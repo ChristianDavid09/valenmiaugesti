@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\anuncio;
+use App\Models\Anuncio;
 use Illuminate\Http\Request;
 
 class AnuncioController extends Controller

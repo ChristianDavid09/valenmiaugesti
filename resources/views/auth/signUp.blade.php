@@ -5,12 +5,11 @@
 
 @section('content')
 
-<?php
-    echo '<pre>';
-    print_r($_POST);
-    echo '</pre>';
-?>
-
+<div class="container mt-4">
+    <h1>Registro</h1>
+    <p>Por favor, selecciona el tipo de usuario que deseas registrar.</p>
+    <p>Si ya tienes cuenta, puedes iniciar sesión <a href="">aquí</a>.</p>
+</div>
 <div class="container mt-4">
     <div class="mb-3">
         <label for="user_type" class="form-label">Tipo de usuario</label>
@@ -22,7 +21,7 @@
     </div>
 
     <div id="form-adoptante" class="container mt-4" style="display: none;">
-        <form class="user-form" action="{{ route('index') }}" method="POST" enctype="multipart/form-data">
+        <form class="user-form" action="{{ route('signUpAdoptante') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row g-2">
                 <div class="col-md-6">
@@ -40,9 +39,13 @@
                     <input type="mail" class="form-control" name="email" id="email" placeholder="" required>
                 </div>
                 <div class="col-md-6">
-                    <label for="dni" class="form-label">DNI</label>
+                    <label for="dni" class="form-label">DNI/NIE</label>
                     <input type="text" class="form-control" name="dni" id="dni" placeholder="" required>
                 </div>
+            </div>
+            <div class="row g-2">
+                <label for="agre" class="form-label">Año de nacimiento</label>
+                <input type="date" class="form-control" name="age" id="age" placeholder="" required>
             </div>
             <div class="row g-2">
                 <div class="col-md-6">
@@ -76,6 +79,11 @@
                     <input type="text" class="form-control" name="city" id="city" placeholder="" required>
                 </div>
             </div>
+            <div class="row g-2">
+                <div class="col-md-6 mt-3">
+                    <textarea class="form-control" name="description" id="description" rows="3" placeholder="Breve presentación personal (opcional)"></textarea>
+                </div>
+            </div>
             <div class="mb-2">
                 <label for="photo">Foto de perfil</label>
                 <input type="file" class="form-control" name="photo" id="photo">
@@ -89,7 +97,7 @@
 
 
         <h4>Datos Administrador</h4>
-        <form action="{{ route('signUpCologne') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('signUpColonia') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row g-2">
                 <div class="col-md-6">

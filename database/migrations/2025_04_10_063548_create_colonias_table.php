@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('direccion')->nullable();
             $table->text('descripcion')->nullable();
             $table->string('telefono_contacto')->nullable();
+            $table->string('foto')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
 

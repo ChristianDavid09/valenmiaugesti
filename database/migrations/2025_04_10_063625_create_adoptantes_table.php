@@ -15,13 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 50);
             $table->string('apellidos', 50);
-            $table->integer('edad');
+            $table->date('fecha_nacimiento');
             $table->string('dni', 9)->unique();
+            $table->string('email', 100)->unique();
             $table->string('telefono', 15)->nullable();
             $table->string('direccion', 255)->nullable();
             $table->string('provincia', 50)->nullable();
             $table->string('foto', 255)->nullable();
             $table->string('certificado', 255);
+            $table->text('descripcion')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

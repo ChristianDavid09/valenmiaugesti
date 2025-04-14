@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\adopt_anun;
+use App\Models\Adopt_Anun;
 use Illuminate\Http\Request;
 
 class AdoptAnunController extends Controller

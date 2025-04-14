@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\colonia;
+use App\Models\Colonia;
 use Illuminate\Http\Request;
 
 class ColoniaController extends Controller

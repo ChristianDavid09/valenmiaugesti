@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
-class signUpCologne extends FormRequest
+class signUpAdoptante extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,17 +23,7 @@ class signUpCologne extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|max:100|unique:users,email',
-            'phone' => 'required|string|max:20',
-    
-            'colonia_name' => 'required|string|max:100',
-            'id_ref_com' => 'required|string|max:50|unique:colonias,id_ref_com',
-            'colonia_location' => 'required|string|max:255',
-            'city' => 'required|string|max:100',
-            'description' => 'nullable|string|max:500',
-    
-            'password' => 'required|string|min:8|confirmed',
+            
         ];
     }
 

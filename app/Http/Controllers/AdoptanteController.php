@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\adoptante;
+use App\Models\Adoptante;
 use Illuminate\Http\Request;
 
 class AdoptanteController extends Controller

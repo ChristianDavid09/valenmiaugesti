@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\felino;
+use App\Models\Felino;
 use Illuminate\Http\Request;
 
 class FelinoController extends Controller
