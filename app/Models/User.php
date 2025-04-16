@@ -11,8 +11,8 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-    const ROL_COLONIA = 'colonia';
-    const ROL_ADOPTANTE = 'adoptante';
+    const ROL_COLONIA = 'Colonia';
+    const ROL_ADOPTANTE = 'Adoptante';
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'dni',
         'password',
         'rol',
     ];
@@ -48,4 +49,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function colonia()
+    {
+        return $this->hasOne(Colonia::class);
+    }
+
 }

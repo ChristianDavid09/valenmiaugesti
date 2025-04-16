@@ -65,7 +65,7 @@
             <div class="text-muted mt-3">------------------------ Datos complementarios no obligatorios ------------------------</div>
             <div class="row g-2">
                 <div class="col-md-6">
-                    <label for="phone" class="form-label">Móvil</label>
+                    <label for="phone" class="form-label">Telefono de contacto</label>
                     <input type="phone" class="form-control" name="phone" id="phone" placeholder="" required>
                 </div>
             </div>
@@ -110,8 +110,14 @@
                 </div>
             </div>
             <div class="row g-2">
-                <label for="phone" class="form-label">Teléfono de contacto</label>
-                <input type="text" class="form-control" name="phone" id="phone" required>
+                <div class="col-md-6">
+                    <label for="phone" class="form-label">Teléfono de contacto</label>
+                    <input type="text" class="form-control" name="phone" id="phone" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="dni" class="form-label">DNI/NIE</label>
+                    <input type="text" class="form-control" name="dni" id="dni" placeholder="" required>
+                </div>
             </div>
             <div class="row g-2">
                 <h4>Datos de la Colonia</h4>
@@ -148,6 +154,10 @@
             <div class="row g-2">
                 <div class="col-md-6 mt-3">
                     <textarea class="form-control" name="description" id="description" rows="3" placeholder="Descripción de la colonia"></textarea>
+                </div>
+                <div class="mb-2">
+                    <label for="photo">Foto de perfil</label>
+                    <input type="file" class="form-control" name="photo" id="photo">
                 </div>
             </div>
             <button type="submit" class="btn btn-primary mt-3">Registrarse</button>

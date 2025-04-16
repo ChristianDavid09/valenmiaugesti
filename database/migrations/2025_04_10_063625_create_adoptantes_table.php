@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('nombre', 50);
             $table->string('apellidos', 50);
             $table->date('fecha_nacimiento');
-            $table->string('dni', 9)->unique();
-            $table->string('email', 100)->unique();
             $table->string('telefono', 15)->nullable();
             $table->string('direccion', 255)->nullable();
             $table->string('provincia', 50)->nullable();

@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('titulo');
             $table->text('descripcion');
-            $table->date('fecha_publicacion')->nullable();
-            $table->enum('tipo', ['disponible', 'perdido', 'acogido', 'adoptado']);
+            $table->enum('tipo', ['Disponible', 'Perdido', 'En acogida', 'Adoptado']);
             $table->foreignId('id_felino')->constrained('felinos')->onDelete('cascade');
             $table->timestamps();
         });

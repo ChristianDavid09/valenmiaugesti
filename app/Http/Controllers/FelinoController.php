@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Felino;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class FelinoController extends Controller
 {
@@ -12,7 +14,8 @@ class FelinoController extends Controller
      */
     public function index()
     {
-        //
+        $felinos = Felino::all();
+        return view('feline.index', compact('felinos'));
     }
 
     /**
@@ -20,7 +23,7 @@ class FelinoController extends Controller
      */
     public function create()
     {
-        //
+        return view('feline.create');
     }
 
     /**
@@ -28,7 +31,33 @@ class FelinoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $feline = new Felino();
+        $feline->nombre = $request->input('name');
+        $feline->edad = $request->input('age');
+        $feline->raza = $request->input('race');
+        $feline->sexo = $request->input('sex');
+        $feline->estado_salud = $request->input('health_status');
+        $feline->id_colonia = Auth::user()->colonia->id;
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+
+            $photo = $request->file('image');
+        
+            $extension = $photo->getClientOriginalExtension();
+            $filePhoto = $request->input('type') . '.' . $request->input('name') . '.' . $extension;
+            
+            
+            $routeImage = public_path('colonias/images/anuncios');
+        
+            if (!file_exists($routeImage)) {
+                mkdir($routeImage, 0777, true);
+            }
+        
+            $photo->move($routeImage, $filePhoto);
+            $felino->foto = $filePhoto;
+        
+        } 
+        $felino->save();
     }
 
     /**

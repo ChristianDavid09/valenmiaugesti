@@ -29,6 +29,7 @@ class LoginController extends Controller
         $user = new User();
         $user->name = $request->get('name');
         $user->email = $request->get('email');
+        $user->dni = $request->get('dni');
         $user->password = Hash::make($request->get('password'));
         $user->rol = User::ROL_COLONIA;
         $user->save();
@@ -43,11 +44,32 @@ class LoginController extends Controller
         $colonia->id_ref_com = $request->input('id_ref_com');
         $colonia->descripcion = $request->input('description');
         $colonia->user_id = $user->id;
+
+        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+
+            $photo = $request->file('photo');
+
+            // Generar un nombre único para la imagen, para diferenciarlo bien usaremos el nombre y el dni del adoptante
+            $filePhoto = $request->input('id_ref_com').'.'.$request->input('colonia_name').'.png';
+
+            /* Ruta absoluta donde se debe guardar la imagen, con la function public_path()
+            obtenemos la ruta abosuluta del directorio al que queremos acceder*/
+            $routeImage = public_path('colonias/images/profile');
+
+            // Asegurarse de que la carpeta existe, y de lo contrario se crea la carpeta
+            if (!file_exists($routeImage)) {
+                mkdir($routeImage, 0777, true);
+            }
+            $photo->move($routeImage, $filePhoto);
+            // Guardar el nombre del archivo en la base de datos
+            $colonia->foto = $filePhoto;
+        }
+
         $colonia->save();
 
         Auth::login($user);
 
-        return redirect()->route('index');
+        return redirect()->route('account');
     }
 
     /**Aqui crearemos al usuario junto al adoptante */
@@ -57,6 +79,7 @@ class LoginController extends Controller
         $user = new User();
         $user->name = $request->get('name');
         $user->email = $request->get('email');
+        $user->dni = $request->get('dni');
         $user->password = Hash::make($request->get('password'));
         $user->rol = User::ROL_ADOPTANTE;
         $user->save();
@@ -66,8 +89,6 @@ class LoginController extends Controller
         $adoptante = new Adoptante();
         $adoptante->nombre = $request->input('name');
         $adoptante->apellidos = $request->input('surname');
-        $adoptante->dni = $request->input('dni');
-        $adoptante->email = $request->input('email');
         $adoptante->fecha_nacimiento = $request->input('age');
         $adoptante->telefono = $request->input('phone');
         $adoptante->direccion = $request->input('address');
@@ -81,7 +102,7 @@ class LoginController extends Controller
             $certificate = $request->file('certificate');
 
             // Generar un nombre único para el certificado, para diferenciarlo bien usaremos el nombre y el dni del adoptante
-            $fileCertificate = $request->input('surname').'.'.$request->input('name').'.'.$request->input('dni').'.pdf';
+            $fileCertificate = $request->input('dni').'.'.$request->input('david').'.pdf';
 
             /* Ruta absoluta donde se debe guardar el PDF*/
             $routePDF = public_path('adoptantes/certificate');
@@ -105,7 +126,7 @@ class LoginController extends Controller
                 $photo = $request->file('photo');
 
                 // Generar un nombre único para la imagen, para diferenciarlo bien usaremos el nombre y el dni del adoptante
-                $filePhoto = $request->input('surname').'.'.$request->input('name').'.'.$request->input('dni').'.png';
+                $filePhoto = $request->input('dni').'.'.$request->input('david').'.png';
 
                 /* Ruta absoluta donde se debe guardar la imagen, con la function public_path()
                 obtenemos la ruta abosuluta del directorio al que queremos acceder*/
@@ -129,8 +150,57 @@ class LoginController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('index');
+        return redirect()->route('account');
 
+    }
+    public function loginForm(): view {
+    /**
+     * Haremos un par de comprobaciones antes de redirigirlo al formulario para iniciar la sesión;
+     * -Si el usuario uso el checkbox para recordar la sesión
+     * -Si el usuario ya esta logeado
+     * En caso de que estos dos no se cumplan, le redirigimos al formulario de login
+     *  */   
+        if (Auth::viaRemember()) {
+            return redirect()->route('account');
+        } else if (Auth::check()) {
+            return redirect()->route('account');
+        } else {
+            return view('auth.login');
+        }
+        
+        
+        return view('auth.login');
+    }
+    public function login(Request $request): RedirectResponse
+    {
+    /**
+     * Recogemos las credenciales del formulario de login, en caso de que todo haya ido bien redirigirá directamente a la cuenta del usuario,
+     * en caso de que no, le redirigirá de nuevo al formulario de inicio de sesión.
+     * Tambien se gestionara el checkbox de recordar la sesión en caso de que quiera entrar en la cuenta sin tener que volver a poner las credenciales.
+     */
+        $credentials = $request->only('email', 'password');
+        $rememberLogin = ($request->get('remember')) ? true : false;
+
+        if (Auth::guard('web')->attempt($credentials, $rememberLogin)) {
+            $request->session()->regenerate();
+            return redirect()->route('account');
+        } else {
+            $error = 'Error al Iniciar sesión';
+            return redirect()->route('login');
+        }
+    }
+
+
+    public function account(): view {
+        return view('users.account');
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('index');
     }
 
 }
