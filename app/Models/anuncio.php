@@ -4,7 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class anuncio extends Model
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Anuncio extends Model
 {
-    //
+
+    public function felino()
+    {
+        return $this->belongsTo(Felino::class, 'id_felino');
+    }
+
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Felino;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 
 
 class FelinoController extends Controller
@@ -14,8 +15,8 @@ class FelinoController extends Controller
      */
     public function index()
     {
-        $felinos = Felino::all();
-        return view('feline.index', compact('felinos'));
+        $felines = Felino::all();
+        return view('feline.index', compact('felines'));
     }
 
     /**
@@ -29,7 +30,7 @@ class FelinoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $feline = new Felino();
         $feline->nombre = $request->input('name');
@@ -42,22 +43,23 @@ class FelinoController extends Controller
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
 
             $photo = $request->file('image');
-        
+
             $extension = $photo->getClientOriginalExtension();
             $filePhoto = $request->input('type') . '.' . $request->input('name') . '.' . $extension;
-            
-            
+
+
             $routeImage = public_path('colonias/images/anuncios');
-        
+
             if (!file_exists($routeImage)) {
                 mkdir($routeImage, 0777, true);
             }
-        
+
             $photo->move($routeImage, $filePhoto);
-            $felino->foto = $filePhoto;
-        
-        } 
-        $felino->save();
+            $feline->foto = $filePhoto;
+
+        }
+        $feline->save();
+        return redirect()->route('felinos.index');
     }
 
     /**
@@ -71,24 +73,47 @@ class FelinoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(felino $felino)
+    public function edit(Felino $felino)
     {
-        //
+        return view ('feline.edit', ['felino' => $felino]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, felino $felino)
+    public function update(Request $request, Felino $felino)
     {
-        //
+        $felino->nombre = $request->input('name');
+        $felino->edad = $request->input('age');
+        $felino->raza = $request->input('race');
+        $felino->sexo = $request->input('sex');
+        $felino->estado_salud = $request->input('health_status');
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $photo = $request->file('image');
+            $extension = $photo->getClientOriginalExtension();
+            $filePhoto = $request->input('type') . '.' . $request->input('name') . '.' . $extension;
+
+            $routeImage = public_path('colonias/images/anuncios');
+
+            if (!file_exists($routeImage)) {
+            mkdir($routeImage, 0777, true);
+            }
+
+            $photo->move($routeImage, $filePhoto);
+            $felino->foto = $filePhoto;
+        }
+
+        $felino->save();
+        return redirect()->route('felinos.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(felino $felino)
+    public function destroy(Felino $felino)
     {
-        //
+        $felino->delete();
+        return redirect()->route('felinos.index');
     }
 }

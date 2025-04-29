@@ -12,10 +12,9 @@
         <div class="container">
             <h1>Bienvenido {{ Auth::user()->name }}</h1>
             <p>Esta es la página de inicio de sesión.</p>
-            <a href="{{ route('adven.create') }}" class="btn btn-primary">Crear Anuncio</a>
             <a href="{{ route('felinos.index') }}" class="btn btn-secondary">Dar de alta a un Felino</a>
         </div>
-        
+
     @elseif (Auth::check() && Auth::user()->rol == 'Adoptante')
         <h1>HOLA</h1>
     @else

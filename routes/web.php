@@ -21,11 +21,16 @@ Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('account', [LoginController::class, 'account'])->name('account');
 
-Route::get('create/anuncio', [AnuncioController::class, 'create'])->name('adven.create');
-Route::post('create/anuncio', [AnuncioController::class, 'store'])->name('adven.store');
-Route::get('anuncios', [AnuncioController::class, 'index'])->name('adven.index');
+Route::get('create/anuncio/{id}', [AnuncioController::class, 'create'])->name('adver.create');
+Route::post('create/anuncio', [AnuncioController::class, 'store'])->name('adver.store');
+Route::get('index/anuncios', [AnuncioController::class, 'index'])->name('adver.index');
+Route::get('edit/anuncio/{anuncio}', [AnuncioController::class, 'edit'])->name('adver.edit');
+Route::put('update/anuncio/{anuncio}', [AnuncioController::class, 'update'])->name('adver.update');
+Route::delete('delete/anuncio/{anuncio}', [AnuncioController::class, 'destroy'])->name('adver.destroy');
 
-Route::get('index', [FelinoController::class, 'index'])->name('felinos.index');
-Route::get('create', [FelinoController::class, 'create'])->name('felinos.create');
-Route::post('create', [FelinoController::class, 'store'])->name('felinos.store');
+
+Route::resource('felinos', FelinoController::class);
+/* Route::get('index/felinos', [FelinoController::class, 'index'])->name('felinos.index');
+Route::get('create/felinos', [FelinoController::class, 'create'])->name('felinos.create');
+Route::post('create', [FelinoController::class, 'store'])->name('felinos.store'); */
 
