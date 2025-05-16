@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('adoptantes', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 50);
-            $table->string('apellidos', 50);
-            $table->date('fecha_nacimiento');
-            $table->string('telefono', 15)->nullable();
-            $table->string('direccion', 255)->nullable();
-            $table->string('provincia', 50)->nullable();
-            $table->string('foto', 255)->nullable();
-            $table->string('certificado', 255);
-            $table->text('descripcion')->nullable();
+            $table->string('name', 50);
+            $table->string('surname', 50);
+            $table->date('date_birth');
+            $table->string('phone', 15)->nullable();
+            $table->string('adress', 255)->nullable();
+            $table->string('province', 50)->nullable();
+            $table->string('photo', 255)->nullable();
+            $table->string('certificate', 255);
+            $table->text('description')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

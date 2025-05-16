@@ -9,13 +9,13 @@ class Colonia extends Model
     protected $table = 'colonias';
 
     protected $fillable = [
-        'nombre',
+        'name',
         'id_ref_com',
-        'provincia',
-        'direccion',
-        'descripcion',
-        'telefono_contacto',
-        'foto',
+        'province',
+        'adress',
+        'description',
+        'phone',
+        'photo',
         'user_id',
     ];
 

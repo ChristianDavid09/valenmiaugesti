@@ -27,7 +27,7 @@ class signUpAdoptante extends FormRequest
             'surname' => ['required', 'string', 'max:30'],
             'email' => ['required', 'email', 'max:100', 'unique:users'],
             'dni' => ['required', 'string', 'max:9', 'unique:users'],
-            'phone' => ['required', 'string', 'regex:/^\+?[0-9]{9,15}$/', 'unique:adoptantes,telefono'],
+            'phone' => ['required', 'string', 'regex:/^\+?[0-9]{9,15}$/', 'unique:adoptantes,phone'],
 
             'age' => ['required', 'date'],
             'certificate' => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
@@ -36,7 +36,7 @@ class signUpAdoptante extends FormRequest
             'description' => ['nullable', 'string', 'max:500'],
             'password' => ['required', 'confirmed', Password::default()],
             'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
-            
+
         ];
     }
 

@@ -20,6 +20,8 @@ Route::post('login', [LoginController::class, 'login'])->name('login');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('account', [LoginController::class, 'account'])->name('account');
+Route::get('account/edit/{user}', [LoginController::class, 'edit'])->name('account.edit');
+Route::put('account/update/{user}', [LoginController::class, 'update'])->name('account.update');
 
 Route::get('create/anuncio/{id}', [AnuncioController::class, 'create'])->name('adver.create');
 Route::post('create/anuncio', [AnuncioController::class, 'store'])->name('adver.store');
@@ -30,6 +32,7 @@ Route::delete('delete/anuncio/{anuncio}', [AnuncioController::class, 'destroy'])
 
 
 Route::resource('felinos', FelinoController::class);
+Route::resource('colonias', ColoniaController::class);
 /* Route::get('index/felinos', [FelinoController::class, 'index'])->name('felinos.index');
 Route::get('create/felinos', [FelinoController::class, 'create'])->name('felinos.create');
 Route::post('create', [FelinoController::class, 'store'])->name('felinos.store'); */

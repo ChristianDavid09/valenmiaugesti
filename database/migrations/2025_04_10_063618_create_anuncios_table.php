@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('anuncios', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo');
-            $table->text('descripcion');
-            $table->enum('tipo', ['Disponible', 'Perdido', 'En acogida', 'Adoptado']);
+            $table->string('title');
+            $table->text('description');
+            $table->enum('type', ['Disponible', 'Perdido', 'En acogida', 'Adoptado']);
             $table->foreignId('id_felino')->constrained('felinos')->onDelete('cascade');
             $table->timestamps();
         });

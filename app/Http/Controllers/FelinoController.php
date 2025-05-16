@@ -33,11 +33,11 @@ class FelinoController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $feline = new Felino();
-        $feline->nombre = $request->input('name');
-        $feline->edad = $request->input('age');
-        $feline->raza = $request->input('race');
-        $feline->sexo = $request->input('sex');
-        $feline->estado_salud = $request->input('health_status');
+        $feline->name = $request->input('name');
+        $feline->age = $request->input('age');
+        $feline->race = $request->input('race');
+        $feline->sex = $request->input('sex');
+        $feline->health_status = $request->input('health_status');
         $feline->id_colonia = Auth::user()->colonia->id;
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -55,7 +55,7 @@ class FelinoController extends Controller
             }
 
             $photo->move($routeImage, $filePhoto);
-            $feline->foto = $filePhoto;
+            $feline->photo = $filePhoto;
 
         }
         $feline->save();
@@ -83,11 +83,11 @@ class FelinoController extends Controller
      */
     public function update(Request $request, Felino $felino)
     {
-        $felino->nombre = $request->input('name');
-        $felino->edad = $request->input('age');
-        $felino->raza = $request->input('race');
-        $felino->sexo = $request->input('sex');
-        $felino->estado_salud = $request->input('health_status');
+        $felino->name = $request->input('name');
+        $felino->age = $request->input('age');
+        $felino->race = $request->input('race');
+        $felino->sex = $request->input('sex');
+        $felino->health_status = $request->input('health_status');
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $photo = $request->file('image');
@@ -101,7 +101,7 @@ class FelinoController extends Controller
             }
 
             $photo->move($routeImage, $filePhoto);
-            $felino->foto = $filePhoto;
+            $felino->photo = $filePhoto;
         }
 
         $felino->save();

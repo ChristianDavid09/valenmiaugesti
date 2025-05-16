@@ -7,11 +7,14 @@ use App\Models\Colonia;
 use App\Models\Adoptante;
 use App\Http\Requests\signUpColonia;
 use App\Http\Requests\signUpAdoptante;
+use App\Http\Requests\editUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -25,32 +28,33 @@ class LoginController extends Controller
      */
     public function registerColonia(signUpColonia $request): RedirectResponse
     {
+        // Generar un nombre único para la imagen, para diferenciarlo bien usaremos el nombre y el dni del adoptante
+        $filePhoto = $request->input('id_ref_com').'.'.$request->input('colonia_name').'.png';
+
         //Creación de usuario
         $user = new User();
         $user->name = $request->get('name');
         $user->email = $request->get('email');
         $user->dni = $request->get('dni');
         $user->password = Hash::make($request->get('password'));
+        $user->photo_url = $filePhoto;
         $user->rol = User::ROL_COLONIA;
         $user->save();
 
         //Creación de colonia
         //El id_ref_com es el id de la comunidad que se le asigna a la colonia, para que el administrador pueda gestionar
         $colonia = new Colonia();
-        $colonia->nombre = $request->input('colonia_name');
-        $colonia->direccion = $request->input('colonia_location');
-        $colonia->telefono_contacto = $request->input('phone');
-        $colonia->provincia = $request->input('city');
+        $colonia->name = $request->input('colonia_name');
+        $colonia->adress = $request->input('colonia_location');
+        $colonia->phone = $request->input('phone');
+        $colonia->province = $request->input('city');
         $colonia->id_ref_com = $request->input('id_ref_com');
-        $colonia->descripcion = $request->input('description');
+        $colonia->description = $request->input('description');
         $colonia->user_id = $user->id;
 
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
 
             $photo = $request->file('photo');
-
-            // Generar un nombre único para la imagen, para diferenciarlo bien usaremos el nombre y el dni del adoptante
-            $filePhoto = $request->input('id_ref_com').'.'.$request->input('colonia_name').'.png';
 
             /* Ruta absoluta donde se debe guardar la imagen, con la function public_path()
             obtenemos la ruta abosuluta del directorio al que queremos acceder*/
@@ -62,7 +66,7 @@ class LoginController extends Controller
             }
             $photo->move($routeImage, $filePhoto);
             // Guardar el nombre del archivo en la base de datos
-            $colonia->foto = $filePhoto;
+            $colonia->photo = $filePhoto;
         }
 
         $colonia->save();
@@ -75,12 +79,16 @@ class LoginController extends Controller
     /**Aqui crearemos al usuario junto al adoptante */
     public function registerAdoptante(signUpAdoptante $request): RedirectResponse
     {
+        // Generar un nombre único para la imagen, para diferenciarlo bien usaremos el nombre y el dni del adoptante
+        $filePhoto = $request->input('id_ref_com').'.'.$request->input('colonia_name').'.png';
+
         //Creación de usuario
         $user = new User();
         $user->name = $request->get('name');
         $user->email = $request->get('email');
         $user->dni = $request->get('dni');
         $user->password = Hash::make($request->get('password'));
+        $user->photo_url = $request->input('dni').'.'.$request->input('david').'.png';
         $user->rol = User::ROL_ADOPTANTE;
         $user->save();
 
@@ -101,8 +109,6 @@ class LoginController extends Controller
 
             $certificate = $request->file('certificate');
 
-            // Generar un nombre único para el certificado, para diferenciarlo bien usaremos el nombre y el dni del adoptante
-            $fileCertificate = $request->input('dni').'.'.$request->input('david').'.pdf';
 
             /* Ruta absoluta donde se debe guardar el PDF*/
             $routePDF = public_path('adoptantes/certificate');
@@ -120,6 +126,7 @@ class LoginController extends Controller
                 si hubieramos movido la imagen antes del certificado, no encontraria el archivo temporal
                 del certificado y nos daría un error. Junto con que el certificado es obligatorio, en caso
                 de que no haya ningúna imagen, solo subira el pdf .*/
+
             //Gestión de la foto de perfil si ha decidido ponerla
             if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
 
@@ -159,7 +166,7 @@ class LoginController extends Controller
      * -Si el usuario uso el checkbox para recordar la sesión
      * -Si el usuario ya esta logeado
      * En caso de que estos dos no se cumplan, le redirigimos al formulario de login
-     *  */   
+     *  */
         if (Auth::viaRemember()) {
             return redirect()->route('account');
         } else if (Auth::check()) {
@@ -167,8 +174,8 @@ class LoginController extends Controller
         } else {
             return view('auth.login');
         }
-        
-        
+
+
         return view('auth.login');
     }
     public function login(Request $request): RedirectResponse
@@ -189,6 +196,36 @@ class LoginController extends Controller
             return redirect()->route('login');
         }
     }
+    public function edit(User $user): View
+    {
+        return view('users.edit', compact('user'));
+    }
+
+    public function update(editUser $request, User $user): RedirectResponse
+    {
+
+        $data = $request->only(['name', 'email', 'dni']);
+
+
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        Validator::make($data, [
+            'dni' => [
+                'required',
+                'string',
+                'max:9',
+                Rule::unique('users')->ignore($user->id),
+            ],
+        ]);
+
+        $user->update($data);
+
+
+        return redirect()->route('account');
+    }
+
 
 
     public function account(): view {

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('mensajes', function (Blueprint $table) {
             $table->id();
-            $table->enum('tipo', ['Consulta', 'Sugerencia', 'Reclamo', 'Adopcion', 'Otro']);
-            $table->text('contenido');
-            $table->enum('estado', ['Pendiente', 'En proceso', 'Resuelto'])->default('Pendiente');
-            $table->timestamp('fecha_envio')->useCurrent();
+            $table->enum('type', ['Consulta', 'Sugerencia', 'Reclamo', 'Adopcion', 'Otro']);
+            $table->text('content');
+            $table->enum('status', ['Pendiente', 'En proceso', 'Resuelto'])->default('Pendiente');
+            $table->timestamp('date_send')->useCurrent();
             $table->foreignId('id_adoptante')->constrained('adoptantes')->onDelete('cascade');
             $table->foreignId('id_colonia')->constrained('colonias')->onDelete('cascade');
             $table->foreignId('id_anuncio')->constrained('anuncios')->onDelete('cascade');

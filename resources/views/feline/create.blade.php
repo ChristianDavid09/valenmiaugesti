@@ -14,13 +14,6 @@
             <img id="preview" src="#" alt="Vista previa" style="display: none;" class="img-thumbnail mx-auto d-block" width="250">
         </div>
         @csrf
-        <div class="mb-3">
-            <label for="image" class="form-label">Imagen</label>
-            <input type="file" class="form-control" id="image" name="image">
-        </div>
-        <div class="text-center">
-            <img id="preview" src="#" alt="Vista previa" style="display: none;" class="img-thumbnail mx-auto d-block" width="250">
-        </div>
         <h4>Datos del Felino</h4>
         <div class="mb-3">
             <label for="name" class="form-label">Nombre del Michi &#128568;</label>

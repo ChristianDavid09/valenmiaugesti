@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('publicacions', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo');
-            $table->text('contenido');
-            $table->timestamp('fecha_publicacion')->useCurrent();
-            $table->string('foto', 255);
+            $table->string('title');
+            $table->text('content');
+            $table->timestamp('date_send')->useCurrent();
+            $table->string('photo', 255);
             $table->foreignId('id_adoptante')->constrained('adoptantes')->onDelete('cascade');
             $table->timestamps();
         });

@@ -34,10 +34,10 @@ class signUpColonia extends FormRequest
              * -Si algun numero contiene algun cero inicial, al ser un int lo eliminaría.
              * -Si el número de teléfono es muy largo, un int no lo aceptará.
              */
-            'phone' => ['required', 'string', 'regex:/^\+?[0-9]{9,15}$/', 'unique:colonias,telefono_contacto'],
+            'phone' => ['required', 'string', 'regex:/^\+?[0-9]{9,15}$/', 'unique:colonias,phone'],
 
             //Validación de los datos de la colonia
-            'colonia_name' => ['required', 'string', 'max:100', 'unique:colonias,nombre'],
+            'colonia_name' => ['required', 'string', 'max:100', 'unique:colonias,name'],
             'id_ref_com' => ['required', 'string', 'max:50', 'unique:colonias'],
             'colonia_location' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:100'],

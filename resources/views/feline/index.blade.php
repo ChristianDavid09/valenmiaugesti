@@ -12,11 +12,11 @@
         @foreach ($felines as $feline)
             <div class="col-md-4">
                 <div class="card mb-4">
-                    <img src="{{ asset('./colonias/images/anuncios/'. $feline->foto) }}" class="card-img-top" alt="{{ $feline->name }}">
+                    <img src="{{ asset('./colonias/images/anuncios/'. $feline->photo) }}" class="card-img-top" alt="{{ $feline->name }}">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $feline->nombre }}</h5>
-                        <p class="card-text">Edad: {{ $feline->edad }} años</p>
-                        <p class="card-text">Raza: {{ $feline->raza }}</p>
+                        <h5 class="card-title">{{ $feline->name }}</h5>
+                        <p class="card-text">Edad: {{ $feline->age }} años</p>
+                        <p class="card-text">Raza: {{ $feline->race }}</p>
                         <a href="{{ route('felinos.edit', $feline) }}" class="btn btn-secondary">Editar</a>
                         <a href="{{ route('adver.create', $feline) }}" class="btn btn-secondary">Publicar Michi</a>
                         <form action="{{ route('felinos.destroy', $feline) }}" method="POST" style="display:inline;">

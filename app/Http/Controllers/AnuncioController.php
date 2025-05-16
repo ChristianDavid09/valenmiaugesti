@@ -36,9 +36,9 @@ class AnuncioController extends Controller
     {
 
         $advertisement = new Anuncio();
-        $advertisement->titulo = $request->input('title');
-        $advertisement->tipo = $request->input('type');
-        $advertisement->descripcion = $request->input('description');
+        $advertisement->title = $request->input('title');
+        $advertisement->type = $request->input('type');
+        $advertisement->description = $request->input('description');
         $advertisement->id_felino = $request->input('feline_id');
 
         $advertisement->save();
@@ -69,9 +69,9 @@ class AnuncioController extends Controller
      */
     public function update(Request $request, Anuncio $anuncio)
     {
-        $anuncio->titulo = $request->input('title');
-        $anuncio->tipo = $request->input('type');
-        $anuncio->descripcion = $request->input('description');
+        $anuncio->title = $request->input('title');
+        $anuncio->type = $request->input('type');
+        $anuncio->description = $request->input('description');
         $anuncio->id_felino = $request->input('feline_id');
 
         $anuncio->save();

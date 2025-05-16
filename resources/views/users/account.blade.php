@@ -18,7 +18,27 @@
         </ul>
 
         <h2>Acciones</h2>
-        {{-- <a href="{{ route('users.edit', $user) }}" class="btn btn-primary">Editar cuenta</a> --}}
+        @if (Auth::user()->rol == 'adoptante')
+            <a href="{{ route('account.edit', Auth::user() ) }}" class="btn btn-primary">Editar cuenta</a>
+        @else
+            <button type="button" class="btn btn-primary" id="button">Editar</button>
+            <div id="buttons" style="display: none;">
+                <a href="{{ route('account.edit', Auth::user() ) }}" class="btn btn-primary">Editar Datos de Administrador</a>
+                <a href="{{ route('colonias.edit', Auth::user()->colonia) }}" class="btn btn-primary">Editar Datos de Colonia</a>
+
+            </div>
+        @endif
+
     </div>
+
+    <script>
+        var button = document.getElementById('button');
+        var buttons = document.getElementById('buttons');
+
+        button.addEventListener('click', function () {
+            buttons.style.display = 'block';
+            button.style.display = 'none';
+        });
+    </script>
 
 @endsection

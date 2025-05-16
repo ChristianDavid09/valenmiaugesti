@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('colonias', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('name');
             $table->string('id_ref_com');
-            $table->string('provincia');
-            $table->text('direccion')->nullable();
-            $table->text('descripcion')->nullable();
-            $table->string('telefono_contacto')->nullable();
-            $table->string('foto')->nullable();
+            $table->string('province');
+            $table->text('adress')->nullable();
+            $table->text('description')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('photo')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
 

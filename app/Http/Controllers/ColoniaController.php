@@ -44,7 +44,7 @@ class ColoniaController extends Controller
      */
     public function edit(colonia $colonia)
     {
-        //
+        return view('colognes.edit', compact('colonia'));
     }
 
     /**

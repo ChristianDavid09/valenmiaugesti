@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('felinos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 50);
-            $table->integer('edad');
-            $table->enum('sexo', ['Macho', 'Hembra']);
-            $table->string('raza', 50)->nullable();
-            $table->enum('estado_salud', ['Sano', 'En tratamiento', 'Fallecido'])->default('Sano');
+            $table->string('name', 50);
+            $table->integer('age');
+            $table->enum('sex', ['Macho', 'Hembra']);
+            $table->string('race', 50)->nullable();
+            $table->enum('health_status', ['Sano', 'En tratamiento', 'Fallecido'])->default('Sano');
             $table->foreignId('id_colonia')->constrained('colonias')->onDelete('cascade');
-            $table->string('foto', 255)->nullable();
+            $table->string('photo', 255)->nullable();
             $table->timestamps();
         });
 
