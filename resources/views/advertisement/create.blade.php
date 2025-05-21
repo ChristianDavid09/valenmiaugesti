@@ -5,12 +5,12 @@
 
 @section('content')
 <div class="container">
-    <h1>Crear Anuncio para {{ $feline->nombre }}</h1>
+    <h1>Crear Anuncio para {{ $feline->name }}</h1>
     {{-- Mostrar la imagen del felino --}}
     <div class="mb-3">
-        <img src="{{ asset('./colonias/images/anuncios/'. $feline->photo) }}" alt="{{ $feline->name }}" class="img-fluid rounded">
+        <img src="{{ asset('./images/colognes/adver/'. $feline->photo) }}" alt="{{ $feline->name }}" class="img-fluid rounded">
     </div>
-    <form action="{{ route('adver.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('advertisement.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label for="title" class="form-label">Título</label>

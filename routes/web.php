@@ -2,10 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ColoniaController;
-use App\Http\Controllers\FelinoController;
-use App\Http\Controllers\AdoptanteController;
-use App\Http\Controllers\AnuncioController;
+use App\Http\Controllers\CologneController;
+use App\Http\Controllers\FelineController;
+use App\Http\Controllers\AdopterController;
+use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\MessageController;
+
 
 Route::get('/', function () {
     return view('index');
@@ -23,16 +25,19 @@ Route::get('account', [LoginController::class, 'account'])->name('account');
 Route::get('account/edit/{user}', [LoginController::class, 'edit'])->name('account.edit');
 Route::put('account/update/{user}', [LoginController::class, 'update'])->name('account.update');
 
-Route::get('create/anuncio/{id}', [AnuncioController::class, 'create'])->name('adver.create');
-Route::post('create/anuncio', [AnuncioController::class, 'store'])->name('adver.store');
-Route::get('index/anuncios', [AnuncioController::class, 'index'])->name('adver.index');
-Route::get('edit/anuncio/{anuncio}', [AnuncioController::class, 'edit'])->name('adver.edit');
-Route::put('update/anuncio/{anuncio}', [AnuncioController::class, 'update'])->name('adver.update');
-Route::delete('delete/anuncio/{anuncio}', [AnuncioController::class, 'destroy'])->name('adver.destroy');
+
+Route::post('create/adver', [AdvertisementController::class, 'store'])->name('advertisement.store');
+Route::get('index/advers', [AdvertisementController::class, 'index'])->name('advertisement.index');
+Route::get('edit/adver/{adver}', [AdvertisementController::class, 'edit'])->name('advertisement.edit');
+Route::get('show/adver/{adver}', [AdvertisementController::class, 'show'])->name('advertisement.show');
+Route::put('update/adver/{adver}', [AdvertisementController::class, 'update'])->name('advertisement.update');
+Route::delete('delete/adver/{adver}', [AdvertisementController::class, 'destroy'])->name('advertisement.destroy');
+Route::get('create/adver/{id}', [AdvertisementController::class, 'create'])->name('advertisement.create');
 
 
-Route::resource('felinos', FelinoController::class);
-Route::resource('colonias', ColoniaController::class);
+Route::resource('messages', MessageController::class);
+Route::resource('felines', FelineController::class);
+Route::resource('colognes', CologneController::class)->middleware('auth');
 /* Route::get('index/felinos', [FelinoController::class, 'index'])->name('felinos.index');
 Route::get('create/felinos', [FelinoController::class, 'create'])->name('felinos.create');
 Route::post('create', [FelinoController::class, 'store'])->name('felinos.store'); */

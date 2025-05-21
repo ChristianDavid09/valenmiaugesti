@@ -9,7 +9,7 @@
 
         <h2>Detalles de la cuenta</h2>
         <ul>
-            <li><strong>{{ Auth::user()->rol }}</strong></li>
+            <li><strong>{{ Auth::user()->rol }}:</strong></li>{{ Auth::user()->cologne->name }}
         </ul>
         <ul>
             <li><strong>Nombre:</strong> {{ Auth::user()->name }}</li>
@@ -24,8 +24,7 @@
             <button type="button" class="btn btn-primary" id="button">Editar</button>
             <div id="buttons" style="display: none;">
                 <a href="{{ route('account.edit', Auth::user() ) }}" class="btn btn-primary">Editar Datos de Administrador</a>
-                <a href="{{ route('colonias.edit', Auth::user()->colonia) }}" class="btn btn-primary">Editar Datos de Colonia</a>
-
+                <a href="{{ route('colognes.edit', Auth::user()->cologne) }}" class="btn btn-primary">Editar Datos de Colonia</a>
             </div>
         @endif
 

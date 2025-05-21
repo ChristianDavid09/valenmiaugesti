@@ -5,24 +5,24 @@
 @section('content')
     <div class="container">
         <h1>Editar Colonia</h1>
-        <form action="{{ route('colonias.update', $colonia) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('colognes.update', $cologne) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="mb-3">
                 <label for="name" class="form-label">Nombre de la colonia</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ $colonia->name }}" required>
+                <input type="text" class="form-control" id="name" name="name" value="{{ $cologne->name }}" required>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Descripción</label>
-                <textarea class="form-control" id="description" name="description" rows="3">{{ $colonia->description }}</textarea>
+                <textarea class="form-control" id="description" name="description" rows="3">{{ $cologne->description }}</textarea>
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Imagen de la colonia</label>
                 <input type="file" class="form-control" id="image" name="image">
             </div>
-            @if ($colonia->photo)
+            @if ($cologne->photo)
                 <div class="text-center">
-                    <img id="preview" src="{{ asset('./colonias/images/profile/' . $colonia->photo) }}" alt="{{ $colonia->name }}" style="display: block;" class="img-thumbnail mx-auto d-block" width="250">
+                    <img id="preview" src="{{ asset('./images/colognes/profile/' . $cologne->photo) }}" alt="{{ $cologne->name }}" style="display: block;" class="img-thumbnail mx-auto d-block" width="250">
                 </div>
             @endif
             <button type="submit" class="btn btn-primary">Actualizar Colonia</button>

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Colonia;
-use App\Models\Adoptante;
-use App\Http\Requests\signUpColonia;
-use App\Http\Requests\signUpAdoptante;
+use App\Models\Cologne;
+use App\Models\Adopter;
+use App\Http\Requests\signUpCologne;
+use App\Http\Requests\signUpAdopter;
 use App\Http\Requests\editUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
@@ -26,7 +26,7 @@ class LoginController extends Controller
      * Haremos la comprobación de permisos de la aplicación web en base al rol que se le asigna al usuario, a traves de $user->rol,
      * se comprobarán en las paginas que acciones puede realizar el usuario.
      */
-    public function registerColonia(signUpColonia $request): RedirectResponse
+    public function registerColonia(signUpCologne $request): RedirectResponse
     {
         // Generar un nombre único para la imagen, para diferenciarlo bien usaremos el nombre y el dni del adoptante
         $filePhoto = $request->input('id_ref_com').'.'.$request->input('colonia_name').'.png';
@@ -43,14 +43,14 @@ class LoginController extends Controller
 
         //Creación de colonia
         //El id_ref_com es el id de la comunidad que se le asigna a la colonia, para que el administrador pueda gestionar
-        $colonia = new Colonia();
-        $colonia->name = $request->input('colonia_name');
-        $colonia->adress = $request->input('colonia_location');
-        $colonia->phone = $request->input('phone');
-        $colonia->province = $request->input('city');
-        $colonia->id_ref_com = $request->input('id_ref_com');
-        $colonia->description = $request->input('description');
-        $colonia->user_id = $user->id;
+        $cologne = new Cologne();
+        $cologne->name = $request->input('colonia_name');
+        $cologne->adress = $request->input('colonia_location');
+        $cologne->phone = $request->input('phone');
+        $cologne->province = $request->input('city');
+        $cologne->id_ref_com = $request->input('id_ref_com');
+        $cologne->description = $request->input('description');
+        $cologne->user_id = $user->id;
 
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
 
@@ -58,7 +58,7 @@ class LoginController extends Controller
 
             /* Ruta absoluta donde se debe guardar la imagen, con la function public_path()
             obtenemos la ruta abosuluta del directorio al que queremos acceder*/
-            $routeImage = public_path('colonias/images/profile');
+            $routeImage = public_path('images/colognes/profile');
 
             // Asegurarse de que la carpeta existe, y de lo contrario se crea la carpeta
             if (!file_exists($routeImage)) {
@@ -66,10 +66,10 @@ class LoginController extends Controller
             }
             $photo->move($routeImage, $filePhoto);
             // Guardar el nombre del archivo en la base de datos
-            $colonia->photo = $filePhoto;
+            $cologne->photo = $filePhoto;
         }
 
-        $colonia->save();
+        $cologne->save();
 
         Auth::login($user);
 
@@ -77,7 +77,7 @@ class LoginController extends Controller
     }
 
     /**Aqui crearemos al usuario junto al adoptante */
-    public function registerAdoptante(signUpAdoptante $request): RedirectResponse
+    public function registerAdoptante(signUpAdopter $request): RedirectResponse
     {
         // Generar un nombre único para la imagen, para diferenciarlo bien usaremos el nombre y el dni del adoptante
         $filePhoto = $request->input('id_ref_com').'.'.$request->input('colonia_name').'.png';
@@ -94,15 +94,15 @@ class LoginController extends Controller
 
         //Creación de adoptante
         //No olvides que el adoptante debe aportar el certificado de delitos penales por la seguridad del felino
-        $adoptante = new Adoptante();
-        $adoptante->nombre = $request->input('name');
-        $adoptante->apellidos = $request->input('surname');
-        $adoptante->fecha_nacimiento = $request->input('age');
-        $adoptante->telefono = $request->input('phone');
-        $adoptante->direccion = $request->input('address');
-        $adoptante->provincia = $request->input('city');
-        $adoptante->descripcion = $request->input('description');
-        $adoptante->user_id = $user->id;
+        $adopter = new Adopter();
+        $adopter->nombre = $request->input('name');
+        $adopter->apellidos = $request->input('surname');
+        $adopter->fecha_nacimiento = $request->input('age');
+        $adopter->telefono = $request->input('phone');
+        $adopter->direccion = $request->input('address');
+        $adopter->provincia = $request->input('city');
+        $adopter->descripcion = $request->input('description');
+        $adopter->user_id = $user->id;
 
         //Gestión del certificado de delitos penales
         if ($request->hasFile('certificate') && $request->file('certificate')->isValid()) {
@@ -111,7 +111,7 @@ class LoginController extends Controller
 
 
             /* Ruta absoluta donde se debe guardar el PDF*/
-            $routePDF = public_path('adoptantes/certificate');
+            $routePDF = public_path('adopters/certificate');
 
             // Asegurarse de que la carpeta existe, y de lo contrario se crea la carpeta
             if (!file_exists($routePDF)) {
@@ -145,15 +145,15 @@ class LoginController extends Controller
                 }
                 $photo->move($routeImage, $filePhoto);
                 // Guardar el nombre del archivo en la base de datos
-                $adoptante->foto = $filePhoto;
+                $adopter->foto = $filePhoto;
             }
 
             // Guardar el nombre del archivo en la base de datos
-            $adoptante->certificado = $fileCertificate;
+            $adopter->certificate = $fileCertificate;
 
         }
         // Guardar el adoptante en la base de datos
-        $adoptante->save();
+        $adopter->save();
 
         Auth::login($user);
 

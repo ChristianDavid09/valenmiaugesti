@@ -5,7 +5,7 @@
 @section('content')
     <div class="container">
     <h1>Dar de alta a un Michi</h1>
-    <form action=" {{ route('felinos.store') }}" method="POST" enctype="multipart/form-data">
+    <form action=" {{ route('felines.store') }}" method="POST" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="image" class="form-label">Imagen</label>
             <input type="file" class="form-control" id="image" name="image">

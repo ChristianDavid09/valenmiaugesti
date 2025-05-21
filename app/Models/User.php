@@ -49,9 +49,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function colonia()
+    public function cologne()
     {
-        return $this->hasOne(Colonia::class);
+        return $this->hasOne(Cologne::class);
     }
+
 
 }
