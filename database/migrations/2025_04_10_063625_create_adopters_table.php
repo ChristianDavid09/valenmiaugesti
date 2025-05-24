@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('surname', 50);
             $table->date('date_birth');
             $table->string('phone', 15)->nullable();
-            $table->string('adress', 255)->nullable();
+            $table->string('address', 255)->nullable();
             $table->string('province', 50)->nullable();
             $table->string('photo', 255)->nullable();
             $table->string('certificate', 255);

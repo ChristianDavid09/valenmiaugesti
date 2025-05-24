@@ -31,15 +31,17 @@
                                     <p class="mb-1"><strong>Sexo:</strong> {{ $feline->sex }}</p>
                                     <p class="mb-1"><strong>Estado de salud:</strong> {{ $feline->health_status }}</p>
                                 </div>
-                                <div class="mt-3">
-                                    <a href="{{ route('felines.edit', $feline) }}" class="btn btn-outline-secondary btn-sm me-1">Editar</a>
-                                    <a href="{{ route('advertisement.create', $feline) }}" class="btn btn-outline-primary btn-sm me-1">Publicar Michi</a>
-                                    <form action="{{ route('felines.destroy', $feline) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este michi?')">Eliminar</button>
-                                    </form>
-                                </div>
+
+                                    <div class="mt-3">
+                                        <a href="{{ route('felines.edit', $feline) }}" class="btn btn-outline-secondary btn-sm me-1">Editar</a>
+                                        <a href="{{ route('advertisement.create', $feline) }}" class="btn btn-outline-primary btn-sm me-1">Publicar Michi</a>
+                                        <form action="{{ route('felines.destroy', $feline) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este michi?')">Eliminar</button>
+                                        </form>
+                                    </div>
+                                
                             </div>
                         </div>
                     </div>

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['Consulta', 'Sugerencia', 'Reclamo', 'Adopcion', 'Otro']);
+            $table->enum('type', ['Consulta', 'Reclamo', 'Adopcion', 'Otro']);
             $table->text('content');
             $table->enum('status', ['Pendiente', 'En proceso', 'Resuelto'])->default('Pendiente');
             $table->timestamp('date_send')->useCurrent();

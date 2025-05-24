@@ -40,8 +40,15 @@ class CologneController extends Controller
 
     public function show(Cologne $cologne): view
     {
-        $isOwner = Auth::check() && $cologne->id == Auth::user()->cologne->id;
-        return view('colognes.show', compact('cologne', 'isOwner'));
+
+        if(Auth::check() && Auth::user()->rol == 'Cologne') {
+            $isOwner = Auth::check() && $cologne->id == Auth::user()->cologne->id;
+            return view('colognes.show', compact('cologne', 'isOwner'));
+        } else {
+            return view('colognes.show', compact('cologne'));
+        }
+
+
     }
 
 

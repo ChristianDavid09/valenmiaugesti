@@ -28,12 +28,14 @@
                                     }}"></span>
                                     <strong class="ms-2">Disponibilidad:&nbsp;</strong> {{ $adver->type }}
                                 </div>
-                                <a href="{{ route('advertisement.edit', $adver) }}" class="btn btn-outline-secondary btn-sm me-1">Editar</a>
-                                <form action="{{ route('advertisement.destroy', $adver) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button>
-                                </form>
+                                @if (Auth::user()->rol == 'Cologne')
+                                    <a href="{{ route('advertisement.edit', $adver) }}" class="btn btn-outline-secondary btn-sm me-1">Editar</a>
+                                    <form action="{{ route('advertisement.destroy', $adver) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     </div>

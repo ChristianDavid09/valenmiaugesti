@@ -38,7 +38,7 @@ class LoginController extends Controller
         $user->dni = $request->get('dni');
         $user->password = Hash::make($request->get('password'));
         $user->photo_url = $filePhoto;
-        $user->rol = User::ROL_COLONIA;
+        $user->rol = User::ROL_COLOGNE;
         $user->save();
 
         //Creación de colonia
@@ -80,7 +80,9 @@ class LoginController extends Controller
     public function registerAdoptante(signUpAdopter $request): RedirectResponse
     {
         // Generar un nombre único para la imagen, para diferenciarlo bien usaremos el nombre y el dni del adoptante
-        $filePhoto = $request->input('id_ref_com').'.'.$request->input('colonia_name').'.png';
+        $filePhoto = $request->input('surname').'.'.$request->input('name').'.png';
+        $fileCertificate = $request->input('surname').'.'.$request->input('name').'.pdf';
+
 
         //Creación de usuario
         $user = new User();
@@ -88,20 +90,20 @@ class LoginController extends Controller
         $user->email = $request->get('email');
         $user->dni = $request->get('dni');
         $user->password = Hash::make($request->get('password'));
-        $user->photo_url = $request->input('dni').'.'.$request->input('david').'.png';
-        $user->rol = User::ROL_ADOPTANTE;
+        $user->photo_url = $filePhoto;
+        $user->rol = User::ROL_ADOPTER;
         $user->save();
 
         //Creación de adoptante
         //No olvides que el adoptante debe aportar el certificado de delitos penales por la seguridad del felino
         $adopter = new Adopter();
-        $adopter->nombre = $request->input('name');
-        $adopter->apellidos = $request->input('surname');
-        $adopter->fecha_nacimiento = $request->input('age');
-        $adopter->telefono = $request->input('phone');
-        $adopter->direccion = $request->input('address');
-        $adopter->provincia = $request->input('city');
-        $adopter->descripcion = $request->input('description');
+        $adopter->name = $request->input('name');
+        $adopter->surname = $request->input('surname');
+        $adopter->date_birth = $request->input('age');
+        $adopter->phone = $request->input('phone');
+        $adopter->address = $request->input('address');
+        $adopter->province = $request->input('city');
+        $adopter->description = $request->input('description');
         $adopter->user_id = $user->id;
 
         //Gestión del certificado de delitos penales
@@ -132,12 +134,9 @@ class LoginController extends Controller
 
                 $photo = $request->file('photo');
 
-                // Generar un nombre único para la imagen, para diferenciarlo bien usaremos el nombre y el dni del adoptante
-                $filePhoto = $request->input('dni').'.'.$request->input('david').'.png';
-
                 /* Ruta absoluta donde se debe guardar la imagen, con la function public_path()
                 obtenemos la ruta abosuluta del directorio al que queremos acceder*/
-                $routeImage = public_path('adoptantes/images/profile');
+                $routeImage = public_path('images/adopters/profile');
 
                 // Asegurarse de que la carpeta existe, y de lo contrario se crea la carpeta
                 if (!file_exists($routeImage)) {
@@ -145,7 +144,7 @@ class LoginController extends Controller
                 }
                 $photo->move($routeImage, $filePhoto);
                 // Guardar el nombre del archivo en la base de datos
-                $adopter->foto = $filePhoto;
+                $adopter->photo = $filePhoto;
             }
 
             // Guardar el nombre del archivo en la base de datos

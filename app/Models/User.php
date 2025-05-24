@@ -11,8 +11,8 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-    const ROL_COLONIA = 'Colonia';
-    const ROL_ADOPTANTE = 'Adoptante';
+    const ROL_COLOGNE = 'Cologne';
+    const ROL_ADOPTER = 'Adopter';
 
     /**
      * The attributes that are mass assignable.
@@ -52,6 +52,10 @@ class User extends Authenticatable
     public function cologne()
     {
         return $this->hasOne(Cologne::class);
+    }
+    public function adopter()
+    {
+        return $this->hasOne(Adopter::class);
     }
 
 

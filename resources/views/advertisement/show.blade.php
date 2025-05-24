@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container my-5">
-        <h1 class="mb-4 text-center">Anuncio: {{ $advertisement->title }}</h1>
+        <h1 class="mb-4 text-center">Anuncio: {{ $advertisement->title }}</h1><br>
 
         <div class="card shadow-lg p-3 mb-5 bg-body rounded">
             <div class="row g-0 align-items-center">
@@ -19,8 +19,9 @@
                         <h5 class="card-title">{{ $advertisement->title }}</h5>
                         <p class="card-text">{{ $advertisement->description }}</p>
                         <strong>Tipo:</strong>
-                            <span class="status-dot {{ $advertisement->type == 'Disponible' ? 'bg-success' : ($advertisement->type == 'En acogida' ? 'bg-warning' : 'bg-secondary') }}">
-                            </span>&nbsp;{{ $advertisement->type }}<br>
+                        <span class="status-dot {{ $advertisement->type == 'Disponible' ? 'bg-success' : ($advertisement->type == 'En acogida' ? 'bg-warning' : 'bg-secondary') }}">
+                        </span>&nbsp;{{ $advertisement->type }}<br>
+                        <strong>Colonia:&nbsp;</strong>{{ $advertisement->feline->cologne->name }}
                         <hr>
                         <p class="card-text">
                             <strong>Nombre del michi:</strong> {{ $advertisement->feline->name }}<br>
@@ -29,7 +30,11 @@
                             <strong>Raza:</strong> {{ $advertisement->feline->race }}<br>
                             <strong>Estado de salud:</strong> {{ $advertisement->feline->health_status }}<br>
                         </p>
-                        <a href="" type="button" class="btn btn-outline-primary btn-sm me-1">Enviar mensaje</a>
+                        <a href="{{ route('messages.create.for', [
+                                        'feline' => $advertisement->feline,
+                                        'cologne' => $advertisement->feline->cologne
+                                ]) }}" type="button" class="btn btn-outline-primary btn-sm me-1">Enviar mensaje
+                        </a>
                     </div>
                 </div>
             </div>

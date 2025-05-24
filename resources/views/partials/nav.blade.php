@@ -70,10 +70,15 @@
             </div>
             @else
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a class="nav-link" href="{{ route('colognes.show', Auth::user()->cologne) }}">Mi Colonia</a></li>
-              <li><a class="nav-link" href="{{ route('felines.index') }}">Mis Michis</a></li>
-              <li><a class="nav-link" href="{{ route('advertisement.index') }}">Mis Anuncios</a></li>
-              <li><a href="#" class="nav-link px-2 link-dark">Foro</a></li>
+                @if (Auth::user()->rol == 'Cologne')
+                    <li><a class="nav-link" href="{{ route('colognes.show', Auth::user()->cologne) }}">Mi Colonia</a></li>
+                    <li><a class="nav-link" href="{{ route('felines.index') }}">Mis Michis</a></li>
+                    <li><a class="nav-link" href="{{ route('advertisement.index') }}">Mis Anuncios</a></li>
+                @else
+                    <li><a class="nav-link" href="{{ route('colognes.index') }}">Colonias</a></li>
+                    <li><a class="nav-link" href="{{ route('advertisement.index') }}">Anuncios</a></li>
+                @endif
+              <li><a href="{{ route('publications.index') }}" class="nav-link px-2 link-dark">Foro</a></li>
             </ul>
 
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
@@ -82,13 +87,18 @@
 
             <div class="dropdown text-end">
                 <a href="#" class="d-block text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="{{ asset('./images/colognes/profile/'.Auth::user()->photo_url) }}" alt="Perfil" width="42" height="42" class="rounded-circle border shadow-sm">
+                    @if (Auth::user()->rol == 'Cologne')
+                        <img src="{{ asset('./images/colognes/profile/'.Auth::user()->photo_url) }}" alt="Perfil" width="42" height="42" class="rounded-circle border shadow-sm">
+                    @else
+                        <img src="{{ asset('./images/adopters/profile/'.Auth::user()->photo_url) }}" alt="Perfil" width="42" height="42" class="rounded-circle border shadow-sm">
+                    @endif
+
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownUser1">
                   <li><h6 class="dropdown-header">{{ Auth::user()->name }}</h6></li>
                   <li><a class="dropdown-item" href="{{ route('account') }}">Cuenta</a></li>
                   <li><a class="dropdown-item" href="{{ route('account.edit', Auth::user()) }}">Editar cuenta</a></li>
-                  <li><a class="dropdown-item" href="{{ route('account') }}">Correo</a></li>
+                  <li><a class="dropdown-item" href="{{ route('messages.index') }}">Correo</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item text-danger" href="{{ route('logout') }}">Cerrar Sesión</a></li>
                 </ul>

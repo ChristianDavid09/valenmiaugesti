@@ -7,6 +7,8 @@ use App\Http\Controllers\FelineController;
 use App\Http\Controllers\AdopterController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\ResponseController;
 
 
 Route::get('/', function () {
@@ -35,7 +37,10 @@ Route::delete('delete/adver/{adver}', [AdvertisementController::class, 'destroy'
 Route::get('create/adver/{id}', [AdvertisementController::class, 'create'])->name('advertisement.create');
 
 
+Route::resource('responses', ResponseController::class);
+Route::resource('publications', PublicationController::class);
 Route::resource('messages', MessageController::class);
+Route::get('/messages/create/{feline}/for/{cologne}', [MessageController::class, 'createForCologne'])->name('messages.create.for');
 Route::resource('felines', FelineController::class);
 Route::resource('colognes', CologneController::class)->middleware('auth');
 /* Route::get('index/felinos', [FelinoController::class, 'index'])->name('felinos.index');

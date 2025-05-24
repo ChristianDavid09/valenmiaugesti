@@ -31,7 +31,7 @@ class signUpAdopter extends FormRequest
 
             'age' => ['required', 'date'],
             'certificate' => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
-            'adress' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:100'],
             'description' => ['nullable', 'string', 'max:500'],
             'password' => ['required', 'confirmed', Password::default()],

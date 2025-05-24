@@ -26,7 +26,11 @@
 {{-- Michis publicados --}}
 <div class="container my-5">
     <h2 class="mb-4 text-center">
-        {{ $isOwner ? 'Mis Michis publicados en esta colonia' : 'Michis publicados en esta colonia' }}
+        @if (Auth::check() && Auth::user()->rol == 'Cologne')
+            {{ $isOwner ? 'Mis Michis publicados en esta colonia' : 'Michis publicados en esta colonia' }}
+        @else
+            Michis publicados en esta colonia
+        @endif
     </h2>
 
     <div class="row">
@@ -50,7 +54,7 @@
                         </div>
                         <div class="mt-3">
                             <a href="{{ route('advertisement.show', $adver) }}" class="btn btn-outline-primary btn-sm me-1">Ver anuncio</a>
-                            @if ($isOwner)
+                            @if (Auth::user()->rol == 'Cologne' && $isOwner)
                                 <a href="{{ route('advertisement.edit', $adver) }}" class="btn btn-outline-secondary btn-sm me-1">Editar</a>
                                 <form action="{{ route('advertisement.destroy', $adver) }}" method="POST" class="d-inline">
                                     @csrf

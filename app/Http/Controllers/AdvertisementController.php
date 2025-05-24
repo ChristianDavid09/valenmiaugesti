@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Advertisement;
 use App\Models\Feline;
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Http\Requests\AdverFeline;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -17,6 +18,13 @@ class AdvertisementController extends Controller
      */
     public function index()
     {
+
+        // Cogemos todos los anuncios de la base de datos
+        if (Auth::user()->rol == User::ROL_ADOPTER) {
+            $advertisements = Advertisement::with('feline')->get();
+            return view('advertisement.index', compact('advertisements'));
+        }
+        // Si el usuario es un colono, cogemos solo los anuncios de su colonia
         $cologneId = Auth::user()->cologne->id;
 
         // Cogemos solo los anuncios cuyo felino pertenece a esa colonia
