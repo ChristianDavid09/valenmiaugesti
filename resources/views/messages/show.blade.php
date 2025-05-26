@@ -17,7 +17,7 @@
                 <div class="card shadow rounded-4 border-0">
                     <div class="card-body p-4 bg-white">
                         <div class="mb-4 border-bottom pb-3">
-                            <a href=""><h5 class="mb-1 text-primary">👤 De: {{ $message->adopter->name ?? 'Sin adoptante' }}</h5></a>
+                            <a href="{{ route('adopters.show', $message->adopter->id) }}"><h5 class="mb-1 text-primary">👤 De: {{ $message->adopter->name ?? 'Sin adoptante' }}</h5></a>
                             <small class="text-muted">{{ $message->created_at->format('d/m/Y H:i') }}</small>
                         </div>
 
@@ -31,13 +31,32 @@
                         <p><span class="fw-bold">📍 Colonia:</span> {{ $message->cologne->name ?? 'Sin colonia' }}</p>
                         <p><span class="fw-bold">🐱 Michi:</span> {{ $message->advertisement->feline->name ?? 'Sin michi' }}</p>
                         <p><span class="fw-bold">📤 Estado:</span> {{ ucfirst($message->status) }}</p>
-
+                        @if (Auth::user()->rol === 'Cologne')
+                            @if ($message->status === 'Pendiente')
+                                <form action="{{ route('messages.updateStatus', $message->id) }}" method="POST" class="mt-4">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="status" value="En proceso">
+                                    <button type="submit" class="btn btn-warning w-100">🔄 Marcar como "En proceso"</button>
+                                </form>
+                            @elseif ($message->status === 'En proceso')
+                                <form action="{{ route('messages.updateStatus', $message->id) }}" method="POST" class="mt-4">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="status" value="Resuelto">
+                                    <button type="submit" class="btn btn-success w-100">✅ Marcar como "Resuelto"</button>
+                                </form>
+                            @endif
+                        @endif
                         <div class="mt-4 bg-light p-3 rounded">
                             <p class="mb-1 text-muted fw-bold">📬 Respuesta:</p>
-                            <p class="mb-2">{{ $message->response ?? 'No hay respuesta aún' }}</p>
-                            <small class="text-muted">
-                                {{ $message->response_date ? $message->response_date->format('d/m/Y H:i') : 'No respondido' }}
-                            </small>
+                            <p class="mb-2">
+                                @if ($message->responses->isNotEmpty())
+                                    ✅ Este mensaje ya tiene respuestas.
+                                @else
+                                    No hay respuestas aún.
+                                @endif
+                            </p>
                         </div>
                         <div class="d-flex justify-content-between mt-4">
                             <a href="{{ route('responses.index') }}" class="btn btn-outline-primary">

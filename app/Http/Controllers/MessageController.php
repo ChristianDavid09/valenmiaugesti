@@ -74,9 +74,11 @@ class MessageController extends Controller
      */
     public function show(Message $message): View
     {
+        $message->load('responses');
         if (Auth::user()->rol == 'cologne') {
 
         } else {
+            
             return view('messages.show', compact('message'));
         }
     }
@@ -111,4 +113,28 @@ class MessageController extends Controller
         }
         return view('messages.create', compact('cologne', 'feline'));
     }
+    public function updateStatus(Request $request, Message $message)
+    {
+        $user = Auth::user();
+
+        if ($user->rol !== 'Cologne' || $message->id_cologne !== $user->cologne->id) {
+            abort(403, 'No autorizado');
+        }
+
+        $newStatus = $request->input('status');
+
+        // Validar la transición de estados
+        if (
+            ($message->status === 'Pendiente' && $newStatus === 'En proceso') ||
+            ($message->status === 'En proceso' && $newStatus === 'Resuelto')
+        ) {
+            $message->status = $newStatus;
+            $message->save();
+            return back()->with('success', 'El estado del mensaje ha sido actualizado.');
+        }
+
+        return back()->with('error', 'Cambio de estado no permitido.');
+    }
+
+
 }

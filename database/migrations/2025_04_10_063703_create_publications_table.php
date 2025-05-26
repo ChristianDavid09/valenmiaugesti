@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->timestamp('date_send')->useCurrent();
             $table->string('photo', 255);
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->timestamps();

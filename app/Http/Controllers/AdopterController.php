@@ -36,7 +36,8 @@ class AdopterController extends Controller
      */
     public function show(Adopter $adopter)
     {
-        //
+        // Aquí puedes retornar una vista con los detalles del adoptante
+        return view('adopters.show', compact('adopter'));
     }
 
     /**
