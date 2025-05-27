@@ -15,7 +15,14 @@
                      style="max-width: 100%; height: auto;">
                 <div class="card-body">
                     <h2 class="card-title text-primary">{{ $cologne->name }}</h2>
-                    <p class="card-text">{{ $cologne->description }}</p>
+                    <p class="card-text">
+                        <strong>Ubicación:</strong> {{ $cologne->adress }}<br>
+                        <strong>Teléfono:</strong> {{ $cologne->phone }}<br>
+                        <strong>Email:</strong> {{ $cologne->user->email }}
+                    </p>
+                    <p class="card-text">
+                        {{ $cologne->description }}<br>
+                    </p>
                 </div>
             </div>
         </div>
@@ -31,10 +38,12 @@
         @else
             Michis publicados en esta colonia
         @endif
+
     </h2>
 
     <div class="row">
         @forelse($cologne->advertisements as $adver)
+
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm border-0 d-flex flex-column">
                     <a href="{{ route('advertisement.show', $adver) }}">

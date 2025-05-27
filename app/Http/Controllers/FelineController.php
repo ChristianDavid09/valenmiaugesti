@@ -115,7 +115,30 @@ class FelineController extends Controller
      */
     public function destroy(Feline $feline)
     {
+
+
+
+        
         $feline->delete();
         return redirect()->route('felines.index');
+    }
+
+    public function active($feline)
+    {
+        $feline = Feline::findOrFail($feline);
+
+        $feline->in_active = 1;
+        $feline->save();
+        return back()->with('success', 'Michi publicado correctamente');
+    }
+
+    public function inactive($feline)
+    {
+        $feline = Feline::findOrFail($feline);
+
+        $feline->in_active = 0;
+        $feline->save();
+
+        return back()->with('success', 'Michi despublicado correctamente');
     }
 }

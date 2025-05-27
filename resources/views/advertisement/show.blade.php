@@ -30,11 +30,14 @@
                             <strong>Raza:</strong> {{ $advertisement->feline->race }}<br>
                             <strong>Estado de salud:</strong> {{ $advertisement->feline->health_status }}<br>
                         </p>
-                        <a href="{{ route('messages.create.for', [
-                                        'feline' => $advertisement->feline,
-                                        'cologne' => $advertisement->feline->cologne
+                        @if (Auth::user()->rol === 'Adopter')
+                            <a href="{{ route('messages.create.for', [
+                                'feline' => $advertisement->feline,
+                                'cologne' => $advertisement->feline->cologne
                                 ]) }}" type="button" class="btn btn-outline-primary btn-sm me-1">Enviar mensaje
-                        </a>
+                            </a>
+                        @endif
+
                     </div>
                 </div>
             </div>

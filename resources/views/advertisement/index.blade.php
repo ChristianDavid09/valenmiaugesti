@@ -33,7 +33,7 @@
                                     <form action="{{ route('advertisement.destroy', $adver) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button>
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar Anuncio</button>
                                     </form>
                                 @endif
                             </div>

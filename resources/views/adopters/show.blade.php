@@ -18,11 +18,7 @@
 
                     {{-- Imagen del adoptante --}}
                     <div class="text-center mb-4">
-                        @if ($adopter->photo_url)
-                            <img src="{{ asset('storage/' . $adopter->photo_url) }}" class="rounded-circle shadow" alt="Foto del adoptante" width="120" height="120">
-                        @else
-                            <img src="{{ asset('./images/adopters/profile/'.$adopter->photo) }}" class="rounded-circle shadow" alt="Foto por defecto" width="120" height="120">
-                        @endif
+                            <img src="{{ asset('./images/adopters/profile/'.$adopter->user->photo_url) }}" class="rounded-circle shadow" alt="Foto por defecto" width="120" height="120">
                     </div>
 
                     {{-- Datos del adoptante --}}

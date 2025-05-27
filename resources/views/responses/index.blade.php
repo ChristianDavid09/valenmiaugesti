@@ -70,7 +70,7 @@
     }
 </style>
 
-@foreach ($messages as $message)
+
     <div class="chat-container">
 
         {{-- Encabezado del mensaje centrado --}}
@@ -101,7 +101,7 @@
             </div>
         </form>
     </div>
-@endforeach
+
 
 
 

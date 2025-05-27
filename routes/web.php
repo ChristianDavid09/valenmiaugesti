@@ -36,11 +36,14 @@ Route::put('update/adver/{adver}', [AdvertisementController::class, 'update'])->
 Route::delete('delete/adver/{adver}', [AdvertisementController::class, 'destroy'])->name('advertisement.destroy');
 Route::get('create/adver/{id}', [AdvertisementController::class, 'create'])->name('advertisement.create');
 
+
 Route::resource('adopters', AdopterController::class);
 Route::resource('responses', ResponseController::class);
+Route::get('/messages/{message}/responses', [ResponseController::class, 'showForMessage'])->name('responses.forMessage');
 Route::resource('publications', PublicationController::class);
 Route::resource('messages', MessageController::class);
 Route::patch('/messages/{message}/status', [MessageController::class, 'updateStatus'])->name('messages.updateStatus');
+Route::patch('/felines/{feline}/desactivate', [FelineController::class, 'inactive'])->name('felines.desactivate');
 Route::get('/messages/create/{feline}/for/{cologne}', [MessageController::class, 'createForCologne'])->name('messages.create.for');
 Route::resource('felines', FelineController::class);
 Route::resource('colognes', CologneController::class)->middleware('auth');

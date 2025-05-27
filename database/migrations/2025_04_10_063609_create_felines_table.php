@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('age');
             $table->enum('sex', ['Macho', 'Hembra']);
             $table->string('race', 50)->nullable();
+            $table->boolean('in_active')->default(false);
             $table->enum('health_status', ['Sano', 'En tratamiento'])->default('Sano');
             $table->foreignId('id_cologne')->constrained('colognes')->onDelete('cascade');
             $table->string('photo', 255)->nullable();

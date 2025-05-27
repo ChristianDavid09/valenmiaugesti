@@ -17,7 +17,12 @@
                 <div class="card shadow rounded-4 border-0">
                     <div class="card-body p-4 bg-white">
                         <div class="mb-4 border-bottom pb-3">
-                            <a href="{{ route('adopters.show', $message->adopter->id) }}"><h5 class="mb-1 text-primary">👤 De: {{ $message->adopter->name ?? 'Sin adoptante' }}</h5></a>
+                            <a href="{{ route('adopters.show', $message->adopter->id) }}" style="text-decoration:none;">
+                                <h5 class="mb-1 text-primary">
+                                    <img src="{{ asset('./images/adopters/profile/'.$message->adopter->user->photo_url) }}" class="rounded-circle shadow" width="120" height="120">
+                                    {{ $message->adopter->name ?? 'Sin adoptante' }}
+                                </h5>
+                            </a>
                             <small class="text-muted">{{ $message->created_at->format('d/m/Y H:i') }}</small>
                         </div>
 
@@ -59,7 +64,7 @@
                             </p>
                         </div>
                         <div class="d-flex justify-content-between mt-4">
-                            <a href="{{ route('responses.index') }}" class="btn btn-outline-primary">
+                            <a href="{{ route('responses.forMessage', $message->id) }}" class="btn btn-outline-primary">
                                 Responder a este mensaje
                             </a>
                             <a href="{{ route('messages.index') }}" class="btn btn-outline-primary">

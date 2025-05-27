@@ -70,6 +70,8 @@ class AdvertisementController extends Controller
 
         $advertisement->save();
 
+        $advertisement->feline->in_active = 1;
+        $advertisement->feline->save();
         return redirect()->route('index');
 
     }
@@ -113,6 +115,8 @@ class AdvertisementController extends Controller
     public function destroy(Advertisement $adver)
     {
         $adver->delete();
+        $adver->feline->in_active = 0;
+        $adver->feline->save();
         return redirect()->route('advertisement.index');
     }
 }

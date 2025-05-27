@@ -18,7 +18,6 @@ class ResponseController extends Controller
         $messages = Message::with(['adopter', 'responses.user'])->get();
         return view('responses.index', compact('messages'));
 
-
     }
 
     /**
@@ -45,7 +44,9 @@ class ResponseController extends Controller
         $response->content = $request->content;
         $response->save();
 
-        return redirect()->route('responses.index');
+        return redirect()->route('responses.forMessage', ['message' => $request->message_id])
+                        ->with('success', 'Respuesta enviada correctamente.');
+
     }
 
     /**
@@ -79,4 +80,12 @@ class ResponseController extends Controller
     {
         //
     }
+    public function showForMessage(Message $message)
+    {
+        $message->load('responses.user');
+
+        return view('responses.index', compact('message'));
+    }
+
+
 }

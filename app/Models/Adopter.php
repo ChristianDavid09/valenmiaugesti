@@ -10,4 +10,9 @@ class Adopter extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function adopter()
+    {
+        return $this->hasOne(Adopter::class);
+    }
+
 }
