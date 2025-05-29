@@ -10,6 +10,7 @@ use App\Models\Cologne;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use App\Models\Adopt_adver;
 
 
 class MessageController extends Controller
@@ -18,24 +19,24 @@ class MessageController extends Controller
      * Display a listing of the resource.
      */
     public function index(): View
-{
-    $user = Auth::user();
+    {
+        $user = Auth::user();
 
-    if ($user->rol === 'Cologne') {
-        // Si el usuario es una colonia, solo los mensajes dirigidos a su colonia
-        $messages = Message::where('id_cologne', $user->cologne->id)->get();
-        return view('messages.index', compact('messages'));
+        if ($user->rol === 'Cologne') {
+            // Si el usuario es una colonia, solo los mensajes dirigidos a su colonia
+            $messages = Message::where('id_cologne', $user->cologne->id)->get();
+            return view('messages.index', compact('messages'));
 
-    } elseif ($user->rol === 'Adopter') {
-        // Si el usuario es adoptante, solo sus propios mensajes
-        $messages = Message::where('id_adopter', $user->adopter->id)->get();
-        return view('messages.index', compact('messages'));
+        } elseif ($user->rol === 'Adopter') {
+            // Si el usuario es adoptante, solo sus propios mensajes
+            $messages = Message::where('id_adopter', $user->adopter->id)->get();
+            return view('messages.index', compact('messages'));
 
-    } else {
-        // Rol no reconocido o admin (opcional)
-        abort(403, 'No autorizado');
+        } else {
+            // Rol no reconocido o admin (opcional)
+            abort(403, 'No autorizado');
+        }
     }
-}
 
     /**
      * Show the form for creating a new resource.
@@ -62,7 +63,11 @@ class MessageController extends Controller
 
         $message->save();
 
-        return redirect()->route('index');
+        $adopt_adver = new Adopt_adver();
+        $adopt_adver->id_adopter = $request->input('adopter_id');
+        $adopt_adver->id_adver = $request->input('adver_id');
+        $adopt_adver->save();
+        return redirect()->route('messages.index')->with('success', 'Mensaje creado correctamente.');
 
     }
 
@@ -110,5 +115,32 @@ class MessageController extends Controller
             abort(403, 'El felino no pertenece a esta colonia');
         }
         return view('messages.create', compact('cologne', 'feline'));
+    }
+    public function updateStatus(Request $request, Message $message)
+    {
+        $newStatus = $request->input('status');
+
+        if ($newStatus === 'Pendiente') {
+
+            $message->status = 'En proceso';
+            $message->save();
+
+        } elseif ($newStatus === 'En proceso') {
+
+            $message->status = 'En proceso';
+            $message->save();
+
+        } elseif ($newStatus === 'Resuelto') {
+
+            $message->status = 'Resuelto';
+            $message->save();
+
+        } else {
+            return redirect()->back()->with('error', 'Estado no válido.');
+        }
+
+        $message->save();
+
+        return redirect()->back()->with('success', 'Estado del mensaje actualizado correctamente.');
     }
 }

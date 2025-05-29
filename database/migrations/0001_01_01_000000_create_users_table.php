@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('photo_url');
-            $table->enum('rol', ['Adoptante', 'Colonia']);
+            $table->enum('rol', ['Adopter', 'Cologne']);
             $table->rememberToken();
             $table->timestamps();
         });

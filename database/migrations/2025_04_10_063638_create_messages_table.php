@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('content');
             $table->enum('status', ['Pendiente', 'En proceso', 'Resuelto'])->default('Pendiente');
             $table->timestamp('date_send')->useCurrent();
-            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_adopter')->constrained('adopters')->onDelete('cascade');
             $table->foreignId('id_cologne')->constrained('colognes')->onDelete('cascade');
             $table->foreignId('id_adver')->constrained('advertisements')->onDelete('cascade');
             $table->timestamps();

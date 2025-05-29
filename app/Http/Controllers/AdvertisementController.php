@@ -44,6 +44,7 @@ class AdvertisementController extends Controller
             $query->where('id_cologne', $cologneId);
         })->with('feline')->get();
 
+
         return view('advertisement.index', compact('advertisements'));
     }
 
@@ -72,7 +73,7 @@ class AdvertisementController extends Controller
 
         $advertisement->feline->in_active = 1;
         $advertisement->feline->save();
-        return redirect()->route('index');
+        return redirect()->route('advertisement.index');
 
     }
 
@@ -114,9 +115,10 @@ class AdvertisementController extends Controller
      */
     public function destroy(Advertisement $adver)
     {
+
         $adver->delete();
         $adver->feline->in_active = 0;
         $adver->feline->save();
-        return redirect()->route('advertisement.index');
+        return redirect()->route('felines.index');
     }
 }

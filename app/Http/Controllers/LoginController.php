@@ -80,8 +80,8 @@ class LoginController extends Controller
     public function registerAdoptante(signUpAdopter $request): RedirectResponse
     {
         // Generar un nombre único para la imagen, para diferenciarlo bien usaremos el nombre y el dni del adoptante
-        $filePhoto = $request->input('surname').'.'.$request->input('name').'.png';
-        $fileCertificate = $request->input('surname').'.'.$request->input('name').'.pdf';
+        $filePhoto = $request->input('dni').'.png';
+        $fileCertificate = $request->input('dni').'.pdf';
 
 
         //Creación de usuario
@@ -98,7 +98,6 @@ class LoginController extends Controller
         //No olvides que el adoptante debe aportar el certificado de delitos penales por la seguridad del felino
         $adopter = new Adopter();
         $adopter->name = $request->input('name');
-        $adopter->surname = $request->input('surname');
         $adopter->date_birth = $request->input('age');
         $adopter->phone = $request->input('phone');
         $adopter->address = $request->input('address');
@@ -113,7 +112,7 @@ class LoginController extends Controller
 
 
             /* Ruta absoluta donde se debe guardar el PDF*/
-            $routePDF = public_path('adopters/certificate');
+            $routePDF = public_path('certificates');
 
             // Asegurarse de que la carpeta existe, y de lo contrario se crea la carpeta
             if (!file_exists($routePDF)) {

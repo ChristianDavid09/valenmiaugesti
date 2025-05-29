@@ -22,11 +22,11 @@
                     <a href="{{ route('messages.show', $message->id) }}"
                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {{ $message->status === 'unread' ? 'fw-bold' : '' }}">
                         <div>
-                            <div class="small text-muted">{{ ucfirst($message->type) }} — {{ $message->created_at->format('d/m/Y H:i') }}</div>
+                            <div class="small text-muted">{{ $message->type }} — {{ $message->created_at->format('d/m/Y H:i') }}</div>
                             <div>{{ Str::limit($message->content, 80) }}</div>
                         </div>
-                        <span class="badge bg-{{ $message->status === 'unread' ? 'primary' : 'secondary' }}">
-                            {{ ucfirst($message->status) }}
+                        <span class="badge bg-{{ $message->status === 'Pendiente' ? 'secondary' : ($message->status === 'En proceso' ? 'primary' : 'success' ) }}">
+                            {{ $message->status }}
                         </span>
                     </a>
                 @endforeach

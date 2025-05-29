@@ -75,16 +75,16 @@
                     <li><a class="nav-link" href="{{ route('felines.index') }}">Mis Michis</a></li>
                     <li><a class="nav-link" href="{{ route('advertisement.index') }}">Mis Anuncios</a></li>
                 @else
-                    <li><a class="nav-link" href="{{ route('colognes.index') }}">Colonias</a></li>
                     <li><a class="nav-link" href="{{ route('advertisement.index') }}">Anuncios</a></li>
                 @endif
-              <li><a href="{{ route('publications.index') }}" class="nav-link px-2 link-dark">Foro</a></li>
-              <li><a href="{{ route('messages.index') }}" class="nav-link px-2 link-dark">Mensajes</a></li>
+                <li><a href="{{ route('colognes.index') }}" class="nav-link px-2 link-dark" >Colonias</a></li>
+                <li><a href="{{ route('publications.index') }}" class="nav-link px-2 link-dark">Foro</a></li>
+                <li><a href="{{ route('messages.index') }}" class="nav-link px-2 link-dark">Mensajes</a></li>
             </ul>
 
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+            {{-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
               <input type="search" class="form-control" placeholder="Buscar..." aria-label="Buscar">
-            </form>
+            </form> --}}
 
             <div class="dropdown text-end">
                 <a href="#" class="d-block text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">

@@ -33,8 +33,17 @@
                             <p class="mb-0">{{ $message->content }}</p>
                         </div>
 
-                        <p><span class="fw-bold">📍 Colonia:</span> {{ $message->cologne->name ?? 'Sin colonia' }}</p>
-                        <p><span class="fw-bold">🐱 Michi:</span> {{ $message->advertisement->feline->name ?? 'Sin michi' }}</p>
+                        <p><span class="fw-bold">📍 Colonia:</span>
+                            <a href="{{ route('colognes.show', $message->cologne) }}" style="text-decoration:none;">
+                                {{ $message->cologne->name ?? 'Sin colonia' }}
+                            </a>
+                        </p>
+                        <p>
+                            <span class="fw-bold">🐱 Michi:</span>
+                            <a href="{{ route('felines.show', $message->advertisement->feline) }}" style="text-decoration:none;">
+                                {{ $message->advertisement->feline->name ?? 'Sin michi' }}
+                            </a>
+                        </p>
                         <p><span class="fw-bold">📤 Estado:</span> {{ ucfirst($message->status) }}</p>
                         @if (Auth::user()->rol === 'Cologne')
                             @if ($message->status === 'Pendiente')

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('publications', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
             $table->text('content');
             $table->string('photo', 255);
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');

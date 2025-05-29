@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Colognes;
+use App\Models\Advertisement;
 
 
 class FelineController extends Controller
@@ -34,23 +35,27 @@ class FelineController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $photo = $request->file('image');
+
+        $extension = $photo->getClientOriginalExtension();
+        $filePhoto = $request->input('race') . '.' . $request->input('name') . '.' . $extension;
+
         $feline = new Feline();
         $feline->name = $request->input('name');
-        $feline->age = $request->input('age');
         $feline->race = $request->input('race');
         $feline->sex = $request->input('sex');
+        $feline->sterilized = $request->input('sterilized');
         $feline->health_status = $request->input('health_status');
         $feline->id_cologne = Auth::user()->cologne->id;
 
+        if($request->input('age') === null || $request->input('age') === '' || !is_int($request->input('age'))) {
+            $feline->age = null;
+        }
+
+
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
 
-            $photo = $request->file('image');
-
-            $extension = $photo->getClientOriginalExtension();
-            $filePhoto = $request->input('type') . '.' . $request->input('name') . '.' . $extension;
-
-
-            $routeImage = public_path('images/colognes/adver');
+            $routeImage = public_path('images/colognes/felines');
 
             if (!file_exists($routeImage)) {
                 mkdir($routeImage, 0777, true);
@@ -69,7 +74,7 @@ class FelineController extends Controller
      */
     public function show(Feline $feline)
     {
-        //
+        return view('feline.show',  compact('feline'));
     }
 
     /**
@@ -116,9 +121,6 @@ class FelineController extends Controller
     public function destroy(Feline $feline)
     {
 
-
-
-        
         $feline->delete();
         return redirect()->route('felines.index');
     }
@@ -132,13 +134,17 @@ class FelineController extends Controller
         return back()->with('success', 'Michi publicado correctamente');
     }
 
-    public function inactive($feline)
+    /* public function inactive($feline)
     {
         $feline = Feline::findOrFail($feline);
 
-        $feline->in_active = 0;
-        $feline->save();
+        $advertisement = Advertisement::where('id_feline', $feline->id);
 
-        return back()->with('success', 'Michi despublicado correctamente');
-    }
+        $advertisement->delete();
+
+        /* $feline->in_active = 0;
+        $feline->save(); */
+
+       /*  return back()->with('success', 'Michi despublicado correctamente'); */
+
 }

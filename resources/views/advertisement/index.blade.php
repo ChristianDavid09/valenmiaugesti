@@ -11,7 +11,7 @@
                     <div class="col-md-4 mb-4 d-flex">
                         <div class="card shadow-sm h-100 border-0">
                             <a href="{{ route('advertisement.show', $adver) }}">
-                                <img src="{{ asset('images/colognes/adver/' . $adver->feline->photo) }}"
+                                <img src="{{ asset('images/colognes/felines/' . $adver->feline->photo) }}"
                                      class="card-img-top rounded-top"
                                      alt="{{ $adver->title }}"
                                      style="height: 200px; object-fit: cover;">
@@ -24,7 +24,7 @@
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="status-dot {{
                                         $adver->type == 'Disponible' ? 'bg-success' :
-                                        ($adver->type == 'En acogida' ? 'bg-warning' : 'bg-secondary')
+                                        ($adver->type == 'En acogida' ? 'bg-warning' : 'bg-danger')
                                     }}"></span>
                                     <strong class="ms-2">Disponibilidad:&nbsp;</strong> {{ $adver->type }}
                                 </div>

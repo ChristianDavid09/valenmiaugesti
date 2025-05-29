@@ -45,6 +45,7 @@
                         </div>
                     @endif
 
+                    <a href="{{ url()->previous() }}" class="btn btn-primary mt-4">Volver</a>
                 </div>
             </div>
         </div>

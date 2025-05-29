@@ -9,7 +9,7 @@
         <div class="card shadow-lg p-3 mb-5 bg-body rounded">
             <div class="row g-0 align-items-center">
                 <div class="col-md-4 text-center p-3">
-                    <img src="{{ asset('images/colognes/adver/' . $advertisement->feline->photo) }}"
+                    <img src="{{ asset('images/colognes/felines/' . $advertisement->feline->photo) }}"
                          alt="{{ $advertisement->title }}"
                          class="img-fluid rounded"
                          style="max-height: 250px; object-fit: cover;">
@@ -19,16 +19,26 @@
                         <h5 class="card-title">{{ $advertisement->title }}</h5>
                         <p class="card-text">{{ $advertisement->description }}</p>
                         <strong>Tipo:</strong>
-                        <span class="status-dot {{ $advertisement->type == 'Disponible' ? 'bg-success' : ($advertisement->type == 'En acogida' ? 'bg-warning' : 'bg-secondary') }}">
+                        <span class="status-dot
+                            {{ $advertisement->type == 'Disponible' ? 'bg-success' :
+                                ($advertisement->type == 'En acogida' ? 'bg-warning' : 'bg-danger')
+                            }}">
                         </span>&nbsp;{{ $advertisement->type }}<br>
-                        <strong>Colonia:&nbsp;</strong>{{ $advertisement->feline->cologne->name }}
+                        <strong>Colonia:&nbsp;</strong>
+                        <a href="{{ route('colognes.show', $advertisement->feline->cologne) }}" class="text-decoration-none text-primary">
+                            {{ $advertisement->feline->cologne->name }}
+                        </a><br>
                         <hr>
                         <p class="card-text">
-                            <strong>Nombre del michi:</strong> {{ $advertisement->feline->name }}<br>
+                            <strong>Nombre:</strong>
+                            <a href="{{ route('felines.show', $advertisement->feline) }}" class="text-decoration-none text-primary">
+                                {{ $advertisement->feline->name }}
+                            </a><br>
                             <strong>Edad</strong>: {{ $advertisement->feline->age }}<br>
                             <strong>Sexo:</strong> {{ $advertisement->feline->sex }}<br>
                             <strong>Raza:</strong> {{ $advertisement->feline->race }}<br>
                             <strong>Estado de salud:</strong> {{ $advertisement->feline->health_status }}<br>
+                            <Strong>Esterilizado:</strong> {{ $advertisement->feline->sterilized == 'Yes' ? 'Sí' : 'No' }}<br>
                         </p>
                         @if (Auth::user()->rol === 'Adopter')
                             <a href="{{ route('messages.create.for', [

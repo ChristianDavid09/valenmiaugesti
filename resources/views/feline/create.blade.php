@@ -22,6 +22,7 @@
         <div class="mb-3">
             <label for="age" class="form-label">Edad</label>
             <input type="text" class="form-control" id="age" name="age" required>
+            <div class="text-muted">Si desconoces la edad, deja el campo vacío</div>
         </div>
         <div class="mb-3">
             <label for="race" class="form-label">Raza</label>
@@ -41,6 +42,14 @@
                 <option value="" selected disabled>Selecciona una opción</option>
                 <option value="Sano">Sin tratamiento</option>
                 <option value="En tratamiento">En tratamiento</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="sterilized">Esterilizado</label>
+            <select class="form-select" name="sterilized" id="sterilized">
+                <option value="" selected disabled>Selecciona una opción</option>
+                <option value="Yes">Si</option>
+                <option value="No">No</option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Crear Anuncio</button>

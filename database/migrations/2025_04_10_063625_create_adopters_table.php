@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('adopters', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50);
-            $table->string('surname', 50);
             $table->date('date_birth');
             $table->string('phone', 15)->nullable();
-            $table->string('address', 255)->nullable();
+            $table->text('address')->nullable();
             $table->string('province', 50)->nullable();
             $table->string('photo', 255)->nullable();
             $table->string('certificate', 255);

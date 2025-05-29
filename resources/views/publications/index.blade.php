@@ -7,10 +7,16 @@
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="text-primary">📰 Últimas publicaciones</h2>
-            <a href="{{ route('publications.create') }}" class="btn btn-success">
-                ➕ Nueva publicación
-            </a>
+            <div class="d-flex gap-2">
+                <a href="{{ route('publications.myPub') }}" class="btn btn-outline-primary">
+                    👤 Mis publicaciones
+                </a>
+                <a href="{{ route('publications.create') }}" class="btn btn-success">
+                    ➕ Nueva publicación
+                </a>
+            </div>
         </div>
+
 
         <div class="row g-4">
             @foreach ($publications as $publication)
@@ -18,19 +24,27 @@
                     <div class="card border-0 shadow-sm card-publication">
                         <div class="card-body d-flex flex-column">
 
-                            {{-- Encabezado: Foto + Nombre --}}
-                            <div class="d-flex align-items-center mb-2">
-                                <img src="{{ asset('images/adopters/profile/' . $publication->user->photo_url) }}"
-                                     class="me-2 profile-img"
-                                     alt="Foto del usuario">
-                                <div>
-                                    <strong><a href="{{ route('adopters.show', $publication->user->adopter) }}" style="text-decoration:none;">{{ $publication->user->name }}</a></strong><br>
-                                    <small class="text-muted">{{ $publication->created_at->format('d/m/Y H:i') }}</small>
+                            @if(Auth::check() &&  $publication->user->cologne)
+                                {{-- Título de la publicación --}}
+                                <div class="d-flex align-items-center mb-2">
+                                    <img src="{{ asset('images/colognes/profile/' . $publication->user->photo_url) }}"
+                                         class="me-2 profile-img">
+                                    <div>
+                                        <strong><a href="{{ route('colognes.show', $publication->user->cologne) }}" style="text-decoration:none;">{{ $publication->user->name }}</a></strong><br>
+                                        <small class="text-muted">{{ $publication->created_at->format('d/m/Y H:i') }}</small>
+                                    </div>
                                 </div>
-                            </div>
-
-                            {{-- Título --}}
-                            <div class="publication-title mb-2">{{ $publication->title }}</div>
+                            @elseif (Auth::check() && $publication->user->adopter)
+                                {{-- Mostrar nombre y foto del usuario si es un adoptante --}}
+                                <div class="d-flex align-items-center mb-2">
+                                    <img src="{{ asset('images/adopters/profile/' . $publication->user->photo_url) }}"
+                                         class="me-2 profile-img">
+                                    <div>
+                                        <strong><a href="{{ route('adopters.show', $publication->user->adopter) }}" style="text-decoration:none;">{{ $publication->user->name }}</a></strong><br>
+                                        <small class="text-muted">{{ $publication->created_at->format('d/m/Y H:i') }}</small>
+                                    </div>
+                                </div>
+                            @endif
 
                             {{-- Contenido --}}
                             <p class="publication-content text-muted mb-2">{{$publication->content}}</p>
@@ -38,7 +52,7 @@
                             {{-- Imagen debajo del texto --}}
                             @if ($publication->photo)
                                 <div class="text-center mt-auto">
-                                    <img src="{{ asset('publication/photo/' . $publication->photo) }}"
+                                    <img src="{{ asset('pubs/photo/' . $publication->photo) }}"
                                          class="img-fluid publication-img"
                                          alt="Imagen de la publicación">
                                 </div>

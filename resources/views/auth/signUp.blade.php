@@ -25,27 +25,23 @@
             @csrf
             <div class="row g-2">
                 <div class="col-md-6">
-                    <label for="name" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" name="name" id="name" placeholder="" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="surname" class="form-label">Apellidos</label>
-                    <input type="text" class="form-control" name="surname" id="surname" placeholder="" required>
+                    <label for="name" class="form-label">Nombre Completo</label>
+                    <input type="text" class="form-control" name="name" id="name" placeholder="" required value="{{ old('name') }}">
                 </div>
             </div>
             <div class="row g-2">
                 <div class="col-md-6">
                     <label for="email" class="form-label">Correo Electrónico</label>
-                    <input type="mail" class="form-control" name="email" id="email" placeholder="" required>
+                    <input type="mail" class="form-control" name="email" id="email" placeholder="" required value="{{ old('email') }}">
                 </div>
                 <div class="col-md-6">
                     <label for="dni" class="form-label">DNI/NIE</label>
-                    <input type="text" class="form-control" name="dni" id="dni" placeholder="" required>
+                    <input type="text" class="form-control" name="dni" id="dni" placeholder="" required value="{{ old('dni') }}">
                 </div>
             </div>
             <div class="row g-2">
                 <label for="agre" class="form-label">Año de nacimiento</label>
-                <input type="date" class="form-control" name="age" id="age" placeholder="" required>
+                <input type="date" class="form-control" name="age" id="age" placeholder="" required value="{{ old('age') }}">
             </div>
             <div class="row g-2">
                 <div class="col-md-6">
@@ -59,24 +55,24 @@
             </div>
             <div class="row g-2">
                 <label for="certificate" class="form-label">Certificado de delitos penales</label>
-                <input type="file" class="form-control" name="certificate" id="certificate">
+                <input type="file" class="form-control" name="certificate" id="certificate" required value="{{ old('certificate') }}">
                 <div class="text-muted">Este certificado es obligatorio para garantizar la seguridad de los felinos.</div>
             </div>
             <div class="text-muted mt-3">------------------------ Datos complementarios no obligatorios ------------------------</div>
             <div class="row g-2">
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Telefono de contacto</label>
-                    <input type="phone" class="form-control" name="phone" id="phone" placeholder="" required>
+                    <input type="phone" class="form-control" name="phone" id="phone" placeholder="" required value="{{ old('phone') }}">
                 </div>
             </div>
             <div class="row g-2">
                 <div class="col-md-6">
                     <label for="address" class="form-label">Dirección</label>
-                    <input type="text" class="form-control" name="address" id="address" placeholder="" required>
+                    <input type="text" class="form-control" name="address" id="address" placeholder="" required value="{{ old('address') }}">
                 </div>
                 <div class="col-md-6">
                     <label for="city" class="form-label">Provincia</label>
-                    <input type="text" class="form-control" name="city" id="city" placeholder="" required>
+                    <input type="text" class="form-control" name="city" id="city" placeholder="" required value="{{ old('city') }}">
                 </div>
             </div>
             <div class="row g-2">
@@ -86,7 +82,7 @@
             </div>
             <div class="mb-2">
                 <label for="photo">Foto de perfil</label>
-                <input type="file" class="form-control" name="photo" id="photo">
+                <input type="file" class="form-control" name="photo" id="photo" value="{{ old('photo') }}">
             </div>
 
             <button type="submit" class="btn btn-primary mt-3">Registrarse</button>
@@ -101,44 +97,44 @@
             @csrf
             <div class="row g-2">
                 <div class="col-md-6">
-                    <label for="name" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" name="name" id="name" placeholder="Nombre" required>
+                    <label for="name" class="form-label">Nombre Completo</label>
+                    <input type="text" class="form-control" name="name" id="name" placeholder="Nombre" required valyue="{{ old('name') }}">
                 </div>
                 <div class="col-md-6">
                     <label for="email" class="form-label">Correo electrónico</label>
-                    <input type="email" class="form-control" name="email" id="email" required>
+                    <input type="email" class="form-control" name="email" id="email" required value="{{ old('email') }}">
                 </div>
             </div>
             <div class="row g-2">
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Teléfono de contacto</label>
-                    <input type="text" class="form-control" name="phone" id="phone" required>
+                    <input type="text" class="form-control" name="phone" id="phone" required value="{{ old('phone') }}">
                 </div>
                 <div class="col-md-6">
                     <label for="dni" class="form-label">DNI/NIE</label>
-                    <input type="text" class="form-control" name="dni" id="dni" placeholder="" required>
+                    <input type="text" class="form-control" name="dni" id="dni" placeholder="" required value="{{ old('dni') }}">
                 </div>
             </div>
             <div class="row g-2">
                 <h4>Datos de la Colonia</h4>
                 <div class="col-md-6">
                     <label for="colonia_name" class="form-label">Nombre de la colonia</label>
-                    <input type="text" class="form-control" name="colonia_name" id="colonia_name" required>
+                    <input type="text" class="form-control" name="colonia_name" id="colonia_name" required value="{{ old('colonia_name') }}">
                 </div>
                 <div class="col-md-6">
                     <label for="id_com_ref" class="form-label">Numero de referencia de la Colonia</label>
-                    <input type="text" class="form-control" name="id_ref_com" id="id_ref_com" required>
+                    <input type="text" class="form-control" name="id_ref_com" id="id_ref_com" required value="{{ old('id_ref_com') }}">
                     <div class="text-muted">Este numero identificador debe ser expedido por el Ayuntamiento de la provincia de la colonia</div>
                 </div>
             </div>
             <div class="row g-2">
                 <div class="col-md-6">
                     <label for="colonia_location" class="form-label">Dirección</label>
-                    <input type="text" class="form-control" name="colonia_location" id="colonia_location" required>
+                    <input type="text" class="form-control" name="colonia_location" id="colonia_location" required value="{{ old('colonia_location') }}">
                 </div>
                 <div class="col-md-6">
                     <label for="city" class="form-label">Provincia</label>
-                    <input type="text" class="form-control" name="city" id="city" required>
+                    <input type="text" class="form-control" name="city" id="city" required value="{{ old('city') }}">
                 </div>
             </div>
             <div class="row g-2">
@@ -157,7 +153,7 @@
                 </div>
                 <div class="mb-2">
                     <label for="photo">Foto de perfil</label>
-                    <input type="file" class="form-control" name="photo" id="photo">
+                    <input type="file" class="form-control" name="photo" id="photo" value="{{ old('photo') }}">
                 </div>
             </div>
             <button type="submit" class="btn btn-primary mt-3">Registrarse</button>

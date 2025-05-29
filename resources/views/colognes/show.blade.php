@@ -16,6 +16,7 @@
                 <div class="card-body">
                     <h2 class="card-title text-primary">{{ $cologne->name }}</h2>
                     <p class="card-text">
+                        <strong>Administrador:</strong> {{ $cologne->user->name }}<br>
                         <strong>Ubicación:</strong> {{ $cologne->adress }}<br>
                         <strong>Teléfono:</strong> {{ $cologne->phone }}<br>
                         <strong>Email:</strong> {{ $cologne->user->email }}
@@ -47,7 +48,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm border-0 d-flex flex-column">
                     <a href="{{ route('advertisement.show', $adver) }}">
-                        <img src="{{ asset('images/colognes/adver/' . $adver->feline->photo) }}"
+                        <img src="{{ asset('images/colognes/felines/' . $adver->feline->photo) }}"
                              class="card-img-top rounded-top"
                              alt="{{ $adver->title }}"
                              style="object-fit: cover; height: 180px;">

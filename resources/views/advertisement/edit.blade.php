@@ -4,7 +4,7 @@
 @section('content')
 <div class="container">
     <h1>Modificar Anuncio de {{ $advertisement->feline->name}}</h1>
-    <img src="{{ asset('./images/colognes/adver/'. $advertisement->feline->photo) }}" alt="{{ $advertisement->feline->name }}" class="img-fluid rounded mb-3">
+    <img src="{{ asset('./images/colognes/felines/'. $advertisement->feline->photo) }}" alt="{{ $advertisement->feline->name }}" class="img-fluid rounded mb-3">
     <form action="{{ route('advertisement.update', $advertisement) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')

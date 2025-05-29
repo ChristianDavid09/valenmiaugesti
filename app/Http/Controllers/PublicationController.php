@@ -8,6 +8,7 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
+
 class PublicationController extends Controller
 {
     /**
@@ -32,17 +33,19 @@ class PublicationController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $filePhoto = $request->input('title').'.png';
+
+        $name = Auth::user()->name;
+        $firstName = explode(' ', $name)[0];
+        $filePhoto = $firstName.'_Pub.png';
 
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')->store('posts', 'public');
         }
 
         $publication = new Publication();
-        $publication->title = $request->title;
         $publication->content = $request->content;
-        
-        $publication->id_user= Auth::id(); 
+
+        $publication->id_user= Auth::id();
 
         //Gestión de la foto de la publicación
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
@@ -51,7 +54,7 @@ class PublicationController extends Controller
 
 
             /* Ruta absoluta donde se debe guardar la imagen*/
-            $routePhoto = public_path('publication/photo');
+            $routePhoto = public_path('pubs/photo');
 
             // Asegurarse de que la carpeta existe, y de lo contrario se crea la carpeta
             if (!file_exists($routePhoto)) {
@@ -59,10 +62,10 @@ class PublicationController extends Controller
             }
             // Mover el archivo a la carpeta destino
             $photo->move($routePhoto, $filePhoto);
-        
+
             $publication->photo = $filePhoto;
 
-        } 
+        }
 
         $publication->save();
         return redirect()->route('publications.index')->with('success', 'Publication created successfully.');
@@ -81,7 +84,7 @@ class PublicationController extends Controller
      */
     public function edit(Publication $publication)
     {
-        //
+        return view('publications.edit', compact('publication'));
     }
 
     /**
@@ -89,7 +92,25 @@ class PublicationController extends Controller
      */
     public function update(Request $request, Publication $publication)
     {
-        //
+        $publication->content = $request->input('content');
+        $publication->id_user = Auth::id();
+        //Gestión de la foto de la publicación
+        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+            $filePhoto = Auth::user()->name.'_Pub.png';
+            $photo = $request->file('photo');
+            $routePhoto = public_path('pubs/photo');
+
+            // Asegurarse de que la carpeta existe, y de lo contrario se crea la carpeta
+            if (!file_exists($routePhoto)) {
+                mkdir($routePhoto, 0777, true);
+            }
+            // Mover el archivo a la carpeta destino
+            $photo->move($routePhoto, $filePhoto);
+
+            $publication->photo = $filePhoto;
+        }
+        $publication->save();
+        return redirect()->route('publications.index')->with('success', 'Publicacion actualizada correctamente.');
     }
 
     /**
@@ -97,6 +118,12 @@ class PublicationController extends Controller
      */
     public function destroy(Publication $publication)
     {
-        //
+        $publication->delete();
+        return redirect()->route('publications.myPub')->with('success', 'Publicacion eliminada correctamente.');
+    }
+    public function myPub()
+    {
+        $publications = Publication::where('id_user', Auth::id())->get();
+        return view('publications.myPub', compact('publications'));
     }
 }

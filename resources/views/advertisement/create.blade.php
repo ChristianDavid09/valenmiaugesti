@@ -8,7 +8,7 @@
     <h1>Crear Anuncio para {{ $feline->name }}</h1>
     {{-- Mostrar la imagen del felino --}}
     <div class="mb-3">
-        <img src="{{ asset('./images/colognes/adver/'. $feline->photo) }}" alt="{{ $feline->name }}" class="img-fluid rounded">
+        <img src="{{ asset('./images/colognes/felines/'. $feline->photo) }}" alt="{{ $feline->name }}" class="img-fluid rounded">
     </div>
     <form action="{{ route('advertisement.store') }}" method="POST" enctype="multipart/form-data">
         @csrf

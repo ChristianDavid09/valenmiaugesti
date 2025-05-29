@@ -34,7 +34,7 @@ class signUpCologne extends FormRequest
              * -Si algun numero contiene algun cero inicial, al ser un int lo eliminaría.
              * -Si el número de teléfono es muy largo, un int no lo aceptará.
              */
-            'phone' => ['required', 'string', 'regex:/^\+?[0-9]{9,15}$/', 'unique:colognes,phone'],
+            'phone' => ['string', 'regex:/^\+?[0-9]{9,15}$/'],
 
             //Validación de los datos de la colonia
             'colonia_name' => ['required', 'string', 'max:100', 'unique:colognes,name'],
@@ -61,8 +61,6 @@ class signUpCologne extends FormRequest
             'email.required' => 'El correo electrónico es obligatorio.',
             'phone.regex' => 'El teléfono no es válido.',
             'phone.max' => 'El teléfono no puede tener más de 15 caracteres.',
-            'phone.unique' => 'El teléfono ya está en uso.',
-            'phone.required' => 'El teléfono es obligatorio.',
             'dni.required' => 'El DNI es obligatorio.',
             'dni.string' => 'El DNI debe ser una cadena de texto.',
             'dni.max' => 'El DNI no puede tener más de 9 caracteres.',
@@ -80,6 +78,9 @@ class signUpCologne extends FormRequest
             'city.string' => 'La ciudad debe ser una cadena de texto.',
             'city.max' => 'La ciudad no puede tener más de 100 caracteres.',
             'city.required' => 'La ciudad es obligatoria.',
+            'photo.image' => 'La foto debe ser una imagen.',
+            'photo.mimes' => 'La foto debe ser un archivo de tipo jpeg, png o jpg.',
+            'photo.max' => 'La foto no puede tener más de 2 MB.',
             'password.required' => 'La contraseña es obligatoria.',
         ];
     }

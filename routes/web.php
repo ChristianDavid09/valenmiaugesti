@@ -40,6 +40,7 @@ Route::get('create/adver/{id}', [AdvertisementController::class, 'create'])->nam
 Route::resource('adopters', AdopterController::class);
 Route::resource('responses', ResponseController::class);
 Route::get('/messages/{message}/responses', [ResponseController::class, 'showForMessage'])->name('responses.forMessage');
+Route::get('/publications/mypub', [PublicationController::class, 'myPub'])->name('publications.myPub');
 Route::resource('publications', PublicationController::class);
 Route::resource('messages', MessageController::class);
 Route::patch('/messages/{message}/status', [MessageController::class, 'updateStatus'])->name('messages.updateStatus');
@@ -47,7 +48,7 @@ Route::patch('/felines/{feline}/desactivate', [FelineController::class, 'inactiv
 Route::get('/messages/create/{feline}/for/{cologne}', [MessageController::class, 'createForCologne'])->name('messages.create.for');
 Route::resource('felines', FelineController::class);
 Route::resource('colognes', CologneController::class)->middleware('auth');
-/* Route::get('index/felinos', [FelinoController::class, 'index'])->name('felinos.index');
-Route::get('create/felinos', [FelinoController::class, 'create'])->name('felinos.create');
-Route::post('create', [FelinoController::class, 'store'])->name('felinos.store'); */
+
+
+
 

@@ -24,10 +24,9 @@ class signUpAdopter extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:30'],
-            'surname' => ['required', 'string', 'max:30'],
             'email' => ['required', 'email', 'max:100', 'unique:users'],
             'dni' => ['required', 'string', 'max:9', 'unique:users'],
-            'phone' => ['required', 'string', 'regex:/^\+?[0-9]{9,15}$/', 'unique:adopters,phone'],
+            'phone' => ['string', 'regex:/^\+?[0-9]{9,15}$/'],
 
             'age' => ['required', 'date'],
             'certificate' => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
@@ -45,9 +44,6 @@ class signUpAdopter extends FormRequest
             'name.required' => 'El nombre es obligatorio.',
             'name.string' => 'El nombre debe ser una cadena de texto.',
             'name.max' => 'El nombre no puede tener más de 30 caracteres.',
-            'surname.required' => 'El apellido es obligatorio.',
-            'surname.string' => 'El apellido debe ser una cadena de texto.',
-            'surname.max' => 'El apellido no puede tener más de 30 caracteres.',
             'email.email' => 'El correo electrónico no es válido.',
             'email.max' => 'El correo electrónico no puede tener más de 100 caracteres.',
             'email.unique' => 'El correo electrónico ya está en uso.',
@@ -57,8 +53,6 @@ class signUpAdopter extends FormRequest
             'dni.max' => 'El DNI no puede tener más de 9 caracteres.',
             'dni.unique' => 'El DNI ya está en uso.',
             'phone.regex' => 'El teléfono no es válido.',
-            'phone.unique' => 'El teléfono ya está en uso.',
-            'phone.required' => 'El teléfono es obligatorio.',
             'city.required' => 'La ciudad es obligatoria.',
             'city.max' => 'La ciudad no puede tener más de 100 caracteres.',
             'adress.required' => 'La dirección es obligatoria.',
