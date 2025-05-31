@@ -17,30 +17,35 @@
             <div class="row g-4">
                 @foreach ($publications as $publication)
                     <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card border-0 shadow-sm card-publication">
+                        <div class="card border-0 shadow-sm card-publication h-100 d-flex flex-column">
+
+                            @if ($publication->photo)
+                                <img src="{{ asset('pubs/photo/' . $publication->photo) }}"
+                                     class="publication-img card-img-top"
+                                     alt="Imagen de la publicación">
+                            @endif
+
                             <div class="card-body d-flex flex-column">
                                 <div class="mb-2">
                                     <strong>{{ Auth::user()->name }}</strong><br>
                                     <small class="text-muted">{{ $publication->created_at->format('d/m/Y H:i') }}</small>
                                 </div>
 
-                                <p class="publication-content text-muted mb-2">{{ $publication->content }}</p>
-                                <div class="text-center mt-2">
-                                    <img src="{{ asset('pubs/photo/' . $publication->photo) }}"
-                                         class="img-fluid publication-img"
-                                         alt="Imagen de la publicación">
-                                </div>
-                                <div class="mt-3 d-flex justify-content-between">
-                                    <a href="{{ route('publications.edit', $publication) }}" class="btn btn-sm btn-outline-secondary">✏️ Editar</a>
+                                <p class="publication-content text-muted mb-3">{{ $publication->content }}</p>
 
-                                    <form action="{{ route('publications.destroy', $publication) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar esta publicación?')">
+                                <div class="mt-auto d-flex justify-content-between">
+                                    <a href="{{ route('publications.edit', $publication) }}"
+                                       class="btn btn-sm btn-outline-secondary">✏️ Editar</a>
+
+                                    <form action="{{ route('publications.destroy', $publication) }}" method="POST"
+                                          onsubmit="return confirm('¿Estás seguro de eliminar esta publicación?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger">🗑️ Eliminar</button>
                                     </form>
                                 </div>
-
                             </div>
+
                         </div>
                     </div>
                 @endforeach
@@ -51,9 +56,7 @@
     <style>
         .card-publication {
             border-radius: 15px;
-            overflow: hidden;
             transition: box-shadow 0.3s ease-in-out;
-            height: 100%;
         }
 
         .card-publication:hover {
@@ -61,9 +64,8 @@
         }
 
         .publication-img {
-            max-height: 200px;
+            height: 200px;
             object-fit: cover;
-            border-radius: 10px;
             width: 100%;
         }
 

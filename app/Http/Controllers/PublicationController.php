@@ -35,12 +35,7 @@ class PublicationController extends Controller
     {
 
         $name = Auth::user()->name;
-        $firstName = explode(' ', $name)[0];
-        $filePhoto = $firstName.'_Pub.png';
 
-        if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('posts', 'public');
-        }
 
         $publication = new Publication();
         $publication->content = $request->content;
@@ -50,8 +45,12 @@ class PublicationController extends Controller
         //Gestión de la foto de la publicación
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
 
-            $photo = $request->file('photo');
 
+            $photo = $request->file('photo');
+            $extension = $photo->getClientOriginalExtension();
+            $timeForFile = now()->timestamp;
+            $filePhoto = explode(' ', $name)[0].'_'.$timeForFile.'.'.$extension;
+            $routePhoto = public_path('pubs/photo');
 
             /* Ruta absoluta donde se debe guardar la imagen*/
             $routePhoto = public_path('pubs/photo');
@@ -96,14 +95,13 @@ class PublicationController extends Controller
         $publication->id_user = Auth::id();
         //Gestión de la foto de la publicación
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $filePhoto = Auth::user()->name.'_Pub.png';
+
+
             $photo = $request->file('photo');
+
+            $filePhoto = $publication->photo;
             $routePhoto = public_path('pubs/photo');
 
-            // Asegurarse de que la carpeta existe, y de lo contrario se crea la carpeta
-            if (!file_exists($routePhoto)) {
-                mkdir($routePhoto, 0777, true);
-            }
             // Mover el archivo a la carpeta destino
             $photo->move($routePhoto, $filePhoto);
 
@@ -118,6 +116,13 @@ class PublicationController extends Controller
      */
     public function destroy(Publication $publication)
     {
+        if ($publication->photo) {
+            $routeImage = public_path('pubs/photo/' . $publication->photo);
+            if (file_exists($routeImage)) {
+                unlink($routeImage);
+            }
+        }
+
         $publication->delete();
         return redirect()->route('publications.myPub')->with('success', 'Publicacion eliminada correctamente.');
     }

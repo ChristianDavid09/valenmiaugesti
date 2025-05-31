@@ -59,6 +59,7 @@
                                 <h5 class="card-title text-primary">{{ $adver->title }}</h5>
                             </a>
                             <p class="mb-1"><strong>Tipo:</strong> {{ $adver->type }}</p>
+
                             <p class="mb-1"><strong>Nombre:</strong> {{ $adver->feline->name }}</p>
                             <p class="small text-muted">{{ $adver->description }}</p>
                         </div>

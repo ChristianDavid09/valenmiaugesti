@@ -38,7 +38,7 @@
                                 </li>
                             @endif
                         </ul>
-                        @if (Auth::user()->rol === 'Cologne')
+                        @if ($isOwner)
                             <a href="{{ route('felines.edit', $feline) }}" class="btn btn-warning me-2">Editar</a>
                             <a href="{{ route('felines.index') }}" class="btn btn-secondary">Michis</a>
                         @endif

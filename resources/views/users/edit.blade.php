@@ -20,6 +20,7 @@
                 <label for="dni" class="form-label">DNI</label>
                 <input type="text" class="form-control" id="dni" name="dni" value="{{ $user->dni }}">
             </div>
+            
 
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal" id="changePassword">Cambiar contraseña</button>
             <div id="changePasswordForm" style="display: none;">

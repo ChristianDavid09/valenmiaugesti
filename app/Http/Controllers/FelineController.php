@@ -35,10 +35,13 @@ class FelineController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $photo = $request->file('image');
 
+
+
+        $photo = $request->file('image');
+        $timeForFile = now()->timestamp;
         $extension = $photo->getClientOriginalExtension();
-        $filePhoto = $request->input('race') . '.' . $request->input('name') . '.' . $extension;
+        $filePhoto =  $request->input('name') . '.' .$request->input('race').'.'. $timeForFile. '.' . $extension;
 
         $feline = new Feline();
         $feline->name = $request->input('name');
@@ -48,8 +51,12 @@ class FelineController extends Controller
         $feline->health_status = $request->input('health_status');
         $feline->id_cologne = Auth::user()->cologne->id;
 
-        if($request->input('age') === null || $request->input('age') === '' || !is_int($request->input('age'))) {
+        //Hacemos comprobacionees, si el campo es nulo, vacío o no es un entero, lo dejamos como nulo
+
+        if($request->input('age') === null || $request->input('age') === '' || !is_numeric($request->input('age'))) {
             $feline->age = null;
+        } else {
+            $feline->age = $request->input('age');
         }
 
 
@@ -74,7 +81,9 @@ class FelineController extends Controller
      */
     public function show(Feline $feline)
     {
-        return view('feline.show',  compact('feline'));
+        $isOwner = Auth::check() && Auth::user()->rol === 'Cologne' && $feline->id_cologne === Auth::user()->cologne->id;
+        return view('feline.show', compact('feline', 'isOwner'));
+
     }
 
     /**
@@ -90,29 +99,32 @@ class FelineController extends Controller
      */
     public function update(Request $request, Feline $feline)
     {
+
+
+
         $feline->name = $request->input('name');
         $feline->age = $request->input('age');
         $feline->race = $request->input('race');
         $feline->sex = $request->input('sex');
         $feline->health_status = $request->input('health_status');
+        $feline->sterilized = $request->input('sterilized');
+        $feline->id_cologne = Auth::user()->cologne->id;
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
+
             $photo = $request->file('image');
-            $extension = $photo->getClientOriginalExtension();
-            $filePhoto = $request->input('type') . '.' . $request->input('name') . '.' . $extension;
 
-            $routeImage = public_path('images/colognes/advertisement');
+            $filePhoto = $feline->photo;
 
-            if (!file_exists($routeImage)) {
-            mkdir($routeImage, 0777, true);
-            }
+            $routeImage = public_path('images/colognes/felines');
+
 
             $photo->move($routeImage, $filePhoto);
-            $feline->photo = $filePhoto;
+
         }
 
         $feline->save();
-        return redirect()->route('felines.index');
+        return redirect()->route('felines.index')->with('success', 'Michi actualizado correctamente.');
     }
 
     /**
@@ -120,6 +132,14 @@ class FelineController extends Controller
      */
     public function destroy(Feline $feline)
     {
+
+        // Eliminar la foto del michi
+        if ($feline->photo) {
+            $routeImage = public_path('images/colognes/felines/' . $feline->photo);
+            if (file_exists($routeImage)) {
+                unlink($routeImage);
+            }
+        }
 
         $feline->delete();
         return redirect()->route('felines.index');

@@ -29,13 +29,17 @@
                                      style="height: 200px; object-fit: cover;">
                                 <div class="card-body d-flex flex-column justify-content-between">
                                     <div>
-                                        <h5 class="card-title text-primary">{{ $feline->name }}</h5>
+                                        <a href="{{ route('felines.show', $feline) }}" class="text-decoration-none text-dark">
+                                            <h5 class="card-title text-primary">{{ $feline->name }}</h5>
+                                        </a>
+                                        
+
                                         @if($feline->age == null)
                                             <li class="list-group-item"><strong>Edad:</strong>&nbsp;Desconocido</li>
                                         @else
                                             <li class="list-group-item"><strong>Edad:</strong> {{ $feline->age }} años</li>
                                         @endif
-                                        <p class="mb-1"><strong>Raza:</strong> {{ $feline->race }}</p>
+                                        <p class="mb-1"><strong>Raza:</strong> {{ ucfirst($feline->race) }}</p>
                                         <p class="mb-1"><strong>Sexo:</strong> {{ $feline->sex }}</p>
                                         <p class="mb-1"><strong>Esterilizado:</strong> {{ $feline->sterilized == 'Yes' ? 'Sí' : 'No' }}</p>
                                         <p class="mb-1"><strong>Estado de salud:</strong> {{ $feline->health_status }}</p>
@@ -91,7 +95,7 @@
                                         @else
                                             <li class="list-group-item"><strong>Edad:</strong> {{ $feline->age }} años</li>
                                         @endif
-                                        <p class="mb-1"><strong>Raza:</strong> {{ $feline->race }}</p>
+                                        <p class="mb-1"><strong>Raza:</strong> {{ ucfirst($feline->race) }}</p>
                                         <p class="mb-1"><strong>Sexo:</strong> {{ $feline->sex }}</p>
                                         <p class="mb-1"><strong>Esterilizado:</strong> {{ $feline->sterilized == 'Yes' ? 'Sí' : 'No' }}</p>
                                         <p class="mb-1"><strong>Estado de salud:</strong> {{ $feline->health_status }}</p>
@@ -100,10 +104,10 @@
                                     <div class="mt-3 d-flex flex-wrap gap-2">
                                         <a href="{{ route('felines.edit', $feline) }}" class="btn btn-outline-secondary btn-sm">Editar</a>
                                         <a href="{{ route('advertisement.create', $feline) }}" class="btn btn-outline-primary btn-sm">Publicar Michi</a>
-                                        <form action="{{ route('felines.destroy', $feline) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este michi?')">
+                                        <form action="{{ route('felines.destroy', $feline) }}" method="POST" >
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button>
+                                            <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este michi?')">Eliminar</button>
                                         </form>
                                     </div>
                                 </div>

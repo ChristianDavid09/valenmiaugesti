@@ -21,7 +21,7 @@
         </div>
         <div class="mb-3">
             <label for="age" class="form-label">Edad</label>
-            <input type="text" class="form-control" id="age" name="age" required>
+            <input type="text" class="form-control" id="age" name="age" >
             <div class="text-muted">Si desconoces la edad, deja el campo vacío</div>
         </div>
         <div class="mb-3">
