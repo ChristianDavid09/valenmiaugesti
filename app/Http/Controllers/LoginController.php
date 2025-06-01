@@ -80,8 +80,7 @@ class LoginController extends Controller
     public function registerAdoptante(signUpAdopter $request): RedirectResponse
     {
         // Generar un nombre único para la imagen, para diferenciarlo bien usaremos el nombre y el dni del adoptante
-        $filePhoto = $request->input('dni').'.png';
-        $fileCertificate = $request->input('dni').'.pdf';
+        
 
 
         //Creación de usuario
@@ -104,6 +103,9 @@ class LoginController extends Controller
         $adopter->province = $request->input('city');
         $adopter->description = $request->input('description');
         $adopter->user_id = $user->id;
+
+        $filePhoto = $request->input('dni').'.png';
+        $fileCertificate = $request->input('dni').'.pdf';
 
         //Gestión del certificado de delitos penales
         if ($request->hasFile('certificate') && $request->file('certificate')->isValid()) {
@@ -199,30 +201,104 @@ class LoginController extends Controller
         return view('users.edit', compact('user'));
     }
 
+ 
+
     public function update(editUser $request, User $user): RedirectResponse
     {
+        $data = $request->validated();
 
-        $data = $request->only(['name', 'email', 'dni']);
-
-
+        // Encriptar contraseña si se ha modificado
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
+        } else {
+            unset($data['password']);
         }
 
-        Validator::make($data, [
-            'dni' => [
-                'required',
-                'string',
-                'max:9',
-                Rule::unique('users')->ignore($user->id),
-            ],
-        ]);
+        // Guardar la foto si se ha subido una
+        
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->dni = $request->input('dni');
+        
 
+        if ($user->rol == User::ROL_COLOGNE) {
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                $routeImage = public_path('images/colognes/profile/'.$user->cologne->photo);
+                $filename = $user->cologne->id_ref_com.'.'.$user->cologne->name .'.'.$photo->getClientOriginalExtension();
+                if (file_exists($routeImage)) {
+                    unlink($routeImage);
+                }
+                $photo->move(public_path('images/colognes/profile'), $filename);
+                $data['photo'] = $filename;
+                // Guardar también datos específicos de la colonia
+                $user->photo_url = $filename;
+                $user->cologne->photo = $filename;
+                
+            } else {
+                $data['photo'] = $user->cologne->photo; // Mantener la foto actual si no se sube una nueva
+            }
+            $user->cologne->province = $request->input('province');
+            $user->cologne->adress = $request->input('address');
+            $user->cologne->phone = $request->input('phone');
+            $user->cologne->save();
+        } else {
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                $routeImage = public_path('images/adopters/profile/'.$user->adopter->photo);
+                $filename = $user->dni.'.'.$photo->getClientOriginalExtension();
+                if (file_exists($routeImage)) {
+                    unlink($routeImage);
+                }
+                $photo->move(public_path('images/adopters/profile'), $filename);
+                $data['photo'] = $filename;
+                
+                $user->photo_url = $filename;
+                $user->adopter->photo = $filename;
+            } else {
+               $data['photo'] = $user->adopter->photo; // Mantener la foto actual si no se sube una nueva
+            }
+
+
+                $user->adopter->date_birth = $request->input('date_birth');
+                $user->adopter->name = $request->input('name');
+                $user->adopter->province = $request->input('province');
+                $user->adopter->address = $request->input('address');
+                $user->adopter->phone = $request->input('phone');
+                $user->adopter->description = $request->input('description');
+                
+                $user->adopter->save();
+        }
+
+        // Actualizar los datos del usuario
         $user->update($data);
 
-
-        return redirect()->route('account');
+        return redirect()->route('account')->with('success', 'Cuenta actualizada correctamente');
     }
+    public function updateColony(Cologne $cologne, Request $request): RedirectResponse
+    {
+    
+
+        $cologne->name = $request->input('name');
+        $cologne->description = $request->input('description');
+
+        // Si se sube una nueva foto, manejarla
+        if ($request->hasFile('photo')) {
+            $photo = $request->file('photo');
+            $filename = $cologne->id_ref_com.'.'.$cologne->name.'.'.$photo->getClientOriginalExtension();
+            $routeImage = public_path('images/colognes/profile/'.$cologne->photo);
+            if (file_exists($routeImage)) {
+                unlink($routeImage);
+            }
+            $photo->move(public_path('images/colognes/profile'), $filename);
+            $cologne->photo = $filename;
+            
+        }
+        $cologne->save();
+        return redirect()->route('account')->with('success', 'Colonia actualizada correctamente');
+    }
+
+
 
 
 

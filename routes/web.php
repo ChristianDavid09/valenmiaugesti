@@ -22,6 +22,7 @@ Route::post('signUp', [LoginController::class, 'registerAdoptante'])->name('sign
 Route::get('login', [LoginController::class, 'loginForm'])->name('loginForm');
 Route::post('login', [LoginController::class, 'login'])->name('login');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+Route::put('update', [LoginController::class, 'updateColony'])->name('updateColony');
 
 Route::get('account', [LoginController::class, 'account'])->name('account');
 Route::get('account/edit/{user}', [LoginController::class, 'edit'])->name('account.edit');

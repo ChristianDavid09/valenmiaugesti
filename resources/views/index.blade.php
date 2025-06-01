@@ -3,16 +3,8 @@
 @section('title', 'Inicio')
 
 @section('content')
-    @if (Auth::check() && Auth::user()->rol == 'Colonia')
         <div class="container">
-            <h1>Bienvenido {{ Auth::user()->cologne->name }}</h1>
-            <a href="{{ route('felines.index') }}" class="btn btn-primary">Dar de alta a un Felino</a>
-            <h2>Colonias</h2>
-
-        </div>
-    @elseif (Auth::check() && Auth::user()->rol == 'Adoptante')
-        <h1>HOLA</h1>
-    @else
+ 
         <h1 class="display-5 fw-bold lh-1 mb-3 text-center">🐾 Bienvenido a ValenMiauGestió 🐾</h1>
 
         <div class="container col-xxl-8 px-4 py-5">
@@ -41,10 +33,7 @@
 
               <p class="fst-italic">Porque cada michi cuenta, y juntos podemos ofrecerles una vida digna y segura.</p>
 
-              <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
-                <a href="{{ route('index') }}" class="btn btn-primary btn-lg px-4 me-md-2">Entrar a la aplicación</a>
-                <a href="{{ route('felines.index') }}" class="btn btn-outline-secondary btn-lg px-4">Ver michis</a>
-              </div>
+             
             </div>
 
             <div class="col-10 col-sm-8 col-lg-6">
@@ -53,19 +42,21 @@
             </div>
           </div>
         </div>
-
-        <div class="sign-up text-center my-5">
-          <div class="row justify-content-center">
-            <div class="col-md-6">
-              <p class="mb-3">¿No tienes cuenta?
-                <a href="{{ route('signUp') }}" class="text-primary fw-bold">Regístrate aquí</a>
-              </p>
-              <p>¿Ya tienes cuenta?
-                <a href="{{ route('index') }}" class="text-primary fw-bold">Inicia sesión</a>
-              </p>
+        @if (!Auth::check())
+          <div class="sign-up text-center my-5">
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <p class="mb-3">¿No tienes cuenta?
+                  <a href="{{ route('signUp') }}" class="text-primary fw-bold">Regístrate aquí</a>
+                </p>
+                <p>¿Ya tienes cuenta?
+                  <a href="{{ route('login') }}" class="text-primary fw-bold">Inicia sesión</a>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-    @endif
+        @endif
+
+
 @endsection

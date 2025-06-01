@@ -47,10 +47,22 @@
                         <a href="{{ route('account.edit', Auth::user()) }}" class="btn btn-outline-primary mt-3 w-100">
                             ✏️ Editar cuenta
                         </a>
+                        <form action="{{ route('adopters.destroy', Auth::user()->adopter) }}" method="POST" class="mt-3">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger w-100">
+                                🗑️ Eliminar cuenta
+                            </button>
+                        </form>
+                        <p class="mt-3 text-muted">
+                            Al eliminar tu cuenta, perderás acceso a todas las funcionalidades y datos asociados.
+                            Esta acción es irreversible.
+                        </p>
                     @else
                         <button type="button" class="btn btn-outline-primary mt-3 w-100" id="button">
                             ✏️ Editar cuenta
                         </button>
+                        
                         <div id="buttons" class="mt-3" style="display: none;">
                             <a href="{{ route('account.edit', Auth::user()) }}" class="btn btn-primary mb-2 w-100">
                                 🧍‍♂️ Editar Datos del Administrador
@@ -59,6 +71,17 @@
                                 🏘️ Editar Datos de la Colonia
                             </a>
                         </div>
+                        <form action="{{ route('colognes.destroy', Auth::user()->cologne) }}" method="POST" class="mt-3">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger w-100" onclick="return confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción es irreversible.')">
+                                🗑️ Eliminar cuenta
+                            </button>
+                        </form>
+                        <p class="mt-3 text-muted">
+                            Al eliminar tu cuenta, perderás acceso a todas las funcionalidades y datos asociados.
+                            Esta acción es irreversible.
+                        </p>
                     @endif
                 </div>
             </div>

@@ -5,12 +5,18 @@
 @section('content')
     <div class="container">
         <h1>Editar Colonia</h1>
-        <form action="{{ route('colognes.update', $cologne) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('updateColony', $cologne) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <div class="mb-3">
-                <label for="name" class="form-label">Nombre de la colonia</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ $cologne->name }}" required>
+            <div class="row-3">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nombre de la colonia</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ $cologne->name }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="id_ref_com" class="form-label">ID de referencia</label>
+                    <input type="text" class="form-control" id="id_ref_com" name="id_ref_com" value="{{ $cologne->id_ref_com }}" required>
+                </div>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Descripción</label>

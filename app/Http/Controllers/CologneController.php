@@ -6,6 +6,8 @@ use App\Models\Cologne;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\RedirectResponse;
 
 class CologneController extends Controller
 {
@@ -75,7 +77,26 @@ class CologneController extends Controller
      */
     public function destroy(Cologne $cologne)
     {
-        //
+
+
+        if (Auth::check() && Auth::user()->rol == 'Cologne' && Auth::user()->cologne->id == $cologne->id) {
+            
+            if ($cologne->photo) {
+                Storage::disk('public')->delete('images/colognes/profile/' . $cologne->photo);
+            }
+            foreach ($cologne->felines as $feline) {
+                if ($feline->photo) {
+                    Storage::disk('public')->delete('images/felines/' . $feline->photo);
+                }
+            }
+            
+
+            $cologne->user->delete(); 
+            Auth::logout(); // Cerrar sesión del usuario que eliminó la colonia
+            return redirect()->route('index')->with('success', 'Colonia eliminada con éxito.');
+        } else {
+            return redirect()->route('colognes.index')->with('error', 'No se ha podido eliminar la colonia.');
+        }
     }
 
 }

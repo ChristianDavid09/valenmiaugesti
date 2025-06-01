@@ -18,7 +18,7 @@
 
                     {{-- Imagen del adoptante --}}
                     <div class="text-center mb-4">
-                            <img src="{{ asset('./images/adopters/profile/'.$adopter->user->photo_url) }}" class="rounded-circle shadow" alt="Foto por defecto" width="120" height="120">
+                            <img src="{{ asset('./images/adopters/profile/'.$adopter->user->photo_url) }}" class="rounded-circle shadow" alt="Foto por defecto" width="120" height="120" style="object-fit: cover;>
                     </div>
 
                     {{-- Datos del adoptante --}}
@@ -29,8 +29,12 @@
 
                     <p><span class="fw-bold">📧 Correo:</span> {{ $adopter->user->email }}</p>
                     <p><span class="fw-bold">📞 Teléfono:</span> {{ $adopter->phone }}</p>
+                    <p><span class="fw-bold">📍 Dirección:</span> {{ $adopter->address ?? 'Sin dirección' }}</p>
+                    <p><span class="fw-bold">📍 Provincia:</span> {{ $adopter->province ?? 'Sin provincia' }}</p>
+                    <p><span class="fw-bold">🆔 DNI:</span> {{ $adopter->user->dni }} </p>
                     <p><span class="fw-bold">📅 Fecha de registro:</span> {{ $adopter->created_at->format('d/m/Y') }}</p>
                     <p><span class="fw-bold">📄 Descripción:</span> {{ $adopter->description?? 'Sin descripción' }}</p>
+
 
                     {{-- Certificado de delitos --}}
                     @if ($adopter->certificate)
