@@ -64,6 +64,10 @@
             @endforeach
         </div>
     </div>
+    <div class="mt-4 d-flex justify-content-center">
+        {{ $publications->links() }}
+    </div>
+
     <style>
             .card-publication {
                 border-radius: 15px;

@@ -16,9 +16,16 @@ class FelineController extends Controller
      */
     public function index()
     {
-        $colognes = Auth::user()->cologne;
-        $felines = $colognes->felines;
-        return view('feline.index', compact('felines'));
+        $cologne = Auth::user()->cologne;
+
+        $activeFelines = $cologne->felines()->where('in_active', 1)
+            ->paginate(6, ['*'], 'activos');
+
+        $inactiveFelines = $cologne->felines()->where('in_active', 0)
+            ->paginate(6, ['*'], 'inactivos');
+
+        return view('feline.index', compact('activeFelines', 'inactiveFelines'));
+
     }
 
     /**

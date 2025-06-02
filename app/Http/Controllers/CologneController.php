@@ -16,7 +16,7 @@ class CologneController extends Controller
      */
     public function index(): view
     {
-        $colognes = Cologne::all();
+        $cologne = Cologne::latest()->paginate(6);
         return view('colognes.index', compact('colognes'));
     }
 
