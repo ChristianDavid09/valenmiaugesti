@@ -30,7 +30,7 @@
                                     <img src="{{ asset('images/colognes/profile/' . $publication->user->photo_url) }}"
                                          class="me-2 profile-img">
                                     <div>
-                                        <strong><a href="{{ route('colognes.show', $publication->user->cologne) }}" style="text-decoration:none;">{{ $publication->user->name }}</a></strong><br>
+                                        <strong><a href="{{ route('colognes.show', $publication->user->cologne) }}" style="text-decoration:none;">{{ $publication->user->cologne->name }}</a></strong><br>
                                         <small class="text-muted">{{ $publication->created_at->format('d/m/Y H:i') }}</small>
                                     </div>
                                 </div>

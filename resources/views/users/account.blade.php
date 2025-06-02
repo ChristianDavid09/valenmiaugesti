@@ -9,6 +9,17 @@
         <div class="d-flex justify-content-center">
             <div class="card shadow-lg rounded-4 border-0" style="max-width: 600px; width: 100%;">
                 <div class="card-body p-5">
+
+                    <div class="text-center mb-4">
+                        @if (Auth::user()->rol === 'Cologne')
+                            <img src="{{ asset('images/colognes/profile/'.Auth::user()->photo_url ) }}" alt="Foto de perfil"
+                                class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+                        @else
+                            <img src="{{ asset('images/adopters/profile/'.Auth::user()->photo_url ) }}" alt="Foto de perfil"
+                                 class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+                        @endif
+                    </div>
+
                     <h2 class="h4 mb-4 text-primary border-bottom pb-2">📄 Detalles de la cuenta</h2>
 
                     <ul class="list-group list-group-flush mb-4">
@@ -50,7 +61,7 @@
                         <form action="{{ route('adopters.destroy', Auth::user()->adopter) }}" method="POST" class="mt-3">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger w-100">
+                            <button type="submit" class="btn btn-danger w-100" onclick="return confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción es irreversible.')">
                                 🗑️ Eliminar cuenta
                             </button>
                         </form>
@@ -62,7 +73,7 @@
                         <button type="button" class="btn btn-outline-primary mt-3 w-100" id="button">
                             ✏️ Editar cuenta
                         </button>
-                        
+
                         <div id="buttons" class="mt-3" style="display: none;">
                             <a href="{{ route('account.edit', Auth::user()) }}" class="btn btn-primary mb-2 w-100">
                                 🧍‍♂️ Editar Datos del Administrador

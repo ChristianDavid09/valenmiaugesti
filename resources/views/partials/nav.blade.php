@@ -49,7 +49,6 @@
                 <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownUser1">
                   <li><h6 class="dropdown-header">{{ Auth::user()->name }}</h6></li>
                   <li><a class="dropdown-item" href="{{ route('account') }}">Cuenta</a></li>
-                  <li><a class="dropdown-item" href="{{ route('account.edit', Auth::user()) }}">Editar cuenta</a></li>
                   <li><a class="dropdown-item" href="{{ route('messages.index') }}">Correo</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item text-danger" href="{{ route('logout') }}">Cerrar Sesión</a></li>

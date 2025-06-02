@@ -55,7 +55,7 @@
             </div>
             <div class="row g-2">
                 <label for="certificate" class="form-label">Certificado de delitos penales</label>
-                <input type="file" class="form-control" name="certificate" id="certificate" required value="{{ old('certificate') }}">
+                <input type="file" class="form-control" name="certificate" id="certificate" accept="application/pdf" required value="{{ old('certificate') }}">
                 <div class="text-muted">Este certificado es obligatorio para garantizar la seguridad de los felinos.</div>
             </div>
             <div class="text-muted mt-3">------------------------ Datos complementarios no obligatorios ------------------------</div>

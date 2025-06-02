@@ -13,8 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
+
 
 class LoginController extends Controller
 {
@@ -80,7 +79,8 @@ class LoginController extends Controller
     public function registerAdoptante(signUpAdopter $request): RedirectResponse
     {
         // Generar un nombre único para la imagen, para diferenciarlo bien usaremos el nombre y el dni del adoptante
-        
+        $filePhoto = $request->input('dni').'.png';
+        $fileCertificate = $request->input('dni').'.pdf';
 
 
         //Creación de usuario
@@ -104,8 +104,7 @@ class LoginController extends Controller
         $adopter->description = $request->input('description');
         $adopter->user_id = $user->id;
 
-        $filePhoto = $request->input('dni').'.png';
-        $fileCertificate = $request->input('dni').'.pdf';
+
 
         //Gestión del certificado de delitos penales
         if ($request->hasFile('certificate') && $request->file('certificate')->isValid()) {
@@ -198,13 +197,37 @@ class LoginController extends Controller
     }
     public function edit(User $user): View
     {
+        if (Auth::user()->rol == User::ROL_COLOGNE) {
+
+            if ($user->id !== Auth::user()->id) {
+                abort(403, 'No tienes permiso para modificar este usuario.');
+            }
+        } else {
+
+            if ($user->id !== Auth::user()->id) {
+                abort(403, 'No tienes permiso para modificar este usuario.');
+            }
+        }
+
         return view('users.edit', compact('user'));
     }
 
- 
+
 
     public function update(editUser $request, User $user): RedirectResponse
     {
+        if (Auth::user()->rol == User::ROL_COLOGNE) {
+
+            if ($user->id !== Auth::user()->id) {
+                abort(403, 'No tienes permiso para modificar este usuario.');
+            }
+        } else {
+
+            if ($user->id !== Auth::user()->id) {
+                abort(403, 'No tienes permiso para modificar este usuario.');
+            }
+        }
+
         $data = $request->validated();
 
         // Encriptar contraseña si se ha modificado
@@ -215,11 +238,11 @@ class LoginController extends Controller
         }
 
         // Guardar la foto si se ha subido una
-        
+
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->dni = $request->input('dni');
-        
+
 
         if ($user->rol == User::ROL_COLOGNE) {
             if ($request->hasFile('photo')) {
@@ -234,7 +257,7 @@ class LoginController extends Controller
                 // Guardar también datos específicos de la colonia
                 $user->photo_url = $filename;
                 $user->cologne->photo = $filename;
-                
+
             } else {
                 $data['photo'] = $user->cologne->photo; // Mantener la foto actual si no se sube una nueva
             }
@@ -252,7 +275,7 @@ class LoginController extends Controller
                 }
                 $photo->move(public_path('images/adopters/profile'), $filename);
                 $data['photo'] = $filename;
-                
+
                 $user->photo_url = $filename;
                 $user->adopter->photo = $filename;
             } else {
@@ -266,7 +289,7 @@ class LoginController extends Controller
                 $user->adopter->address = $request->input('address');
                 $user->adopter->phone = $request->input('phone');
                 $user->adopter->description = $request->input('description');
-                
+
                 $user->adopter->save();
         }
 
@@ -277,10 +300,11 @@ class LoginController extends Controller
     }
     public function updateColony(Cologne $cologne, Request $request): RedirectResponse
     {
-    
+
 
         $cologne->name = $request->input('name');
         $cologne->description = $request->input('description');
+        $cologne->id_ref_com = $request->input('id_ref_com');
 
         // Si se sube una nueva foto, manejarla
         if ($request->hasFile('photo')) {
@@ -292,9 +316,9 @@ class LoginController extends Controller
             }
             $photo->move(public_path('images/colognes/profile'), $filename);
             $cologne->photo = $filename;
-            
+
         }
-        $cologne->save();
+        $cologne->update();
         return redirect()->route('account')->with('success', 'Colonia actualizada correctamente');
     }
 

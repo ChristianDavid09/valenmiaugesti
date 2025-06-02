@@ -6,8 +6,7 @@ use App\Models\Feline;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
-use App\Models\Colognes;
-use App\Models\Advertisement;
+use App\Http\Requests\FormFeline;
 
 
 class FelineController extends Controller
@@ -33,15 +32,9 @@ class FelineController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(FormFeline $request): RedirectResponse
     {
 
-
-
-        $photo = $request->file('image');
-        $timeForFile = now()->timestamp;
-        $extension = $photo->getClientOriginalExtension();
-        $filePhoto =  $request->input('name') . '.' .$request->input('race').'.'. $timeForFile. '.' . $extension;
 
         $feline = new Feline();
         $feline->name = $request->input('name');
@@ -61,6 +54,11 @@ class FelineController extends Controller
 
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
+
+            $photo = $request->file('image');
+            $timeForFile = now()->timestamp;
+            $extension = $photo->getClientOriginalExtension();
+            $filePhoto =  $request->input('name') . '.' .$request->input('race').'.'. $timeForFile. '.' . $extension;
 
             $routeImage = public_path('images/colognes/felines');
 
@@ -91,35 +89,57 @@ class FelineController extends Controller
      */
     public function edit(Feline $feline)
     {
+        // Verificar si el usuario autenticado es el propietario del michi
+        if (Auth::user()->rol == "Cologne") {
+            if ($feline->id_cologne !== Auth::user()->cologne->id) {
+                abort(403, 'No tienes permiso para modificar este michi.');
+            }
+        } else {
+            abort(403, 'No tienes permiso para modificar este michi.');
+        }
+
+
         return view ('feline.edit', ['feline' => $feline]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Feline $feline)
+    public function update(FormFeline $request, Feline $feline)
     {
 
-
-
         $feline->name = $request->input('name');
-        $feline->age = $request->input('age');
         $feline->race = $request->input('race');
         $feline->sex = $request->input('sex');
         $feline->health_status = $request->input('health_status');
         $feline->sterilized = $request->input('sterilized');
         $feline->id_cologne = Auth::user()->cologne->id;
 
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
 
+        //Hacemos comprobacionees, si el campo es nulo, vacío o no es un entero, lo dejamos como nulo
+        if($request->input('age') === null || $request->input('age') === '' || !is_numeric($request->input('age'))) {
+            $feline->age = null;
+        } else {
+            $feline->age = $request->input('age');
+        }
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $photo = $request->file('image');
 
-            $filePhoto = $feline->photo;
+            if($feline->photo === null) {
+                $timeForFile = now()->timestamp;
+                $extension = $photo->getClientOriginalExtension();
+                $filePhoto =  $request->input('name') . '.' .$request->input('race').'.'. $timeForFile. '.' . $extension;
+            } else {
+                $filePhoto = $feline->photo;
+            }
 
             $routeImage = public_path('images/colognes/felines');
 
 
             $photo->move($routeImage, $filePhoto);
+
+            $feline->photo = $filePhoto;
 
         }
 

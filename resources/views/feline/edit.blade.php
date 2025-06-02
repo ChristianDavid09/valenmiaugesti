@@ -5,6 +5,15 @@
 @section('content')
 <div class="container d-flex justify-content-center py-5">
     <div class="card shadow-lg border-0 rounded-4 p-4 w-100" style="max-width: 600px;">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <h2 class="text-center text-primary mb-4">🐱 Editar Michi</h2>
 
         <form action="{{ route('felines.update', $feline) }}" method="POST" enctype="multipart/form-data">
@@ -20,7 +29,7 @@
             <div class="mb-3">
                 <label for="age" class="form-label fw-semibold">Edad</label>
                 <input type="number" class="form-control" id="age" name="age"
-                       value="{{ old('age', $feline->age) }}" required>
+                       value="{{ old('age', $feline->age) }}">
             </div>
 
             <div class="mb-3">
@@ -51,14 +60,14 @@
                 <label for="sterilized" class="form-label fw-semibold">Esterilizado</label>
                 <select class="form-select" name="sterilized" id="sterilized" required>
                     <option disabled selected>Selecciona una opción</option>
-                    <option value="Yes" {{ old('sterilized', $feline->sterilized) === 'Yes' ? 'selected' : '' }}>Sí</option>
+                    <option value="Si" {{ old('sterilized', $feline->sterilized) === 'Si' ? 'selected' : '' }}>Sí</option>
                     <option value="No" {{ old('sterilized', $feline->sterilized) === 'No' ? 'selected' : '' }}>No</option>
                 </select>
             </div>
 
             <div class="mb-3">
                 <label for="image" class="form-label fw-semibold">Imagen (opcional)</label>
-                <input type="file" id="image" name="image" class="form-control">
+                <input type="file" id="image" name="image" class="form-control" accept="image/png, image/jpeg, image/jpg">
             </div>
 
             @if ($feline->photo)

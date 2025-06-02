@@ -61,6 +61,17 @@ class CologneController extends Controller
      */
     public function edit(Cologne $cologne)
     {
+        if (Auth::user()->rol == "Cologne") {
+
+            if ($cologne->user->id !== Auth::user()->id) {
+                abort(403, 'No tienes permiso para modificar este usuario.');
+            }
+        } else {
+
+            if ($cologne->user->id !== Auth::user()->id) {
+                abort(403, 'No tienes permiso para modificar este usuario.');
+            }
+        }
         return view('colognes.edit', compact('cologne'));
     }
 
@@ -80,22 +91,29 @@ class CologneController extends Controller
 
 
         if (Auth::check() && Auth::user()->rol == 'Cologne' && Auth::user()->cologne->id == $cologne->id) {
-            
+
             if ($cologne->photo) {
-                Storage::disk('public')->delete('images/colognes/profile/' . $cologne->photo);
-            }
-            foreach ($cologne->felines as $feline) {
-                if ($feline->photo) {
-                    Storage::disk('public')->delete('images/felines/' . $feline->photo);
+                if (file_exists(public_path('images/colognes/profile/' . $cologne->photo))) {
+                    unlink(public_path('images/colognes/profile/' . $cologne->photo));
                 }
             }
-            
+            foreach ($cologne->felines as $feline) {
+                if (file_exists(public_path('images/colognes/felines/' . $feline->photo))) {
+                    unlink(public_path('images/colognes/felines/' . $feline->photo));
+                }
+            }
+            foreach ($cologne->user->publications as $publication) {
+                if (file_exists(public_path('pubs/photo/' . $publication->photo))) {
+                    unlink(public_path('pubs/photo/' . $publication->photo));
+                }
+            }
 
-            $cologne->user->delete(); 
+
+            $cologne->user->delete();
             Auth::logout(); // Cerrar sesión del usuario que eliminó la colonia
             return redirect()->route('index')->with('success', 'Colonia eliminada con éxito.');
         } else {
-            return redirect()->route('colognes.index')->with('error', 'No se ha podido eliminar la colonia.');
+            return redirect()->route('account')->with('error', 'No se ha podido eliminar la colonia.');
         }
     }
 

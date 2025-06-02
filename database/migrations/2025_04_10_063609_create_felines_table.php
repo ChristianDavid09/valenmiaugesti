@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 50);
             $table->integer('age');
-            $table->enum('sex', ['Macho', 'Hembra']);
+            $table->enum('sex', ['Macho', 'Hembra'])->nullable();
             $table->string('race', 50)->nullable();
             $table->boolean('in_active')->default(false);
             $table->enum('Sterilized', ['Si', 'No'])->default('No');

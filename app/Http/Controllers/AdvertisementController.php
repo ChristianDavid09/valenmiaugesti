@@ -90,6 +90,13 @@ class AdvertisementController extends Controller
      */
     public function edit(Advertisement $adver)
     {
+        // Verificar si el usuario autenticado es el propietario del anuncio
+        if (Auth::user()->rol == User::ROL_ADOPTER) {
+            abort(403, 'No tienes permiso para editar este anuncio.');
+        }
+        if ($adver->feline->id_cologne !== Auth::user()->cologne->id) {
+            abort(403, 'No tienes permiso para editar este anuncio.');
+        }
 
         return view('advertisement.edit', ['advertisement' => $adver]);
     }

@@ -4,11 +4,21 @@
 
 @section('content')
     <div class="container">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+
+        @endif
     <h1>Dar de alta a un Michi</h1>
     <form action=" {{ route('felines.store') }}" method="POST" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="image" class="form-label">Imagen</label>
-            <input type="file" class="form-control" id="image" name="image">
+            <input type="file" class="form-control" id="image" name="image" accept="image/png, image/jpeg, image/jpg" required>
         </div>
         <div class="text-center">
             <img id="preview" src="#" alt="Vista previa" style="display: none;" class="img-thumbnail mx-auto d-block" width="250">
@@ -48,7 +58,7 @@
             <label for="sterilized">Esterilizado</label>
             <select class="form-select" name="sterilized" id="sterilized">
                 <option value="" selected disabled>Selecciona una opción</option>
-                <option value="Yes">Si</option>
+                <option value="Si">Si</option>
                 <option value="No">No</option>
             </select>
         </div>

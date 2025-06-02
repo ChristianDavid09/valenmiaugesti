@@ -83,6 +83,11 @@ class PublicationController extends Controller
      */
     public function edit(Publication $publication)
     {
+        // Verificar si el usuario autenticado es el propietario de la publicación
+        if ($publication->id_user !== Auth::id()) {
+            abort(403, 'No tienes permiso para editar esta publicación.');
+        }
+
         return view('publications.edit', compact('publication'));
     }
 

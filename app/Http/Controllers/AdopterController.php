@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Adopter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use App\Models\Cologne;
 
 class AdopterController extends Controller
 {
@@ -61,6 +65,31 @@ class AdopterController extends Controller
      */
     public function destroy(Adopter $adopter)
     {
-        //
+        if (Auth::check() && Auth::user()->rol == 'Adopter' && Auth::user()->adopter->id == $adopter->id) {
+
+            if ($adopter->photo) {
+                if (file_exists(public_path('images/adopters/profile/' . $adopter->photo))) {
+                    unlink(public_path('images/adopters/profile/' . $adopter->photo));
+                }
+            }
+            if(file_exists(public_path('certificates/' . $adopter->certificate))) {
+                unlink(public_path('certificates/' . $adopter->certificate));
+
+            }
+
+            foreach ($adopter->user->publications as $publication) {
+                if (file_exists(public_path('pubs/photo/' . $publication->photo))) {
+                    unlink(public_path('pubs/photo/' . $publication->photo));
+                }
+            }
+
+
+            $adopter->user->delete();
+            Auth::logout(); // Cerrar sesión del usuario que eliminó la colonia
+            return redirect()->route('index')->with('success', 'Colonia eliminada con éxito.');
+        } else {
+            return redirect()->route('account')->with('error', 'No se ha podido eliminar la cuenta.');
+        }
+
     }
 }
