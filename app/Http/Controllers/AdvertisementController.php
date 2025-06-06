@@ -13,12 +13,9 @@ use Illuminate\View\View;
 
 class AdvertisementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
-
         // Cogemos todos los anuncios de la base de datos
         if (Auth::user()->rol == User::ROL_ADOPTER) {
             $advertisements = Advertisement::with('feline')->get();
@@ -29,40 +26,32 @@ class AdvertisementController extends Controller
 
         // Cogemos solo los anuncios cuyo felino pertenece a esa colonia
         /**
-         * La función whereHas() permite filtrar los anuncios de una consulta Eloquent basandose en la
-         * existencia de una relacion que cumpla ciertas condiciones.
+         * La función whereHas() permite filtrar los anuncios de una consulta Eloquent (consulta para 
+         * interactuar con la base de datos usando PHP) basandose en la existencia de una relacion que cumpla ciertas condiciones.
          *
          * Este filtro sería equivalente a esta consulta SQL:
          *
          * SELECT anuncios.*, felinos.*
          * FROM anuncios
          * JOIN felinos ON anuncios.felino_id = felinos.id
-         * WHERE felinos.id_colonia = (id de la colonia del usuario logueado)
+         * WHERE felinos.id_colonia = (id de la colonia del usuario)
          */
 
         $advertisements = Advertisement::whereHas('feline', function($query) use ($cologneId) {
             $query->where('id_cologne', $cologneId);
         })->with('feline')->get();
 
-
         return view('advertisement.index', compact('advertisements'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create($feline)
     {
         $feline = Feline::find($feline);
         return view('advertisement.create', compact('feline'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(AdverFeline $request)
     {
-
         $advertisement = new Advertisement();
         $advertisement->title = $request->input('title');
         $advertisement->type = $request->input('type');
@@ -71,23 +60,18 @@ class AdvertisementController extends Controller
 
         $advertisement->save();
 
+        // Actualiamos el campo booleano in_active del felino asociado al anuncio
         $advertisement->feline->in_active = 1;
         $advertisement->feline->save();
         return redirect()->route('advertisement.index');
 
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Advertisement $adver): View
     {
-        return view('advertisement.show', ['advertisement' => $adver]);
+        return view('advertisement.show', compact('adver'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Advertisement $adver)
     {
         // Verificar si el usuario autenticado es el propietario del anuncio
@@ -98,13 +82,9 @@ class AdvertisementController extends Controller
             abort(403, 'No tienes permiso para editar este anuncio.');
         }
 
-        return view('advertisement.edit', ['advertisement' => $adver]);
+        return view('advertisement.edit', compact('adver'));
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Advertisement $adver)
     {
         $adver->title = $request->input('title');
@@ -117,13 +97,11 @@ class AdvertisementController extends Controller
         return redirect()->route('advertisement.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Advertisement $adver)
     {
-
         $adver->delete();
+        // Actualizamos el campo booleano in_active del felino asociado al anuncio a 0
+        // Esto indica que el felino ya no está activo en la adopción y solo estara como un registro de la colonia
         $adver->feline->in_active = 0;
         $adver->feline->save();
         return redirect()->route('felines.index');

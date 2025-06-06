@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author: David Murillo
+ * @version: 1.0
+ * @since: 05-03-2025
+ */
 namespace App\Http\Controllers;
 
 use App\Models\Cologne;
@@ -12,37 +16,19 @@ use Illuminate\Http\RedirectResponse;
 class CologneController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * La edicion de colonias solo se realiza en LoginController
      */
     public function index(): view
     {
-        $cologne = Cologne::latest()->paginate(6);
+        //Utilizamos la paginacion para mostrar 6 colonias por página
+        $colognes = Cologne::latest()->paginate(6);
         return view('colognes.index', compact('colognes'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-
     public function show(Cologne $cologne): view
     {
-
+        // Comprobamos si el usuario está autenticado y es una colonia
+        // Si es así, comprobamos si la colonia que se está mostrando es la misma que la del usuario autenticado
+        // Si es así, pasamos una variable "isOwner" a la vista para mostrar opciones adicionales
         if(Auth::check() && Auth::user()->rol == 'Cologne') {
             $isOwner = Auth::check() && $cologne->id == Auth::user()->cologne->id;
             return view('colognes.show', compact('cologne', 'isOwner'));
@@ -53,14 +39,9 @@ class CologneController extends Controller
 
     }
 
-
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Cologne $cologne)
     {
+        // Comprobamos si el usuario autenticado es una Colonia y si es el dueño de la colonia que se está editando
         if (Auth::user()->rol == "Cologne") {
 
             if ($cologne->user->id !== Auth::user()->id) {
@@ -75,21 +56,13 @@ class CologneController extends Controller
         return view('colognes.edit', compact('cologne'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Cologne $cologne)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Cologne $cologne)
     {
 
-
+        /**Comprobamos que el usuario es una colonia, aparte de que sea el dueño de la cuenta,
+         * y confirmamos que tenga foto, una vez comprobamos, eliminamos todas las fotos relacionadas
+         * con esta colonia, y las publicaciones del usuario
+         */
         if (Auth::check() && Auth::user()->rol == 'Cologne' && Auth::user()->cologne->id == $cologne->id) {
 
             if ($cologne->photo) {

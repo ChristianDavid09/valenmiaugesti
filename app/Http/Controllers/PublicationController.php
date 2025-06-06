@@ -11,27 +11,21 @@ use Illuminate\Support\Facades\Auth;
 
 class PublicationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(): View
     {
+        // Obtenemos las publicaciones más recientes y las paginamos
+        // Utilizamos el método latest() para ordenar por fecha de creación descendente
+        // y paginate(6) para mostrar 6 publicaciones por página.
         $publications = Publication::latest()->paginate(6);
         return view('publications.index', compact('publications'));
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(): View
     {
         return view('publications.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request): RedirectResponse
     {
 
@@ -46,7 +40,7 @@ class PublicationController extends Controller
         //Gestión de la foto de la publicación
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
 
-
+            //Creamos un nombre unico para la foto
             $photo = $request->file('photo');
             $extension = $photo->getClientOriginalExtension();
             $timeForFile = now()->timestamp;
@@ -71,17 +65,6 @@ class PublicationController extends Controller
         return redirect()->route('publications.index')->with('success', 'Publication created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Publication $publication)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Publication $publication)
     {
         // Verificar si el usuario autenticado es el propietario de la publicación
@@ -92,17 +75,13 @@ class PublicationController extends Controller
         return view('publications.edit', compact('publication'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Publication $publication)
     {
         $publication->content = $request->input('content');
         $publication->id_user = Auth::id();
         //Gestión de la foto de la publicación
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-
-
+            // Verificamos si la publicacion tiene foto
             $photo = $request->file('photo');
 
             $filePhoto = $publication->photo;
@@ -117,11 +96,9 @@ class PublicationController extends Controller
         return redirect()->route('publications.index')->with('success', 'Publicacion actualizada correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Publication $publication)
     {
+        // Verificamos si la publicacion tiene foto
         if ($publication->photo) {
             $routeImage = public_path('pubs/photo/' . $publication->photo);
             if (file_exists($routeImage)) {
@@ -132,6 +109,11 @@ class PublicationController extends Controller
         $publication->delete();
         return redirect()->route('publications.myPub')->with('success', 'Publicacion eliminada correctamente.');
     }
+    /**
+     * Metodo creado para mostrar las publicaciones del usuario autenticado.
+     * Verificamos que el usuario autenticado es el propietario de las publicaciones
+     * y mostramos la vista de las publicaciones del usuario.
+     */
     public function myPub()
     {
         $publications = Publication::where('id_user', Auth::id())->get();

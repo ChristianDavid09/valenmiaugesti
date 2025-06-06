@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author: David Murillo
+ * @version: 1.0
+ * @since: 05-03-2025
+ */
 namespace App\Http\Controllers;
 
 use App\Models\Feline;
@@ -11,15 +15,22 @@ use App\Http\Requests\FormFeline;
 
 class FelineController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $cologne = Auth::user()->cologne;
-
+        /** Obtenemos los felinos activos e inactivos de la colonia del usuario autenticado 
+         * y los paginamos, mostrando 6 por página.
+         * Utilizamos la paginación con dos parámetros diferentes para poder acceder a cada uno de ellos
+         * desde la vista, y diferenciarlos en la URL.
+         * Por ejemplo, si el usuario quiere ver los felinos activos, la URL será /felines?activos=1
+         * y si quiere ver los felinos inactivos, la URL será /felines?inactivos=1
+         * Esto nos permite tener dos paginaciones diferentes en la misma vista, una para los felinos activos
+         * y otra para los felinos inactivos.
+         * Si el usuario no tiene colonias, no se mostrarán felinos.
+        */
         $activeFelines = $cologne->felines()->where('in_active', 1)
             ->paginate(6, ['*'], 'activos');
+        /* [*] - Es lo mismo que hacer en la consulta "Select * from felines where in_active = 1" */
 
         $inactiveFelines = $cologne->felines()->where('in_active', 0)
             ->paginate(6, ['*'], 'inactivos');
@@ -27,21 +38,13 @@ class FelineController extends Controller
         return view('feline.index', compact('activeFelines', 'inactiveFelines'));
 
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('feline.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(FormFeline $request): RedirectResponse
     {
-
 
         $feline = new Feline();
         $feline->name = $request->input('name');
@@ -62,6 +65,7 @@ class FelineController extends Controller
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
 
+            // Creamos un nombre propio para la foto del michi
             $photo = $request->file('image');
             $timeForFile = now()->timestamp;
             $extension = $photo->getClientOriginalExtension();
@@ -81,19 +85,16 @@ class FelineController extends Controller
         return redirect()->route('felines.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Feline $feline)
     {
+        // Verificamos si el usuario autenticado es el propietario del michi
+        // De esta manera, en la vista podemos mostrar el botón de editar y eliminar
+        // solo si el usuario es el propietario del michi.
         $isOwner = Auth::check() && Auth::user()->rol === 'Cologne' && $feline->id_cologne === Auth::user()->cologne->id;
         return view('feline.show', compact('feline', 'isOwner'));
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Feline $feline)
     {
         // Verificar si el usuario autenticado es el propietario del michi
@@ -109,9 +110,7 @@ class FelineController extends Controller
         return view ('feline.edit', ['feline' => $feline]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(FormFeline $request, Feline $feline)
     {
 
@@ -132,7 +131,9 @@ class FelineController extends Controller
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $photo = $request->file('image');
-
+            // Si el michi no tiene foto, creamos un nombre propio para la foto del michi
+            // Si el michi ya tiene foto, usamos el nombre de la foto existente
+            // para sobreescribirla y no llenar el directorio de fotos.
             if($feline->photo === null) {
                 $timeForFile = now()->timestamp;
                 $extension = $photo->getClientOriginalExtension();
@@ -142,7 +143,6 @@ class FelineController extends Controller
             }
 
             $routeImage = public_path('images/colognes/felines');
-
 
             $photo->move($routeImage, $filePhoto);
 
@@ -154,9 +154,6 @@ class FelineController extends Controller
         return redirect()->route('felines.index')->with('success', 'Michi actualizado correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Feline $feline)
     {
 
@@ -180,18 +177,5 @@ class FelineController extends Controller
         $feline->save();
         return back()->with('success', 'Michi publicado correctamente');
     }
-
-    /* public function inactive($feline)
-    {
-        $feline = Feline::findOrFail($feline);
-
-        $advertisement = Advertisement::where('id_feline', $feline->id);
-
-        $advertisement->delete();
-
-        /* $feline->in_active = 0;
-        $feline->save(); */
-
-       /*  return back()->with('success', 'Michi despublicado correctamente'); */
 
 }

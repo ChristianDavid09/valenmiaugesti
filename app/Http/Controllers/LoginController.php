@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author: David Murillo
+ * @version: 1.0
+ * @since: 05-03-2025
+ */
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -197,6 +201,11 @@ class LoginController extends Controller
     }
     public function edit(User $user): View
     {
+        /**
+         * Comprobamos si el usuario autenticado es el mismo que el usuario que se quiere editar.
+         * Si no es así, se aborta la solicitud con un error 403 (Forbidden).
+         * Esto asegura que los usuarios solo puedan editar su propia información.
+         */
         if (Auth::user()->rol == User::ROL_COLOGNE) {
 
             if ($user->id !== Auth::user()->id) {
@@ -216,6 +225,11 @@ class LoginController extends Controller
 
     public function update(editUser $request, User $user): RedirectResponse
     {
+        /**
+         * Comprobamos si el usuario autenticado es el mismo que el usuario que se quiere editar.
+         * Si no es así, se aborta la solicitud con un error 403 (Forbidden).
+         * Esto asegura que los usuarios solo puedan editar su propia información.
+         */
         if (Auth::user()->rol == User::ROL_COLOGNE) {
 
             if ($user->id !== Auth::user()->id) {
@@ -227,7 +241,10 @@ class LoginController extends Controller
                 abort(403, 'No tienes permiso para modificar este usuario.');
             }
         }
-
+        /**
+         * Validamos los datos del formulario de edición de usuario.
+         * Si la validación falla, se redirige al usuario de vuelta al formulario con los errores.
+         */
         $data = $request->validated();
 
         // Encriptar contraseña si se ha modificado
@@ -267,6 +284,7 @@ class LoginController extends Controller
             $user->cologne->save();
         } else {
             if ($request->hasFile('photo')) {
+                //Creamos un nombre propio para la foto del adoptante
                 $photo = $request->file('photo');
                 $routeImage = public_path('images/adopters/profile/'.$user->adopter->photo);
                 $filename = $user->dni.'.'.$photo->getClientOriginalExtension();
@@ -322,16 +340,18 @@ class LoginController extends Controller
         return redirect()->route('account')->with('success', 'Colonia actualizada correctamente');
     }
 
-
-
-
-
     public function account(): view {
         return view('users.account');
     }
 
     public function logout(Request $request): RedirectResponse
     {
+        /**
+         * Este método se encarga de cerrar la sesión del usuario autenticado.
+         * Primero, se cierra la sesión del guard 'web', luego se invalida la sesión actual
+         * y se regenera el token CSRF para prevenir ataques CSRF.
+         * Finalmente, redirige al usuario a la ruta 'index'.
+         */
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author: David Murillo
+ * @version: 1.0
+ * @since: 05-03-2025
+ */
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -49,14 +53,17 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    // Un usuario pertenece a una colonia
     public function cologne()
     {
         return $this->hasOne(Cologne::class);
     }
+    // Un usuario pertecene a un adoptante
     public function adopter()
     {
         return $this->hasOne(Adopter::class);
     }
+    // Un usuario puede tener muchas publicaciones
     public function publications()
     {
         return $this->hasMany(Publication::class, 'id_user');

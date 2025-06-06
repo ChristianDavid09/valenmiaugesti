@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Response extends Model
 {
+    // Un mensaje puede tener muchas respuestas
+    protected $fillable = [
+        'message_id',
+        'user_id',
+        'content',
+    ];
+    // Muchas respuestas pertenece a un mensaje
     public function message()
     {
         return $this->belongsTo(Message::class);

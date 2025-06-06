@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author: David Murillo
+ * @version: 1.0
+ * @since: 05-03-2025
+ */
 
 namespace App\Models;
 
@@ -7,7 +12,12 @@ use Illuminate\Database\Eloquent\Model;
 class Cologne extends Model
 {
     protected $table = 'colognes';
-
+    /**
+     * Los atributos que son asignables en masa.
+     * Estos son los campos que se pueden llenar directamente
+     * al crear o actualizar un modelo de colonia.
+     * Esto es útil para evitar la asignación masiva de campos no deseados.
+     */
     protected $fillable = [
         'name',
         'id_ref_com',
@@ -19,10 +29,17 @@ class Cologne extends Model
         'user_id',
     ];
 
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+    /**
+     * Relación uno a muchos con el modelo Feline.
+     * Una colonia puede tener muchos felinos asociados.
+     * Esto permite acceder a todos los felinos que pertenecen a una colonia específica.
+     * Por ejemplo, si queremos obtener todos los felinos de una colonia, podemos usar esta relación.
+     */
     public function felines()
     {
         return $this->hasMany(Feline::class, 'id_cologne');

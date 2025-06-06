@@ -159,7 +159,6 @@
             <button type="submit" class="btn btn-primary mt-3">Registrarse</button>
         </form>
     </div>
-
     @if ($errors->any())
         <ul>
             @foreach ($errors->all() as $error)
@@ -167,9 +166,6 @@
             @endforeach
         </ul>
     @endif
-
-
-
 <script>
     document.getElementById('user_type').addEventListener('change', function () {
         document.getElementById('form-adoptante').style.display = (this.value === 'adoptante') ? 'block' : 'none';

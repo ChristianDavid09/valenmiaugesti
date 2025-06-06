@@ -8,7 +8,7 @@ use Illuminate\Validation\Rules\Password;
 class signUpCologne extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Metodo para determinar si el usuario está autorizado a realizar esta solicitud.
      */
     public function authorize(): bool
     {
@@ -16,7 +16,7 @@ class signUpCologne extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Reglas de validación que se aplican a la solicitud.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -82,6 +82,8 @@ class signUpCologne extends FormRequest
             'photo.mimes' => 'La foto debe ser un archivo de tipo jpeg, png o jpg.',
             'photo.max' => 'La foto no puede tener más de 2 MB.',
             'password.required' => 'La contraseña es obligatoria.',
+            'password.confirmed' => 'Las contraseñas no coinciden.',
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
         ];
     }
 }

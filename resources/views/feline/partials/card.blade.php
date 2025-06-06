@@ -1,3 +1,19 @@
+<?php 
+/**
+ * @author: David Murillo
+ * @version: 1.0
+ * @since: 05-03-2025
+ */
+/**
+ * Se separa la lógica de presentación de un felino en una tarjeta.
+ * Esta tarjeta muestra la foto, nombre, edad, raza, sexo, esterilización y estado de salud del felino.
+ * También incluye botones para editar, publicar/despublicar y eliminar el felino.
+ * Al separarlo imprimimos el mismo card para los felinos que estan activos como los que no, facilitando la reutilización del código.
+ * @param $feline Objeto que representa al felino.
+ */
+*/
+?>
+
 <div class="mb-4">
     <div class="card shadow-sm border-0 h-100">
         <img src="{{ asset('images/colognes/felines/' . $feline->photo) }}"

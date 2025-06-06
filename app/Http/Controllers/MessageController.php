@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author: David Murillo
+ * @version: 1.0
+ * @since: 05-03-2025
+ */
 namespace App\Http\Controllers;
 
 use App\Models\Message;
@@ -16,8 +20,11 @@ use App\Models\Adopt_adver;
 class MessageController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Por el momento no se implementa el metodo destroy, ya que no se prevee que se eliminen mensajes
+     * por fines legales. Los mensajes se mantienen para registro y seguimiento.
+     * En el futuro, si se implementa la eliminación, se debe considerar la privacidad y el cumplimiento legal.
      */
+ 
     public function index(): View
     {
         $user = Auth::user();
@@ -33,24 +40,11 @@ class MessageController extends Controller
             return view('messages.index', compact('messages'));
 
         } else {
-            // Rol no reconocido o admin (opcional)
+            // Rol no reconocido
             abort(403, 'No autorizado');
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-       /*  $cologneId = $request->query('cologne_id');
-        $cologne = Cologne::findOrFail($cologneId);
-        return view('messages.create', compact('cologne')); */
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request): RedirectResponse
     {
         $message = new Message();
@@ -71,12 +65,6 @@ class MessageController extends Controller
 
     }
 
-
-
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Message $message): View
     {
         if (Auth::user()->rol == 'cologne') {
@@ -86,31 +74,12 @@ class MessageController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Message $message)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Message $message)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Message $message)
-    {
-        //
-    }
     public function createForCologne(Feline $feline, Cologne $cologne)
     {
+        /**
+         * Crea un mensaje para una colonia específica.
+         * Verificamos que el felino pertenece a la colonia y mostramos la vista de creación de mensajes
+         */
         if ($feline->id_cologne !== $cologne->id) {
             abort(403, 'El felino no pertenece a esta colonia');
         }
@@ -118,6 +87,13 @@ class MessageController extends Controller
     }
     public function updateStatus(Request $request, Message $message)
     {
+        /**
+         * Actualiza el estado de un mensaje.
+         * @param Request $request
+         * @param Message $message
+         * @return RedirectResponse
+         * Comprobamos en que estado se enceuntra el mensaje y lo actualizamos        
+         */
         $newStatus = $request->input('status');
 
         if ($newStatus === 'Pendiente') {

@@ -12,60 +12,25 @@ use App\Models\Cologne;
 class AdopterController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * La edición y creacion del adoptante se realiza en "LoginController"
      */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
+   
     public function show(Adopter $adopter)
     {
         // Aquí puedes retornar una vista con los detalles del adoptante
         return view('adopters.show', compact('adopter'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Adopter $adopter)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Adopter $adopter)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Adopter $adopter)
     {
+        /**Comprobamos que el usuario es un adoptante, aparte de que sea el dueño de la cuenta,
+         * y confirmamos que tenga foto, una vez comprobamos, eliminamos todas las fotos relacionadas
+         * con este usuario, y el certificado del adoptante
+         */
         if (Auth::check() && Auth::user()->rol == 'Adopter' && Auth::user()->adopter->id == $adopter->id) {
+
+            /*Utilizamos la funcion public_path para obtener la ruta absoluta del directorio
+            Si el archivo existe, lo eliminamos con la función unlink()*/
 
             if ($adopter->photo) {
                 if (file_exists(public_path('images/adopters/profile/' . $adopter->photo))) {
@@ -76,14 +41,14 @@ class AdopterController extends Controller
                 unlink(public_path('certificates/' . $adopter->certificate));
 
             }
-
+            // Recorremos las publicaciones del adoptante y eliminamos las fotos asociadas
             foreach ($adopter->user->publications as $publication) {
                 if (file_exists(public_path('pubs/photo/' . $publication->photo))) {
                     unlink(public_path('pubs/photo/' . $publication->photo));
                 }
             }
 
-
+            // Una vez vaciado los directorios de fotos, eliminamos al usuario completo, que incluye al adoptante
             $adopter->user->delete();
             Auth::logout(); // Cerrar sesión del usuario que eliminó la colonia
             return redirect()->route('index')->with('success', 'Colonia eliminada con éxito.');
