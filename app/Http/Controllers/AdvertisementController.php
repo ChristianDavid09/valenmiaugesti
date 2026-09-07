@@ -15,38 +15,64 @@ class AdvertisementController extends Controller
 {
     
     public function index()
-    {
-        // Cogemos todos los anuncios de la base de datos
-        if (Auth::user()->rol == User::ROL_ADOPTER) {
-            $advertisements = Advertisement::with('feline')->get();
-            return view('advertisement.index', compact('advertisements'));
-        }
-        // Si el usuario es un colono, cogemos solo los anuncios de su colonia
-        $cologneId = Auth::user()->cologne->id;
+{
+    // Si el usuario es adoptante, ve todos los anuncios
+    if (Auth::user()->rol == User::ROL_ADOPTER) {
 
-        // Cogemos solo los anuncios cuyo felino pertenece a esa colonia
-        /**
-         * La función whereHas() permite filtrar los anuncios de una consulta Eloquent (consulta para 
-         * interactuar con la base de datos usando PHP) basandose en la existencia de una relacion que cumpla ciertas condiciones.
-         *
-         * Este filtro sería equivalente a esta consulta SQL:
-         *
-         * SELECT anuncios.*, felinos.*
-         * FROM anuncios
-         * JOIN felinos ON anuncios.felino_id = felinos.id
-         * WHERE felinos.id_colonia = (id de la colonia del usuario)
-         */
-
-        $advertisements = Advertisement::whereHas('feline', function($query) use ($cologneId) {
-            $query->where('id_cologne', $cologneId);
-        })->with('feline')->get();
+        $advertisements = Advertisement::with('feline')->get();
 
         return view('advertisement.index', compact('advertisements'));
     }
 
+    // Cogemos la colonia del usuario autenticado
+    $cologne = Auth::user()->cologne;
+
+    // Cogemos el ID de la colonia
+    $cologneId = $cologne->id;
+
+    // Consulta base
+    $query = Advertisement::whereHas('feline', function ($query) use ($cologneId) {
+        $query->where('id_cologne', $cologneId);
+    })->with('feline');
+
+    // 👇 AQUÍ comprobamos el tipo de usuario
+    if ($cologne->t_user === 'basic') {
+
+        // Solo mostramos 3 publicaciones
+        $advertisements = $query
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->get();
+
+    } else {
+
+        // Premium ve todas las publicaciones
+        $advertisements = $query->get();
+    }
+
+    return view('advertisement.index', compact('advertisements'));
+}
+
     public function create($feline)
     {
-        $feline = Feline::find($feline);
+        $feline = Feline::findOrFail($feline);
+
+        $colony = $feline->cologne;
+
+        if ($colony->t_user === 'basic') {
+
+            $total = Advertisement::whereHas('feline', function ($query) use ($colony) {
+                $query->where('id_cologne', $colony->id);
+            })->count();
+
+            if ($total >= 3) {
+                return redirect()->back()->with(
+                    'error',
+                    'Las colonias con nivel básico solo pueden tener 3 publicaciones. Si necesitas más, clica <a href="'. route('contactUs') .'">aquí</a> para contactar con el desarrollador.'
+                );
+            }
+        }
+
         return view('advertisement.create', compact('feline'));
     }
 
@@ -106,4 +132,5 @@ class AdvertisementController extends Controller
         $adver->feline->save();
         return redirect()->route('felines.index');
     }
+    
 }

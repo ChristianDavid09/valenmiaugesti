@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('province', 50)->nullable();
             $table->string('photo', 255)->nullable();
-            $table->string('certificate', 255);
+            /* $table->string('certificate', 255); */
             $table->text('description')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();

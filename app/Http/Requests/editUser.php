@@ -28,7 +28,7 @@ class editUser extends FormRequest
             //Validación del nombre, email, dni y contraseña del usuario
             'name' => ['required', 'string', 'max:30'],
             'email' => ['required', 'email', 'max:100'],
-            'dni' => ['required', 'string', 'min:9','max:9'],
+            /* 'dni' => ['required', 'string', 'min:9','max:9'], */
             'password' => ['nullable','confirmed', Password::default()],
         ];
     }
@@ -39,10 +39,10 @@ class editUser extends FormRequest
             'name.required' => 'El nombre es obligatorio.',
             'name.string' => 'El nombre debe ser una cadena de texto.',
             'name.max' => 'El nombre no puede tener más de 30 caracteres.',
-            'dni.required' => 'El DNI es obligatorio.',
+            /* 'dni.required' => 'El DNI es obligatorio.',
             'dni.max' => 'El DNI no puede tener más de 9 caracteres.',
             'dni.min' => 'El DNI no puede tener menos de 9 caracteres.',
-            'dni.unique' => 'El DNI ya está en uso.',
+            'dni.unique' => 'El DNI ya está en uso.', */
             'email.email' => 'El correo electrónico no es válido.',
             'email.max' => 'El correo electrónico no puede tener más de 100 caracteres.',
             'email.required' => 'El correo electrónico es obligatorio.',

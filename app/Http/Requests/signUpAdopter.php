@@ -25,11 +25,11 @@ class signUpAdopter extends FormRequest
         return [
             'name' => ['required', 'string', 'max:30'],
             'email' => ['required', 'email', 'max:100', 'unique:users'],
-            'dni' => ['required', 'string', 'max:9', 'unique:users'],
+            /* 'dni' => ['required', 'string', 'max:9', 'unique:users'], */
             'phone' => ['string', 'regex:/^\+?[0-9]{9,15}$/'],
 
             'age' => ['required', 'date'],
-            'certificate' => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
+            /* 'certificate' => ['nullable', 'file', 'mimes:pdf', 'max:2048'], */
             'address' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:100'],
             'description' => ['nullable', 'string', 'max:500'],
@@ -48,10 +48,10 @@ class signUpAdopter extends FormRequest
             'email.max' => 'El correo electrónico no puede tener más de 100 caracteres.',
             'email.unique' => 'El correo electrónico ya está en uso.',
             'email.required' => 'El correo electrónico es obligatorio.',
-            'dni.required' => 'El DNI es obligatorio.',
+            /* 'dni.required' => 'El DNI es obligatorio.',
             'dni.string' => 'El DNI debe ser una cadena de texto.',
             'dni.max' => 'El DNI no puede tener más de 9 caracteres.',
-            'dni.unique' => 'El DNI ya está en uso.',
+            'dni.unique' => 'El DNI ya está en uso.', */
             'phone.regex' => 'El teléfono no es válido.',
             'city.required' => 'La ciudad es obligatoria.',
             'city.max' => 'La ciudad no puede tener más de 100 caracteres.',
@@ -60,9 +60,9 @@ class signUpAdopter extends FormRequest
             'adress.max' => 'La dirección no puede tener más de 255 caracteres.',
             'description.string' => 'La descripción debe ser una cadena de texto.',
             'description.max' => 'La descripción no puede tener más de 500 caracteres.',
-            'certificate.mimes' => 'El certificado debe ser un archivo PDF.',
+            /* 'certificate.mimes' => 'El certificado debe ser un archivo PDF.',
             'certificate.max' => 'El certificado no puede tener más de 2 MB.',
-            'certificate.file' => 'El certificado debe ser un archivo.',
+            'certificate.file' => 'El certificado debe ser un archivo.', */
             'photo.image' => 'La foto debe ser una imagen.',
             'photo.mimes' => 'La foto debe ser un archivo de tipo jpeg, png o jpg.',
             'photo.max' => 'La foto no puede tener más de 2 MB.',

@@ -11,7 +11,6 @@
  * Al separarlo imprimimos el mismo card para los felinos que estan activos como los que no, facilitando la reutilización del código.
  * @param $feline Objeto que representa al felino.
  */
-*/
 ?>
 
 <div class="mb-4">

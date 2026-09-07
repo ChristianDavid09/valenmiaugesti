@@ -27,7 +27,7 @@ class signUpCologne extends FormRequest
             //Validación del nombre, email y teléfono del usuario
             'name' => ['required', 'string', 'max:30'],
             'email' => ['required', 'email', 'max:100', 'unique:users'],
-            'dni' => ['required', 'string', 'max:9', 'unique:users'],
+            /* 'dni' => ['required', 'string', 'max:9', 'unique:users'], */
             /**Comprobamos el número telefónico como una string y no como un int, los motivos son:
              * -Si algun usuario quiere incluir un + delante del numero, un tipo int no lo aceptara.
              * -Al no usarse como operaciones matematicas no es necesario que sea un int.
@@ -38,7 +38,7 @@ class signUpCologne extends FormRequest
 
             //Validación de los datos de la colonia
             'colonia_name' => ['required', 'string', 'max:100', 'unique:colognes,name'],
-            'id_ref_com' => ['required', 'string', 'max:50', 'unique:colognes'],
+            /* 'id_ref_com' => ['required', 'string', 'max:50', 'unique:colognes'], */
             'colonia_location' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:100'],
             'description' => ['nullable', 'string', 'max:500'],
@@ -61,17 +61,17 @@ class signUpCologne extends FormRequest
             'email.required' => 'El correo electrónico es obligatorio.',
             'phone.regex' => 'El teléfono no es válido.',
             'phone.max' => 'El teléfono no puede tener más de 15 caracteres.',
-            'dni.required' => 'El DNI es obligatorio.',
+            /* 'dni.required' => 'El DNI es obligatorio.',
             'dni.string' => 'El DNI debe ser una cadena de texto.',
             'dni.max' => 'El DNI no puede tener más de 9 caracteres.',
-            'dni.unique' => 'El DNI ya está en uso.',
+            'dni.unique' => 'El DNI ya está en uso.', */
             'colonia_name.required' => 'El nombre de la colonia es obligatorio.',
             'colonia_name.string' => 'El nombre de la colonia debe ser una cadena de texto.',
             'colonia_name.max' => 'El nombre de la colonia no puede tener más de 100 caracteres.',
             'colonia_name.unique' => 'El nombre de la colonia ya está en uso.',
-            'id_ref_com.string' => 'El ID de referencia de la comunidad debe ser una cadena de texto.',
+            /* 'id_ref_com.string' => 'El ID de referencia de la comunidad debe ser una cadena de texto.',
             'id_ref_com.unique' => 'El ID de referencia de la comunidad ya está en uso.',
-            'id_ref_com.required' => 'El ID de referencia de la comunidad es obligatorio.',
+            'id_ref_com.required' => 'El ID de referencia de la comunidad es obligatorio.', */
             'colonia_location.required' => 'La ubicación de la colonia es obligatoria.',
             'colonia_location.string' => 'La ubicación de la colonia debe ser una cadena de texto.',
             'colonia_location.max' => 'La ubicación de la colonia no puede tener más de 255 caracteres.',

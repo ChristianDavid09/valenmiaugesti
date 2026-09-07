@@ -9,6 +9,8 @@ use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\ResponseController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PolitytermsController;
 
 
 Route::get('/', function () {
@@ -65,7 +67,15 @@ Route::middleware('auth')->group(function () {
 
     // Publicaciones
     Route::get('/publications/mypub', [PublicationController::class, 'myPub'])->name('publications.myPub');
+    Route::get('/publications/process', [PublicationController::class, 'process'])->name('publications.process');
     Route::resource('publications', PublicationController::class);
+    
+    Route::get('/contactUs', [ContactController::class, 'index'])->name('contactUs');
+    Route::post('/contactUs/send', [ContactController::class, 'send'])->name('contact.send');
+
+    Route::get('/privacy-policy', [PolitytermsController::class, 'index'])->name('privacyPolicy');
+    Route::get('/terms-of-service', [PolitytermsController::class, 'show'])->name('termsOfService');
+
 });
 
 

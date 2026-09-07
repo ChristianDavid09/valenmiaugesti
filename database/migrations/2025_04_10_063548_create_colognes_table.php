@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('colognes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('id_ref_com');
+            /* $table->string('id_ref_com'); */
             $table->string('province');
             $table->text('adress')->nullable();
             $table->text('description')->nullable();
             $table->string('phone')->nullable();
             $table->string('photo')->nullable();
+            $table->enum('t_user', ['basic', 'premium'])->default('basic');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
 

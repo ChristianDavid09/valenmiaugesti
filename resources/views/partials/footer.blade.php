@@ -7,12 +7,13 @@
         <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
           <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
         </a>
-        <span class="mb-3 mb-md-0 text-body-secondary">David Murillo Martínez ©2024</span>
+        <span class="mb-3 mb-md-0 text-body-secondary">David Murillo Martínez ©2026</span>
+        <a href="{{ route('contactUs') }}" class="btn btn-outline-primary">Contacta con el desarrollador</a>
       </div>
       <div>
-        <a href="">Politica de privacidad</a> |
-        <a href="">Terminos y condiciones de uso</a> |
-        <a href="">Contacto</a>
+        <a href="{{ route('privacyPolicy') }}">Politica de privacidad</a> |
+        <a href="{{ route('termsOfService') }}">Terminos y condiciones de uso</a>
+        <a href="{{ route('contactUs') }}">Contacto</a>
     </div>
       {{-- <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
         <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>

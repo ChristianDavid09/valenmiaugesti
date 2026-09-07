@@ -11,33 +11,62 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\FormFeline;
+use App\Http\Controllers\AdvertisementController;
+use App\Models\Advertisement;
 
 
 class FelineController extends Controller
 {
     public function index()
-    {
-        $cologne = Auth::user()->cologne;
-        /** Obtenemos los felinos activos e inactivos de la colonia del usuario autenticado 
-         * y los paginamos, mostrando 6 por página.
-         * Utilizamos la paginación con dos parámetros diferentes para poder acceder a cada uno de ellos
-         * desde la vista, y diferenciarlos en la URL.
-         * Por ejemplo, si el usuario quiere ver los felinos activos, la URL será /felines?activos=1
-         * y si quiere ver los felinos inactivos, la URL será /felines?inactivos=1
-         * Esto nos permite tener dos paginaciones diferentes en la misma vista, una para los felinos activos
-         * y otra para los felinos inactivos.
-         * Si el usuario no tiene colonias, no se mostrarán felinos.
-        */
-        $activeFelines = $cologne->felines()->where('in_active', 1)
-            ->paginate(6, ['*'], 'activos');
-        /* [*] - Es lo mismo que hacer en la consulta "Select * from felines where in_active = 1" */
+{
+    $cologne = Auth::user()->cologne;
 
-        $inactiveFelines = $cologne->felines()->where('in_active', 0)
-            ->paginate(6, ['*'], 'inactivos');
+    /*
+     * Obtenemos los IDs de los felinos que tienen anuncios.
+     */
+    $advertisementsQuery = Advertisement::whereHas('feline', function ($query) use ($cologne) {
+        $query->where('id_cologne', $cologne->id);
+    })->orderBy('created_at', 'asc');
 
-        return view('feline.index', compact('activeFelines', 'inactiveFelines'));
+    /*
+     * Si la colonia es BASIC, solo obtenemos los 3 primeros anuncios.
+     */
+    if ($cologne->t_user === 'basic') {
 
+        $publishedFelineIds = $advertisementsQuery
+            ->take(3)
+            ->pluck('id_feline');
+
+    } else {
+
+        /*
+         * PREMIUM puede tener todos los anuncios publicados.
+         */
+        $publishedFelineIds = $advertisementsQuery
+            ->pluck('id_feline');
     }
+
+    /*
+     * Michis publicados:
+     * Solo los que pertenecen a los anuncios visibles.
+     */
+    $activeFelines = $cologne->felines()
+        ->whereIn('id', $publishedFelineIds)
+        ->paginate(6, ['*'], 'activos');
+
+    /*
+     * Michis no publicados:
+     * Los demás felinos de la colonia.
+     */
+    $inactiveFelines = $cologne->felines()
+        ->whereNotIn('id', $publishedFelineIds)
+        ->paginate(6, ['*'], 'inactivos');
+
+    return view(
+        'feline.index',
+        compact('activeFelines', 'inactiveFelines')
+    );
+}
     public function create()
     {
         return view('feline.create');
@@ -177,5 +206,6 @@ class FelineController extends Controller
         $feline->save();
         return back()->with('success', 'Michi publicado correctamente');
     }
+    
 
 }

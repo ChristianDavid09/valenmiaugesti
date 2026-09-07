@@ -38,8 +38,8 @@ class ResponseController extends Controller
         $response->content = $request->content;
         $response->save();
 
-        return redirect()->route('responses.forMessage', compact('response'))
-                        ->with('success', 'Respuesta enviada correctamente.');
+        return redirect()->route('responses.forMessage', $response->message_id)
+                ->with('success', 'Respuesta enviada correctamente.');
 
     }
     public function showForMessage(Message $message)

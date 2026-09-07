@@ -33,12 +33,12 @@
                 </div>
             </div>
 
-            <div class="row mb-3">
+            {{-- <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="dni" class="form-label">DNI</label>
                     <input type="text" class="form-control" id="dni" name="dni" value="{{ old('dni', $user->dni) }}">
                 </div>
-            </div>
+            </div> --}}
 
             {{-- Datos específicos según el rol --}}
             @if ($user->rol === 'Cologne')

@@ -12,11 +12,15 @@
 
                     <div class="text-center mb-4">
                         @if (Auth::user()->rol === 'Cologne')
-                            <img src="{{ asset('images/colognes/profile/'.Auth::user()->photo_url ) }}" alt="Foto de perfil"
-                                class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+                            <img src="{{ asset('images/colognes/profile/' . Auth::user()->photo_url) }}"
+                                alt="Foto de perfil"
+                                class="img-fluid rounded-circle"
+                                style="width: 150px; height: 150px; object-fit: cover;">
                         @else
-                            <img src="{{ asset('images/adopters/profile/'.Auth::user()->photo_url ) }}" alt="Foto de perfil"
-                                 class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+                            <img src="{{ asset('images/adopters/profile/' . Auth::user()->photo_url) }}"
+                                alt="Foto de perfil"
+                                class="img-fluid rounded-circle"
+                                style="width: 150px; height: 150px; object-fit: cover;">
                         @endif
                     </div>
 
@@ -41,7 +45,7 @@
                         <li class="list-group-item">
                             <strong>Cuenta creada el:</strong> {{ Auth::user()->created_at->format('d/m/Y') }}
                         </li>
-                        @if(Auth::user()->rol === 'Adopter')
+                        {{-- @if(Auth::user()->rol === 'Adopter')
                             <li class="list-group-item">
                                 <strong>Certificado:</strong>
                                 <a href="{{ asset('./certificates/' . Auth::user()->adopter->certificate) }}"
@@ -49,7 +53,7 @@
                                     📄 Ver documento
                                 </a>
                             </li>
-                        @endif
+                        @endif --}}
                     </ul>
 
                     <h2 class="h4 text-primary mt-4 border-top pt-4">⚙️ Acciones disponibles</h2>

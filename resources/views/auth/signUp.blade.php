@@ -8,7 +8,7 @@
 <div class="container mt-4">
     <h1>Registro</h1>
     <p>Por favor, selecciona el tipo de usuario que deseas registrar.</p>
-    <p>Si ya tienes cuenta, puedes iniciar sesión <a href="">aquí</a>.</p>
+    <p>Si ya tienes cuenta, puedes iniciar sesión <a href="{{ route('loginForm') }}">aquí</a>.</p>
 </div>
 <div class="container mt-4">
     <div class="mb-3">
@@ -34,10 +34,10 @@
                     <label for="email" class="form-label">Correo Electrónico</label>
                     <input type="mail" class="form-control" name="email" id="email" placeholder="" required value="{{ old('email') }}">
                 </div>
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                     <label for="dni" class="form-label">DNI/NIE</label>
                     <input type="text" class="form-control" name="dni" id="dni" placeholder="" required value="{{ old('dni') }}">
-                </div>
+                </div> --}}
             </div>
             <div class="row g-2">
                 <label for="agre" class="form-label">Año de nacimiento</label>
@@ -53,11 +53,11 @@
                     <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="" required>
                 </div>
             </div>
-            <div class="row g-2">
+            {{-- <div class="row g-2">
                 <label for="certificate" class="form-label">Certificado de delitos penales</label>
                 <input type="file" class="form-control" name="certificate" id="certificate" accept="application/pdf" required value="{{ old('certificate') }}">
                 <div class="text-muted">Este certificado es obligatorio para garantizar la seguridad de los felinos.</div>
-            </div>
+            </div> --}}
             <div class="text-muted mt-3">------------------------ Datos complementarios no obligatorios ------------------------</div>
             <div class="row g-2">
                 <div class="col-md-6">
@@ -110,10 +110,10 @@
                     <label for="phone" class="form-label">Teléfono de contacto</label>
                     <input type="text" class="form-control" name="phone" id="phone" required value="{{ old('phone') }}">
                 </div>
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                     <label for="dni" class="form-label">DNI/NIE</label>
                     <input type="text" class="form-control" name="dni" id="dni" placeholder="" required value="{{ old('dni') }}">
-                </div>
+                </div> --}}
             </div>
             <div class="row g-2">
                 <h4>Datos de la Colonia</h4>
@@ -121,11 +121,11 @@
                     <label for="colonia_name" class="form-label">Nombre de la colonia</label>
                     <input type="text" class="form-control" name="colonia_name" id="colonia_name" required value="{{ old('colonia_name') }}">
                 </div>
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                     <label for="id_com_ref" class="form-label">Numero de referencia de la Colonia</label>
                     <input type="text" class="form-control" name="id_ref_com" id="id_ref_com" required value="{{ old('id_ref_com') }}">
                     <div class="text-muted">Este numero identificador debe ser expedido por el Ayuntamiento de la provincia de la colonia</div>
-                </div>
+                </div> --}}
             </div>
             <div class="row g-2">
                 <div class="col-md-6">

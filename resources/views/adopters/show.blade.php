@@ -31,13 +31,13 @@
                     <p><span class="fw-bold">📞 Teléfono:</span> {{ $adopter->phone }}</p>
                     <p><span class="fw-bold">📍 Dirección:</span> {{ $adopter->address ?? 'Sin dirección' }}</p>
                     <p><span class="fw-bold">📍 Provincia:</span> {{ $adopter->province ?? 'Sin provincia' }}</p>
-                    <p><span class="fw-bold">🆔 DNI:</span> {{ $adopter->user->dni }} </p>
+                    {{-- <p><span class="fw-bold">🆔 DNI:</span> {{ $adopter->user->dni }} </p> --}}
                     <p><span class="fw-bold">📅 Fecha de registro:</span> {{ $adopter->created_at->format('d/m/Y') }}</p>
                     <p><span class="fw-bold">📄 Descripción:</span> {{ $adopter->description?? 'Sin descripción' }}</p>
 
 
                     {{-- Certificado de delitos --}}
-                    @if ($adopter->certificate)
+                    {{-- @if ($adopter->certificate)
                         <div class="mt-4">
                             <a href="{{ asset('./certificates/' . $adopter->certificate) }}" target="_blank" class="btn btn-outline-success w-100">
                                 📄 Ver certificado de delitos penales
@@ -49,7 +49,7 @@
                         </div>
                     @endif
 
-                    <a href="{{ url()->previous() }}" class="btn btn-primary mt-4">Volver</a>
+                    <a href="{{ url()->previous() }}" class="btn btn-primary mt-4">Volver</a> --}}
                 </div>
             </div>
         </div>

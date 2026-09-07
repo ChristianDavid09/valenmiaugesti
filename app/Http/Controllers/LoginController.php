@@ -32,13 +32,13 @@ class LoginController extends Controller
     public function registerColonia(signUpCologne $request): RedirectResponse
     {
         // Generar un nombre único para la imagen, para diferenciarlo bien usaremos el nombre y el dni del adoptante
-        $filePhoto = $request->input('id_ref_com').'.'.$request->input('colonia_name').'.png';
+        $filePhoto =/*  $request->input('id_ref_com').'.'. */$request->input('colonia_name').'.png';
 
         //Creación de usuario
         $user = new User();
         $user->name = $request->get('name');
         $user->email = $request->get('email');
-        $user->dni = $request->get('dni');
+        /* $user->dni = $request->get('dni'); */
         $user->password = Hash::make($request->get('password'));
         $user->photo_url = $filePhoto;
         $user->rol = User::ROL_COLOGNE;
@@ -51,7 +51,7 @@ class LoginController extends Controller
         $cologne->adress = $request->input('colonia_location');
         $cologne->phone = $request->input('phone');
         $cologne->province = $request->input('city');
-        $cologne->id_ref_com = $request->input('id_ref_com');
+        /* $cologne->id_ref_com = $request->input('id_ref_com'); */
         $cologne->description = $request->input('description');
         $cologne->user_id = $user->id;
 
@@ -83,15 +83,15 @@ class LoginController extends Controller
     public function registerAdoptante(signUpAdopter $request): RedirectResponse
     {
         // Generar un nombre único para la imagen, para diferenciarlo bien usaremos el nombre y el dni del adoptante
-        $filePhoto = $request->input('dni').'.png';
-        $fileCertificate = $request->input('dni').'.pdf';
+        $filePhoto = $request->input('name').'.png';
+        /* $fileCertificate = $request->input('dni').'.pdf'; */
 
 
         //Creación de usuario
         $user = new User();
         $user->name = $request->get('name');
         $user->email = $request->get('email');
-        $user->dni = $request->get('dni');
+        /* $user->dni = $request->get('dni'); */
         $user->password = Hash::make($request->get('password'));
         $user->photo_url = $filePhoto;
         $user->rol = User::ROL_ADOPTER;
@@ -111,20 +111,20 @@ class LoginController extends Controller
 
 
         //Gestión del certificado de delitos penales
-        if ($request->hasFile('certificate') && $request->file('certificate')->isValid()) {
+        /* if ($request->hasFile('certificate') && $request->file('certificate')->isValid()) {
 
             $certificate = $request->file('certificate');
-
+ */
 
             /* Ruta absoluta donde se debe guardar el PDF*/
-            $routePDF = public_path('certificates');
+            /* $routePDF = public_path('certificates'); */
 
             // Asegurarse de que la carpeta existe, y de lo contrario se crea la carpeta
-            if (!file_exists($routePDF)) {
+            /* if (!file_exists($routePDF)) {
                 mkdir($routePDF, 0777, true);
-            }
+            } */
             // Mover el archivo a la carpeta destino
-            $certificate->move($routePDF, $fileCertificate);
+            /* $certificate->move($routePDF, $fileCertificate); */
 
             /* Mover la imagen a la carpeta destino...
             ¿Porque hacemos aqui dentro la gestión de la imagen?
@@ -152,9 +152,9 @@ class LoginController extends Controller
             }
 
             // Guardar el nombre del archivo en la base de datos
-            $adopter->certificate = $fileCertificate;
+            /* $adopter->certificate = $fileCertificate; */
 
-        }
+        
         // Guardar el adoptante en la base de datos
         $adopter->save();
 
@@ -258,14 +258,14 @@ class LoginController extends Controller
 
         $user->name = $request->input('name');
         $user->email = $request->input('email');
-        $user->dni = $request->input('dni');
+        /* $user->dni = $request->input('dni'); */
 
 
         if ($user->rol == User::ROL_COLOGNE) {
             if ($request->hasFile('photo')) {
                 $photo = $request->file('photo');
                 $routeImage = public_path('images/colognes/profile/'.$user->cologne->photo);
-                $filename = $user->cologne->id_ref_com.'.'.$user->cologne->name .'.'.$photo->getClientOriginalExtension();
+                $filename =/*  $user->cologne->id_ref_com.'.'. */$user->cologne->name .'.'.$photo->getClientOriginalExtension();
                 if (file_exists($routeImage)) {
                     unlink($routeImage);
                 }
@@ -322,12 +322,12 @@ class LoginController extends Controller
 
         $cologne->name = $request->input('name');
         $cologne->description = $request->input('description');
-        $cologne->id_ref_com = $request->input('id_ref_com');
+        /* $cologne->id_ref_com = $request->input('id_ref_com'); */
 
         // Si se sube una nueva foto, manejarla
         if ($request->hasFile('photo')) {
             $photo = $request->file('photo');
-            $filename = $cologne->id_ref_com.'.'.$cologne->name.'.'.$photo->getClientOriginalExtension();
+            $filename = /* $cologne->id_ref_com.'.' */$cologne->name.'.'.$photo->getClientOriginalExtension();
             $routeImage = public_path('images/colognes/profile/'.$cologne->photo);
             if (file_exists($routeImage)) {
                 unlink($routeImage);

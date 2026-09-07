@@ -16,14 +16,18 @@ class PublicationController extends Controller
         // Obtenemos las publicaciones más recientes y las paginamos
         // Utilizamos el método latest() para ordenar por fecha de creación descendente
         // y paginate(6) para mostrar 6 publicaciones por página.
-        $publications = Publication::latest()->paginate(6);
-        return view('publications.index', compact('publications'));
+
+
+        /* publications = Publication::latest()->paginate(6);
+        return view('publications.index', compact('publications')); */
+        return view('publications.process');
 
     }
 
     public function create(): View
     {
-        return view('publications.create');
+        /* return view('publications.create'); */
+        return view('publications.process');
     }
 
     public function store(Request $request): RedirectResponse
@@ -61,8 +65,9 @@ class PublicationController extends Controller
 
         }
 
-        $publication->save();
-        return redirect()->route('publications.index')->with('success', 'Publication created successfully.');
+        /* $publication->save();
+        return redirect()->route('publications.index')->with('success', 'Publication created successfully.'); */
+        return view('publications.process');
     }
 
     public function edit(Publication $publication)
@@ -72,7 +77,8 @@ class PublicationController extends Controller
             abort(403, 'No tienes permiso para editar esta publicación.');
         }
 
-        return view('publications.edit', compact('publication'));
+        /* return view('publications.edit', compact('publication')); */
+        return view('publications.process');
     }
 
     public function update(Request $request, Publication $publication)
@@ -93,7 +99,8 @@ class PublicationController extends Controller
             $publication->photo = $filePhoto;
         }
         $publication->save();
-        return redirect()->route('publications.index')->with('success', 'Publicacion actualizada correctamente.');
+        /* return redirect()->route('publications.index')->with('success', 'Publicacion actualizada correctamente.'); */
+        return view('publications.process');
     }
 
     public function destroy(Publication $publication)
@@ -107,7 +114,8 @@ class PublicationController extends Controller
         }
 
         $publication->delete();
-        return redirect()->route('publications.myPub')->with('success', 'Publicacion eliminada correctamente.');
+        /* return redirect()->route('publications.myPub')->with('success', 'Publicacion eliminada correctamente.'); */
+        return view('publications.process');
     }
     /**
      * Metodo creado para mostrar las publicaciones del usuario autenticado.
@@ -117,6 +125,7 @@ class PublicationController extends Controller
     public function myPub()
     {
         $publications = Publication::where('id_user', Auth::id())->get();
-        return view('publications.myPub', compact('publications'));
+        /* return view('publications.myPub', compact('publications')); */
+        return redirect()->route('publications.process');
     }
 }
