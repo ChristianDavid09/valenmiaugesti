@@ -12,7 +12,7 @@
       </div>
       <div>
         <a href="{{ route('privacyPolicy') }}">Politica de privacidad</a> |
-        <a href="{{ route('termsOfService') }}">Terminos y condiciones de uso</a>
+        <a href="{{ route('termsOfService') }}">Terminos y condiciones de uso</a> |
         <a href="{{ route('contactUs') }}">Contacto</a>
     </div>
       {{-- <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">

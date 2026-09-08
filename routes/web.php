@@ -13,6 +13,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PolitytermsController;
 
 
+
 Route::get('/', function () {
     return view('index');
 })->name('index');
@@ -70,15 +71,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/publications/process', [PublicationController::class, 'process'])->name('publications.process');
     Route::resource('publications', PublicationController::class);
     
-    Route::get('/contactUs', [ContactController::class, 'index'])->name('contactUs');
-    Route::post('/contactUs/send', [ContactController::class, 'send'])->name('contact.send');
+    
 
-    Route::get('/privacy-policy', [PolitytermsController::class, 'index'])->name('privacyPolicy');
-    Route::get('/terms-of-service', [PolitytermsController::class, 'show'])->name('termsOfService');
+    
 
 });
-
-
+    Route::get('/contactUs', [ContactController::class, 'index'])->name('contactUs');
+    Route::post('/contactUs/send', [ContactController::class, 'send'])->name('contact.send');
+    Route::get('/privacy-policy', [PolitytermsController::class, 'index'])->name('privacyPolicy');
+    Route::get('/terms-of-service', [PolitytermsController::class, 'show'])->name('termsOfService');
 
 
 

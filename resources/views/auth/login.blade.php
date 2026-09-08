@@ -13,6 +13,15 @@
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
+                        {{-- Mensaje de error --}}
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                @foreach ($errors->all() as $error)
+                                    <div>{{ $error }}</div>
+                                @endforeach
+                            </div>
+                        @endif
+
                         <div class="form-floating mb-3">
                             <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
                             <label for="floatingInput">Correo electrónico</label>
@@ -33,6 +42,7 @@
                         <button class="w-100 btn btn-lg btn-primary" type="submit">
                             🔓 Iniciar Sesión
                         </button>
+                        
 
                         <hr class="my-4">
 
@@ -42,7 +52,7 @@
                         </small>
 
                         <small class="text-muted d-block text-center mt-2">
-                            Al hacer clic en Iniciar Sesión, aceptas nuestros <a href="#" class="text-decoration-none">términos de uso</a>.
+                            Al hacer clic en Iniciar Sesión, aceptas nuestros <a href="{{ route("termsOfService") }}" class="text-decoration-none">términos de uso</a>.
                         </small>
                     </form>
                 </div>

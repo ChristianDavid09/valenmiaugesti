@@ -1,4 +1,4 @@
-```html
+
 @extends('layout')
 
 @section('title', 'Política de Privacidad')

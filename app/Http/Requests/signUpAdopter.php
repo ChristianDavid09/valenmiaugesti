@@ -26,7 +26,7 @@ class signUpAdopter extends FormRequest
             'name' => ['required', 'string', 'max:30'],
             'email' => ['required', 'email', 'max:100', 'unique:users'],
             /* 'dni' => ['required', 'string', 'max:9', 'unique:users'], */
-            'phone' => ['string', 'regex:/^\+?[0-9]{9,15}$/'],
+            'phone' => ['string', 'nullable', 'regex:/^\+?[0-9]{9,15}$/'],
 
             'age' => ['required', 'date'],
             /* 'certificate' => ['nullable', 'file', 'mimes:pdf', 'max:2048'], */
@@ -67,6 +67,7 @@ class signUpAdopter extends FormRequest
             'photo.mimes' => 'La foto debe ser un archivo de tipo jpeg, png o jpg.',
             'photo.max' => 'La foto no puede tener más de 2 MB.',
             'password.required' => 'La contraseña es obligatoria.',
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
         ];
     }
 }

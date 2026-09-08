@@ -62,7 +62,7 @@
             <div class="row g-2">
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Telefono de contacto</label>
-                    <input type="phone" class="form-control" name="phone" id="phone" placeholder="" required value="{{ old('phone') }}">
+                    <input type="phone" class="form-control" name="phone" id="phone" placeholder="" value="{{ old('phone') }}">
                 </div>
             </div>
             <div class="row g-2">
@@ -98,7 +98,7 @@
             <div class="row g-2">
                 <div class="col-md-6">
                     <label for="name" class="form-label">Nombre Completo</label>
-                    <input type="text" class="form-control" name="name" id="name" placeholder="Nombre" required valyue="{{ old('name') }}">
+                    <input type="text" class="form-control" name="name" id="name" placeholder="Nombre" required value="{{ old('name') }}">
                 </div>
                 <div class="col-md-6">
                     <label for="email" class="form-label">Correo electrónico</label>

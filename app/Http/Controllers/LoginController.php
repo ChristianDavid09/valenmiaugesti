@@ -183,20 +183,24 @@ class LoginController extends Controller
     }
     public function login(Request $request): RedirectResponse
     {
-    /**
-     * Recogemos las credenciales del formulario de login, en caso de que todo haya ido bien redirigirá directamente a la cuenta del usuario,
-     * en caso de que no, le redirigirá de nuevo al formulario de inicio de sesión.
-     * Tambien se gestionara el checkbox de recordar la sesión en caso de que quiera entrar en la cuenta sin tener que volver a poner las credenciales.
-     */
         $credentials = $request->only('email', 'password');
+    
         $rememberLogin = ($request->get('remember')) ? true : false;
-
+    
         if (Auth::guard('web')->attempt($credentials, $rememberLogin)) {
+    
             $request->session()->regenerate();
+    
             return redirect()->route('account');
+    
         } else {
-            $error = 'Error al Iniciar sesión';
-            return redirect()->route('login');
+    
+            return redirect()
+                ->route('login')
+                ->withErrors([
+                    'email' => 'El correo electrónico o la contraseña no son correctos.',
+                ])
+                ->withInput($request->only('email'));
         }
     }
     public function edit(User $user): View

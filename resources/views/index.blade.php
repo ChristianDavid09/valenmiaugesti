@@ -1,11 +1,11 @@
 @extends('layout')
 
-@section('title', 'Inicio')
+@section('title', 'ValenMiauGesti')
 
 @section('content')
         <div class="container">
  
-        <h1 class="display-5 fw-bold lh-1 mb-3 text-center">🐾 Bienvenido a ValenMiauGestió 🐾</h1>
+        <h1 class="display-5 fw-bold lh-1 mb-3 text-center">🐾 Bienvenido a ValenMiauGesti 🐾</h1>
 
         <div class="container col-xxl-8 px-4 py-5">
           <div class="row flex-lg-row align-items-center g-5 py-5">
@@ -13,7 +13,7 @@
               <p class="lead mb-4">
                 <strong>La plataforma para cuidar, gestionar y dar voz a los michis de nuestra ciudad.</strong>
                 <br><br>
-                <strong>ValenMiauGestió</strong> es una aplicación pensada para facilitar la gestión de las colonias felinas urbanas en la ciudad de Valencia, en cumplimiento con la Ley 7/2023 de Bienestar Animal.
+                <strong>ValenMiauGesti</strong> es una aplicación pensada para facilitar la gestión de las colonias felinas urbanas en la ciudad de Valencia, en cumplimiento con la Ley 7/2023 de Bienestar Animal.
               </p>
 
               <p class="fw-bold mb-2">Desde este espacio, las colonias registradas pueden:</p>

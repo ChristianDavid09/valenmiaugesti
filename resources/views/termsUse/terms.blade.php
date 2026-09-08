@@ -1,4 +1,4 @@
-```blade
+
 @extends('layout')
 
 @section('title', 'Términos de Uso | ValenmiauGesti')
