@@ -12,7 +12,7 @@
                         <div class="card shadow-sm border-0 w-100" style="height: 100%; min-height: 400px;">
                             <a href="{{ route('colognes.show', $cologne) }}">
                                 <div style="height: 200px; overflow: hidden;">
-                                    <img src="{{ asset('images/colognes/profile/' . $cologne->photo) }}"
+                                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('s3')->url('colognes/profile/' . $cologne->photo) }}"
                                          class="card-img-top w-100"
                                          alt="{{ $cologne->name }}"
                                          style="height: 100%; object-fit: cover;">

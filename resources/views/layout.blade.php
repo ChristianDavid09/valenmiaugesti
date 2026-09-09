@@ -4,6 +4,7 @@
  * @version: 1.1
  * @since 
 */
+use Illuminate\Support\Facades\Storage;
 ?>
 <!DOCTYPE html>
 <html lang="en">

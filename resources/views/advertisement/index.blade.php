@@ -11,7 +11,7 @@
                     <div class="col-md-4 mb-4 d-flex">
                         <div class="card shadow-sm h-100 border-0">
                             <a href="{{ route('advertisement.show', $adver) }}">
-                                <img src="{{ asset('images/colognes/felines/' . $adver->feline->photo) }}"
+                                <img src="{{ Storage::disk('s3')->url('colognes/felines/' . $adver->feline->photo) }}"
                                      class="card-img-top rounded-top"
                                      alt="{{ $adver->title }}"
                                      style="height: 200px; object-fit: cover;">

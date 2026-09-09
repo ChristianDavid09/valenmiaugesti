@@ -26,10 +26,11 @@
                 <label for="image" class="form-label">Imagen de la colonia</label>
                 <input type="file" class="form-control" id="image" name="image">
             </div>
-            @if ($cologne->photo)
-                <div class="text-center">
-                    <img id="preview" src="{{ asset('./images/colognes/profile/' . $cologne->photo) }}" alt="{{ $cologne->name }}" style="display: block;" class="img-thumbnail mx-auto d-block" width="250">
-                </div>
+            @if ($cologne->photo) {
+                Storage::disk('s3')->delete(
+                    'colognes/profile/' . $cologne->photo
+                );
+            }
             @endif
             <button type="submit" class="btn btn-primary">Actualizar Colonia</button>
         </form>

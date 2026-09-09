@@ -20,12 +20,12 @@
             <div class="message-wrapper">
                 <div class="message-bubble {{ $response->user_id === Auth::id() ? 'message-right' : 'message-left' }}">
                     @if ($response->user->rol == "Cologne")
-                        <img src="{{ asset('images/colognes/profile/' . $response->user->photo_url) }}" alt="Foto de {{ $response->user->name }}" class="rounded-circle" width="30" height="30">
+                        <img src="{{ Storage::disk('s3')->url('colognes/profile/' . $response->user->photo_url) }}" alt="Foto de {{ $response->user->name }}" class="rounded-circle" width="30" height="30">
                         <strong>
                             <a href="{{ route('colognes.show', $response->user->cologne) }}" style="text-decoration:none;color:inherit;">{{ $response->user->cologne->name ?? 'Colonia desconocido' }}</a>
                         </strong>
                     @else
-                        <img src="{{ asset('images/adopters/profile/' . $response->user->photo_url) }}" alt="Foto de {{ $response->user->name }}" class="rounded-circle" width="30" height="30">
+                        <img src="{{Storage::disk('s3')->url('adopters/profile/' . $response->user->photo_url) }}" alt="Foto de {{ $response->user->name }}" class="rounded-circle" width="30" height="30">
                         <strong>
                             <a href="{{ route('adopters.show', $response->user->adopter) }}" style="text-decoration:none;color:inherit;">{{ $response->user->adopter->name ?? 'Colonia desconocido' }}</a>
                         </strong>

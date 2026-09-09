@@ -9,7 +9,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card shadow-sm border-0">
-                    <img src="{{ asset('images/colognes/felines/' . $feline->photo) }}"
+                    <img src="{{ Storage::disk('s3')->url('colognes/felines/' . $feline->photo) }}"
                          alt="Foto de {{ $feline->name }}"
                          class="card-img-top"
                          style="height: 400px; object-fit: cover;">

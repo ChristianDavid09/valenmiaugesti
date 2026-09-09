@@ -72,7 +72,7 @@
 
             @if ($feline->photo)
                 <div class="mb-3 text-center">
-                    <img src="{{ asset('images/colognes/felines/' . $feline->photo) }}" alt="Imagen de la publicación" class="img-thumbnail rounded shadow-sm" style="max-width: 300px; height: auto;">
+                    <img src="{{ Storage::disk('s3')->url('colognes/felines/'. $feline->photo) }}" alt="Imagen de la publicación" class="img-thumbnail rounded shadow-sm" style="max-width: 300px; height: auto;">
                     <p class="text-muted mt-2 mb-0">Imagen actual</p>
                 </div>
             @endif

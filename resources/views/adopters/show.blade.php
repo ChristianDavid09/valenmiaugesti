@@ -18,7 +18,7 @@
 
                     {{-- Imagen del adoptante --}}
                     <div class="text-center mb-4">
-                            <img src="{{ asset('./images/adopters/profile/'.$adopter->user->photo_url) }}" class="rounded-circle shadow" alt="Foto por defecto" width="120" height="120" style="object-fit: cover;>
+                            <img src="{{ Storage::disk('s3')->url('adopters/profile/' . $adopter->user->photo_url) }}" class="rounded-circle shadow" alt="Foto por defecto" width="120" height="120" style="object-fit: cover;>
                     </div>
 
                     {{-- Datos del adoptante --}}

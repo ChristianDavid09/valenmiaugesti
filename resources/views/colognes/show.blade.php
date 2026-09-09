@@ -9,7 +9,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow-sm border-0 text-center">
-                <img src="{{ asset('images/colognes/profile/' . $cologne->photo) }}"
+                <img src="{{ \Illuminate\Support\Facades\Storage::disk('s3')->url('colognes/profile/' . $cologne->photo) }}"
                      alt="{{ $cologne->name }}"
                      class="img-fluid mx-auto d-block rounded-top"
                      style="max-width: 100%; height: auto;">
@@ -48,7 +48,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm border-0 d-flex flex-column">
                     <a href="{{ route('advertisement.show', $adver) }}">
-                        <img src="{{ asset('images/colognes/felines/' . $adver->feline->photo) }}"
+                        <img src="{{ Storage::disk('s3')->url('colognes/felines/' . $adver->feline->photo) }}"
                              class="card-img-top rounded-top"
                              alt="{{ $adver->title }}"
                              style="object-fit: cover; height: 180px;">

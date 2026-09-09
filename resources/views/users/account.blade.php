@@ -5,19 +5,25 @@
 @section('content')
     <div class="container my-5">
         <h1 class="text-center mb-5 text-primary">👤 Mi Cuenta</h1>
-
+        {{-- @php
+            dd([
+                'user_id' => Auth::user()->id,
+                'rol' => Auth::user()->rol,
+                'cologne' => Auth::user()->cologne,
+            ]);
+        @endphp --}}
         <div class="d-flex justify-content-center">
             <div class="card shadow-lg rounded-4 border-0" style="max-width: 600px; width: 100%;">
                 <div class="card-body p-5">
 
                     <div class="text-center mb-4">
                         @if (Auth::user()->rol === 'Cologne')
-                            <img src="{{ asset('images/colognes/profile/' . Auth::user()->photo_url) }}"
+                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('s3')->url('colognes/profile/' . Auth::user()->photo_url) }}"
                                 alt="Foto de perfil"
                                 class="img-fluid rounded-circle"
                                 style="width: 150px; height: 150px; object-fit: cover;">
                         @else
-                            <img src="{{ asset('images/adopters/profile/' . Auth::user()->photo_url) }}"
+                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('s3')->url('adopters/profile/' . Auth::user()->photo_url) }}"
                                 alt="Foto de perfil"
                                 class="img-fluid rounded-circle"
                                 style="width: 150px; height: 150px; object-fit: cover;">

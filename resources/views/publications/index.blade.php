@@ -27,7 +27,7 @@
                             @if(Auth::check() &&  $publication->user->cologne)
                                 {{-- Título de la publicación --}}
                                 <div class="d-flex align-items-center mb-2">
-                                    <img src="{{ asset('images/colognes/profile/' . $publication->user->photo_url) }}"
+                                    <img src="{{Storage::disk('s3')->url('adopters/profile/' .  $publication->user->photo_url) }}"
                                          class="me-2 profile-img">
                                     <div>
                                         <strong><a href="{{ route('colognes.show', $publication->user->cologne) }}" style="text-decoration:none;">{{ $publication->user->cologne->name }}</a></strong><br>
@@ -37,7 +37,7 @@
                             @elseif (Auth::check() && $publication->user->adopter)
                                 {{-- Mostrar nombre y foto del usuario si es un adoptante --}}
                                 <div class="d-flex align-items-center mb-2">
-                                    <img src="{{ asset('images/adopters/profile/' . $publication->user->photo_url) }}"
+                                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('s3')->url('adopters/profile/'. $publication->user->photo_url) }}"
                                          class="me-2 profile-img">
                                     <div>
                                         <strong><a href="{{ route('adopters.show', $publication->user->adopter) }}" style="text-decoration:none;">{{ $publication->user->name }}</a></strong><br>

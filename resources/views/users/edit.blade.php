@@ -95,11 +95,18 @@
             <div class="mb-3">
                 <label class="form-label d-block">Foto actual</label>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal">
-                    <img src="{{ asset('images/' . strtolower($user->rol) . 's/profile/' . $user->photo_url) }}" alt="Foto de perfil" class="img-thumbnail mb-2" style="max-width: 150px;">
+                    <img
+                        src="{{ $user->rol === 'Cologne'
+                            ? Storage::disk('s3')->url('colognes/profile/' . $user->photo_url)
+                            : Storage::disk('s3')->url('adopters/profile/' . $user->photo_url) }}"
+                        alt="Foto de perfil"
+                        class="img-thumbnail mb-2"
+                        style="max-width: 150px;">
                 </a>
             </div>
 
             <button type="button" class="btn btn-outline-secondary mb-3" id="changePhotoBtn">📷 Cambiar foto</button>
+
             <div class="mb-3" id="photoForm" style="display: none;">
                 <label for="photo" class="form-label">Nueva foto de perfil</label>
                 <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
@@ -132,7 +139,10 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-body p-0">
-                    <img src="{{ asset('images/' . strtolower($user->rol) . 's/profile/' . $user->photo_url) }}" class="img-fluid w-100">
+                    <img src="{{ $user->rol === 'Cologne'
+                        ? Storage::disk('s3')->url('colognes/profile/' . $user->photo_url)
+                        : Storage::disk('s3')->url('adopters/profile/' . $user->photo_url) }}"
+                        class="img-fluid w-100">
                 </div>
             </div>
         </div>

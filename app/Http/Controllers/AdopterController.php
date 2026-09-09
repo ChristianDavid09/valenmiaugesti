@@ -33,9 +33,9 @@ class AdopterController extends Controller
             Si el archivo existe, lo eliminamos con la función unlink()*/
 
             if ($adopter->photo) {
-                if (file_exists(public_path('images/adopters/profile/' . $adopter->photo))) {
-                    unlink(public_path('images/adopters/profile/' . $adopter->photo));
-                }
+                Storage::disk('s3')->delete(
+                    'adopters/profile/' . $adopter->photo
+                );
             }
             if(file_exists(public_path('certificates/' . $adopter->certificate))) {
                 unlink(public_path('certificates/' . $adopter->certificate));

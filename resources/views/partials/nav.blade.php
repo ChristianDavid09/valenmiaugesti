@@ -40,9 +40,19 @@
             <div class="dropdown text-end">
                 <a href="#" class="d-block text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                     @if (Auth::user()->rol == 'Cologne')
-                        <img src="{{ asset('./images/colognes/profile/'.Auth::user()->photo_url) }}" alt="Perfil" width="42" height="42" class="rounded-circle border shadow-sm" style="object-fit: cover;">
+                        <img src="{{ Storage::disk('s3')->url('colognes/profile/' . Auth::user()->photo_url) }}"
+                             alt="Perfil"
+                             width="42"
+                             height="42"
+                             class="rounded-circle border shadow-sm"
+                             style="object-fit: cover;">
                     @else
-                        <img src="{{ asset('./images/adopters/profile/'.Auth::user()->photo_url) }}" alt="Perfil" width="42" height="42" class="rounded-circle border shadow-sm" style="object-fit: cover;">
+                        <img src="{{ Storage::disk('s3')->url('adopters/profile/' . Auth::user()->photo_url) }}"
+                             alt="Perfil"
+                             width="42"
+                             height="42"
+                             class="rounded-circle border shadow-sm"
+                             style="object-fit: cover;">
                     @endif
 
                 </a>

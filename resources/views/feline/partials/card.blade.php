@@ -15,7 +15,7 @@
 
 <div class="mb-4">
     <div class="card shadow-sm border-0 h-100">
-        <img src="{{ asset('images/colognes/felines/' . $feline->photo) }}"
+        <img src="{{ Storage::disk('s3')->url('colognes/felines/' . $feline->photo) }}"
              class="card-img-top rounded-top"
              alt="{{ $feline->name }}"
              style="height: 200px; object-fit: cover;">

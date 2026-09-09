@@ -9,7 +9,7 @@
         <div class="card shadow-lg p-3 mb-5 bg-body rounded">
             <div class="row g-0 align-items-center">
                 <div class="col-md-4 text-center p-3">
-                    <img src="{{ asset('images/colognes/felines/' . $adver->feline->photo) }}"
+                    <img src="{{ Storage::disk('s3')->url('colognes/felines/' . $adver->feline->photo) }}"
                          alt="{{ $adver->title }}"
                          class="img-fluid rounded"
                          style="max-height: 250px; object-fit: cover;">

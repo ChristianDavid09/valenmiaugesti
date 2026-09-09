@@ -57,37 +57,68 @@ class CologneController extends Controller
     }
 
     public function destroy(Cologne $cologne)
-    {
+{
+    /**
+     * Comprobamos que el usuario es una colonia
+     * y que es el propietario de la cuenta.
+     *
+     * Si todo es correcto:
+     * - Eliminamos la foto de la colonia.
+     * - Eliminamos las fotos de todos sus felinos.
+     * - Eliminamos las fotos de todas sus publicaciones.
+     * - Eliminamos al usuario.
+     * - Cerramos su sesión.
+     */
 
-        /**Comprobamos que el usuario es una colonia, aparte de que sea el dueño de la cuenta,
-         * y confirmamos que tenga foto, una vez comprobamos, eliminamos todas las fotos relacionadas
-         * con esta colonia, y las publicaciones del usuario
-         */
-        if (Auth::check() && Auth::user()->rol == 'Cologne' && Auth::user()->cologne->id == $cologne->id) {
+    if (
+        Auth::check() &&
+        Auth::user()->rol == 'Cologne' &&
+        Auth::user()->cologne->id == $cologne->id
+    ) {
 
-            if ($cologne->photo) {
-                if (file_exists(public_path('images/colognes/profile/' . $cologne->photo))) {
-                    unlink(public_path('images/colognes/profile/' . $cologne->photo));
-                }
-            }
-            foreach ($cologne->felines as $feline) {
-                if (file_exists(public_path('images/colognes/felines/' . $feline->photo))) {
-                    unlink(public_path('images/colognes/felines/' . $feline->photo));
-                }
-            }
-            foreach ($cologne->user->publications as $publication) {
-                if (file_exists(public_path('pubs/photo/' . $publication->photo))) {
-                    unlink(public_path('pubs/photo/' . $publication->photo));
-                }
-            }
-
-
-            $cologne->user->delete();
-            Auth::logout(); // Cerrar sesión del usuario que eliminó la colonia
-            return redirect()->route('index')->with('success', 'Colonia eliminada con éxito.');
-        } else {
-            return redirect()->route('account')->with('error', 'No se ha podido eliminar la colonia.');
+        // Eliminar foto de la colonia
+        if ($cologne->photo) {
+            Storage::disk('s3')->delete(
+                'colognes/profile/' . $cologne->photo
+            );
         }
+
+        // Eliminar fotos de los felinos de la colonia
+        foreach ($cologne->felines as $feline) {
+
+            if ($feline->photo) {
+                Storage::disk('s3')->delete(
+                    'colognes/felines/' . $feline->photo
+                );
+            }
+        }
+
+        // Eliminar fotos de las publicaciones de la colonia
+        foreach ($cologne->user->publications as $publication) {
+
+            if ($publication->photo) {
+                Storage::disk('s3')->delete(
+                    'pubs/photo/' . $publication->photo
+                );
+            }
+        }
+
+        // Eliminar usuario
+        $cologne->user->delete();
+
+        // Cerrar sesión
+        Auth::logout();
+
+        return redirect()
+            ->route('index')
+            ->with('success', 'Colonia eliminada con éxito.');
+
+    } else {
+
+        return redirect()
+            ->route('account')
+            ->with('error', 'No se ha podido eliminar la colonia.');
     }
+}
 
 }
