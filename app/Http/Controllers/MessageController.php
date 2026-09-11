@@ -10,11 +10,13 @@ use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Feline;
+use App\Models\Adopter;
 use App\Models\Cologne;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Adopt_adver;
+use App\Notifications\NewChatMessage;
 
 
 class MessageController extends Controller
@@ -61,8 +63,48 @@ class MessageController extends Controller
         $adopt_adver->id_adopter = $request->input('adopter_id');
         $adopt_adver->id_adver = $request->input('adver_id');
         $adopt_adver->save();
-        return redirect()->route('messages.index')->with('success', 'Mensaje creado correctamente.');
 
+        /*
+         * Enviamos un email al destinatario del mensaje.
+         */
+        $sender = Auth::user();
+
+        if ($sender->rol === User::ROL_ADOPTER) {
+
+            // El adoptante ha enviado el mensaje a la colonia.
+            $cologne = Cologne::find($message->id_cologne);
+
+            if ($cologne && $cologne->user_id) {
+            $recipient = User::find($cologne->user_id);
+        
+            if ($recipient && !$recipient->isOnline()) {
+                    $recipient->notify(
+                        new NewChatMessage($sender->name)
+                    );
+                }
+            }
+
+        } elseif ($sender->rol === User::ROL_COLOGNE) {
+
+            // La colonia ha enviado el mensaje al adoptante.
+            $adopter = \App\Models\Adopter::find($message->id_adopter);
+
+            if ($adopter && $adopter->user_id) {
+                $recipient = User::find($adopter->user_id);
+
+                if ($recipient) {
+                    if ($recipient && !$recipient->isOnline()) {
+                        $recipient->notify(
+                            new NewChatMessage($sender->name)
+                        );
+                    }
+                }
+            }
+        }
+
+        return redirect()
+            ->route('messages.index')
+            ->with('success', 'Mensaje creado correctamente.');
     }
 
     public function show(Message $message): View

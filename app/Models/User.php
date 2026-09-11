@@ -10,6 +10,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Notifications\ResetPassword;
+use App\Notifications\CustomResetPassword;
 
 class User extends Authenticatable
 {
@@ -48,7 +50,9 @@ class User extends Authenticatable
      */
     protected function casts(): array
     {
+        
         return [
+            'last_activity_at' => 'datetime',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
@@ -67,6 +71,16 @@ class User extends Authenticatable
     public function publications()
     {
         return $this->hasMany(Publication::class, 'id_user');
+    }
+    
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new CustomResetPassword($token));
+    }
+    public function isOnline(): bool
+    {
+        return $this->last_activity_at
+            && $this->last_activity_at->greaterThan(now()->subMinutes(5));
     }
 
 

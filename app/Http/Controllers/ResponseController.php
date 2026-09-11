@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Response;
 use Illuminate\Http\Request;
 use App\Models\Message;
+use App\Models\User;
+use App\Notifications\NewChatMessage;
+use App\Models\Cologne;
+use App\Models\Adopter;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -23,10 +27,6 @@ class ResponseController extends Controller
     }
     public function store(Request $request)
     {
-        /**
-         * Validamos los datos de la solicitud
-         * Aseguramos que el mensaje exista y que el contenido no esté vacío.
-         */
         $request->validate([
             'message_id' => 'required|exists:messages,id',
             'content' => 'required|string|max:255',
@@ -38,9 +38,47 @@ class ResponseController extends Controller
         $response->content = $request->content;
         $response->save();
 
-        return redirect()->route('responses.forMessage', $response->message_id)
-                ->with('success', 'Respuesta enviada correctamente.');
+        /*
+         * Buscamos el mensaje original para saber
+         * quién debe recibir la notificación.
+         */
+        $message = Message::findOrFail($request->message_id);
 
+        $sender = Auth::user();
+        $recipient = null;
+
+        if ($sender->rol === User::ROL_ADOPTER) {
+
+            // El adoptante responde a la colonia.
+            $cologne = Cologne::find($message->id_cologne);
+
+            if ($cologne && $cologne->user_id) {
+                $recipient = User::find($cologne->user_id);
+            }
+
+        } elseif ($sender->rol === User::ROL_COLOGNE) {
+
+            // La colonia responde al adoptante.
+            $adopter = Adopter::find($message->id_adopter);
+
+            if ($adopter && $adopter->user_id) {
+                $recipient = User::find($adopter->user_id);
+            }
+        }
+
+        if (
+            $recipient &&
+            $recipient->id !== $sender->id &&
+            !$recipient->isOnline()
+        ) {
+            $recipient->notify(
+                new NewChatMessage($sender->name)
+            );
+        }
+
+        return redirect()
+            ->route('responses.forMessage', $response->message_id)
+            ->with('success', 'Respuesta enviada correctamente.');
     }
     public function showForMessage(Message $message)
     {

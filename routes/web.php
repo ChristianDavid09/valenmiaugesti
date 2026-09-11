@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
         Route::get('account', 'account')->name('account');
         Route::get('account/edit/{user}', 'edit')->name('account.edit');
         Route::put('account/update/{user}', 'update')->name('account.update');
-        Route::put('update', 'updateColony')->name('updateColony');
+        Route::put('update/{cologne}', 'updateColony')->name('updateColony');
     });
 
     // Anuncios
@@ -76,10 +76,23 @@ Route::middleware('auth')->group(function () {
     
 
 });
+    Route::get('index/advers', [AdvertisementController::class, 'index'])
+        ->name('advertisement.index');
     Route::get('/contactUs', [ContactController::class, 'index'])->name('contactUs');
     Route::post('/contactUs/send', [ContactController::class, 'send'])->name('contact.send');
     Route::get('/privacy-policy', [PolitytermsController::class, 'index'])->name('privacyPolicy');
     Route::get('/terms-of-service', [PolitytermsController::class, 'show'])->name('termsOfService');
+    
+    // Recuperación de contraseña
+    Route::get('forgot-password', [LoginController::class, 'forgotPassword'])
+        ->name('password.request');
 
+    Route::post('forgot-password', [LoginController::class, 'sendResetLink'])
+        ->name('password.email');
 
+    Route::get('reset-password/{token}', [LoginController::class, 'showResetForm'])
+        ->name('password.reset');
+
+    Route::post('reset-password', [LoginController::class, 'resetPassword'])
+        ->name('password.update');
 

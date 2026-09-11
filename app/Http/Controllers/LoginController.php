@@ -19,6 +19,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
@@ -264,43 +267,44 @@ class LoginController extends Controller
     }
 
     public function updateColony(
-        Cologne $cologne,
-        Request $request
+    Cologne $cologne,
+    Request $request
     ): RedirectResponse {
-
-        $cologne->name = $request->input('name');
-        $cologne->description = $request->input('description');
-
-        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-
-            $photo = $request->file('photo');
-
-            $oldFilename = $cologne->photo;
-
-            $filename = $cologne->name . '.' . $photo->getClientOriginalExtension();
-
-            Storage::disk('s3')->put(
-                'colognes/profile/' . $filename,
-                file_get_contents($photo->getPathname())
+    
+    $cologne->name = $request->input('name');
+    $cologne->description = $request->input('description');
+    
+    if ($request->hasFile('image') && $request->file('image')->isValid()) {
+    
+        $photo = $request->file('image');
+    
+        $oldFilename = $cologne->photo;
+    
+        $filename = $cologne->name . '.' . $photo->getClientOriginalExtension();
+    
+        Storage::disk('s3')->put(
+            'colognes/profile/' . $filename,
+            file_get_contents($photo->getPathname())
+        );
+    
+        if (
+            $oldFilename &&
+            $oldFilename !== $filename
+        ) {
+            Storage::disk('s3')->delete(
+                'colognes/profile/' . $oldFilename
             );
-
-            if (
-                $oldFilename &&
-                $oldFilename !== $filename
-            ) {
-                Storage::disk('s3')->delete(
-                    'colognes/profile/' . $oldFilename
-                );
-            }
-
-            $cologne->photo = $filename;
         }
+    
+        $cologne->photo = $filename;
+    }
 
-        $cologne->update();
-
-        return redirect()
-            ->route('account')
-            ->with('success', 'Colonia actualizada correctamente');
+    $cologne->update();
+    
+    return redirect()
+        ->route('account')
+        ->with('success', 'Colonia actualizada correctamente');
+    
     }
 
     public function account(): View
@@ -317,4 +321,76 @@ class LoginController extends Controller
 
         return redirect()->route('index');
     }
+    public function forgotPassword(): View
+    {
+    return view('auth.forgot-password');
+    }
+    
+    public function sendResetLink(Request $request): RedirectResponse
+    {
+    $request->validate([
+    'email' => ['required', 'email'],
+    ]);
+    
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+    
+    if ($status === Password::RESET_LINK_SENT) {
+        return back()->with('status', __($status));
+    }
+    
+    return back()
+        ->withInput($request->only('email'))
+        ->withErrors([
+            'email' => __($status),
+        ]);
+    
+    }
+        public function showResetForm(Request $request, string $token): View
+    {
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => $request->email,
+        ]);
+    }
+    
+    public function resetPassword(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'token' => ['required'],
+            'email' => ['required', 'email'],
+            'password' => ['required', 'confirmed', 'min:8'],
+        ]);
+    
+        $status = Password::reset(
+            $request->only(
+                'email',
+                'password',
+                'password_confirmation',
+                'token'
+            ),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => $password,
+                    'remember_token' => Str::random(60),
+                ])->save();
+    
+                event(new PasswordReset($user));
+            }
+        );
+    
+        if ($status === Password::PASSWORD_RESET) {
+            return redirect()
+                ->route('loginForm')
+                ->with('status', 'Tu contraseña se ha cambiado correctamente.');
+        }
+    
+        return back()
+            ->withInput($request->only('email'))
+            ->withErrors([
+                'email' => __($status),
+            ]);
+    }
+    
 }

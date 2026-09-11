@@ -26,12 +26,11 @@
                 <label for="image" class="form-label">Imagen de la colonia</label>
                 <input type="file" class="form-control" id="image" name="image">
             </div>
-            @if ($cologne->photo) {
+            {{-- @if ($cologne->photo) {
                 Storage::disk('s3')->delete(
                     'colognes/profile/' . $cologne->photo
-                );
-            }
-            @endif
+                );}
+            @endif --}}
             <button type="submit" class="btn btn-primary">Actualizar Colonia</button>
         </form>
     </div>

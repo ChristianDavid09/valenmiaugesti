@@ -7,7 +7,7 @@
         <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
           <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
         </a>
-        <span class="mb-3 mb-md-0 text-body-secondary">David Murillo Martínez ©2026</span>
+        <span class="mb-3 mb-md-0 text-body-secondary">Christian David Murillo Martínez ©2026</span>
         <a href="{{ route('contactUs') }}" class="btn btn-outline-primary">Contacta con el desarrollador</a>
       </div>
       <div>

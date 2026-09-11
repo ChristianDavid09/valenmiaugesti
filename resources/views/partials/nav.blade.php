@@ -15,11 +15,16 @@
             </a>
         @endif
         @if (!Auth::check())
-            <div class="ms-auto d-flex gap-2">
-              <a class="btn btn-outline-primary" href="{{ route('signUp') }}">Registrarse</a>
-              <a class="btn btn-primary" href="{{ route('loginForm') }}">Iniciar Sesión</a>
+            <div class="ms-auto d-flex align-items-center gap-2">
+                <a href="{{ route('advertisement.index') }}"
+                   class="btn btn-primary rounded-pill px-3 shadow-sm d-flex align-items-center gap-2">
+                    <span>🐾</span>
+                    <span>Ver Michis</span>
+                </a>
+                <a class="btn btn-outline-primary" href="{{ route('signUp') }}">Registrarse</a>
+                <a class="btn btn-primary" href="{{ route('loginForm') }}">Iniciar Sesión</a>
             </div>
-            @else
+        @else
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 @if (Auth::user()->rol == 'Cologne')
                     <li><a class="nav-link" href="{{ route('colognes.show', Auth::user()->cologne) }}">Mi Colonia</a></li>
@@ -40,7 +45,7 @@
             <div class="dropdown text-end">
                 <a href="#" class="d-block text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                     @if (Auth::user()->rol == 'Cologne')
-                        <img src="{{ Storage::disk('s3')->url('colognes/profile/' . Auth::user()->photo_url) }}"
+                        <img src="{{ Storage::disk('s3')->url('colognes/profile/' . Auth::user()->cologne->photo) }}"
                              alt="Perfil"
                              width="42"
                              height="42"

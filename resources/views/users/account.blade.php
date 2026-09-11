@@ -18,7 +18,7 @@
 
                     <div class="text-center mb-4">
                         @if (Auth::user()->rol === 'Cologne')
-                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('s3')->url('colognes/profile/' . Auth::user()->photo_url) }}"
+                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('s3')->url('colognes/profile/' . Auth::user()->cologne->photo) }}"
                                 alt="Foto de perfil"
                                 class="img-fluid rounded-circle"
                                 style="width: 150px; height: 150px; object-fit: cover;">
